@@ -8,12 +8,29 @@
 
 /* Begin PBXBuildFile section */
 		1ABD3B431BFD3F6300544104 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B421BFD3F6300544104 /* AppDelegate.swift */; };
-		1ABD3B451BFD3F6300544104 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B441BFD3F6300544104 /* ViewController.swift */; };
 		1ABD3B481BFD3F6300544104 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B461BFD3F6300544104 /* Main.storyboard */; };
 		1ABD3B4A1BFD3F6300544104 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B491BFD3F6300544104 /* Assets.xcassets */; };
 		1ABD3B4D1BFD3F6300544104 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B4B1BFD3F6300544104 /* LaunchScreen.storyboard */; };
 		1ABD3B581BFD3F6300544104 /* DoubleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B571BFD3F6300544104 /* DoubleTests.swift */; };
 		1ABD3B631BFD3F6300544104 /* DoubleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B621BFD3F6300544104 /* DoubleUITests.swift */; };
+		1ABD3B711BFD724D00544104 /* FriendshipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B701BFD724D00544104 /* FriendshipViewController.swift */; };
+		1ABD3B731BFD726400544104 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B721BFD726400544104 /* ChatViewController.swift */; };
+		1ABD3B751BFD727700544104 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B741BFD727700544104 /* ProfileViewController.swift */; };
+		1ABD3B781BFD72F800544104 /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B771BFD72F800544104 /* FirebaseController.swift */; };
+		1ABD3B7B1BFD736700544104 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B7A1BFD736700544104 /* Person.swift */; };
+		1ABD3B7D1BFD737000544104 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B7C1BFD737000544104 /* Profile.swift */; };
+		1ABD3B7F1BFD73D700544104 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B7E1BFD73D700544104 /* Response.swift */; };
+		1ABD3B821BFD73F800544104 /* Friendship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B811BFD73F800544104 /* Friendship.swift */; };
+		1ABD3B841BFD740400544104 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B831BFD740400544104 /* Message.swift */; };
+		1ABD3B861BFD740C00544104 /* Child.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B851BFD740C00544104 /* Child.swift */; };
+		1ABD3B881BFD775400544104 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B871BFD775400544104 /* Firebase.framework */; };
+		1ABD3B891BFD775400544104 /* Firebase.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B871BFD775400544104 /* Firebase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		1ABD3B8C1BFD777500544104 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B8B1BFD777500544104 /* CFNetwork.framework */; };
+		1ABD3B8E1BFD777E00544104 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B8D1BFD777E00544104 /* Security.framework */; };
+		1ABD3B901BFD778900544104 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B8F1BFD778900544104 /* SystemConfiguration.framework */; };
+		1ABD3B921BFD779600544104 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B911BFD779600544104 /* libicucore.tbd */; };
+		1ABD3B941BFD77A900544104 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B931BFD77A900544104 /* libc++.tbd */; };
+		1ABD3B971BFD8B4500544104 /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B961BFD8B4500544104 /* ImageController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,10 +50,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		1ABD3B8A1BFD775400544104 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				1ABD3B891BFD775400544104 /* Firebase.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		1ABD3B3F1BFD3F6300544104 /* Double.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Double.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABD3B421BFD3F6300544104 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		1ABD3B441BFD3F6300544104 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		1ABD3B471BFD3F6300544104 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1ABD3B491BFD3F6300544104 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1ABD3B4C1BFD3F6300544104 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +77,23 @@
 		1ABD3B5E1BFD3F6300544104 /* DoubleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DoubleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABD3B621BFD3F6300544104 /* DoubleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleUITests.swift; sourceTree = "<group>"; };
 		1ABD3B641BFD3F6300544104 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1ABD3B701BFD724D00544104 /* FriendshipViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendshipViewController.swift; sourceTree = "<group>"; };
+		1ABD3B721BFD726400544104 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		1ABD3B741BFD727700544104 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		1ABD3B771BFD72F800544104 /* FirebaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
+		1ABD3B7A1BFD736700544104 /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
+		1ABD3B7C1BFD737000544104 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		1ABD3B7E1BFD73D700544104 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		1ABD3B811BFD73F800544104 /* Friendship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friendship.swift; sourceTree = "<group>"; };
+		1ABD3B831BFD740400544104 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		1ABD3B851BFD740C00544104 /* Child.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Child.swift; sourceTree = "<group>"; };
+		1ABD3B871BFD775400544104 /* Firebase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Firebase.framework; sourceTree = "<group>"; };
+		1ABD3B8B1BFD777500544104 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		1ABD3B8D1BFD777E00544104 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		1ABD3B8F1BFD778900544104 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		1ABD3B911BFD779600544104 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		1ABD3B931BFD77A900544104 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		1ABD3B961BFD8B4500544104 /* ImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +101,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1ABD3B941BFD77A900544104 /* libc++.tbd in Frameworks */,
+				1ABD3B921BFD779600544104 /* libicucore.tbd in Frameworks */,
+				1ABD3B901BFD778900544104 /* SystemConfiguration.framework in Frameworks */,
+				1ABD3B8E1BFD777E00544104 /* Security.framework in Frameworks */,
+				1ABD3B8C1BFD777500544104 /* CFNetwork.framework in Frameworks */,
+				1ABD3B881BFD775400544104 /* Firebase.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +130,7 @@
 		1ABD3B361BFD3F6300544104 = {
 			isa = PBXGroup;
 			children = (
+				1ABD3B951BFD77B600544104 /* Frameworks */,
 				1ABD3B411BFD3F6300544104 /* Double */,
 				1ABD3B561BFD3F6300544104 /* DoubleTests */,
 				1ABD3B611BFD3F6300544104 /* DoubleUITests */,
@@ -98,8 +152,10 @@
 			isa = PBXGroup;
 			children = (
 				1ABD3B421BFD3F6300544104 /* AppDelegate.swift */,
-				1ABD3B441BFD3F6300544104 /* ViewController.swift */,
 				1ABD3B461BFD3F6300544104 /* Main.storyboard */,
+				1ABD3B801BFD73E100544104 /* Model Objects */,
+				1ABD3B791BFD72FC00544104 /* Model Controllers */,
+				1ABD3B761BFD728000544104 /* View Controllers */,
 				1ABD3B491BFD3F6300544104 /* Assets.xcassets */,
 				1ABD3B4B1BFD3F6300544104 /* LaunchScreen.storyboard */,
 				1ABD3B4E1BFD3F6300544104 /* Info.plist */,
@@ -125,6 +181,51 @@
 			path = DoubleUITests;
 			sourceTree = "<group>";
 		};
+		1ABD3B761BFD728000544104 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1ABD3B741BFD727700544104 /* ProfileViewController.swift */,
+				1ABD3B701BFD724D00544104 /* FriendshipViewController.swift */,
+				1ABD3B721BFD726400544104 /* ChatViewController.swift */,
+			);
+			name = "View Controllers";
+			sourceTree = "<group>";
+		};
+		1ABD3B791BFD72FC00544104 /* Model Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1ABD3B771BFD72F800544104 /* FirebaseController.swift */,
+				1ABD3B961BFD8B4500544104 /* ImageController.swift */,
+			);
+			name = "Model Controllers";
+			sourceTree = "<group>";
+		};
+		1ABD3B801BFD73E100544104 /* Model Objects */ = {
+			isa = PBXGroup;
+			children = (
+				1ABD3B7A1BFD736700544104 /* Person.swift */,
+				1ABD3B7C1BFD737000544104 /* Profile.swift */,
+				1ABD3B7E1BFD73D700544104 /* Response.swift */,
+				1ABD3B811BFD73F800544104 /* Friendship.swift */,
+				1ABD3B831BFD740400544104 /* Message.swift */,
+				1ABD3B851BFD740C00544104 /* Child.swift */,
+			);
+			name = "Model Objects";
+			sourceTree = "<group>";
+		};
+		1ABD3B951BFD77B600544104 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1ABD3B931BFD77A900544104 /* libc++.tbd */,
+				1ABD3B911BFD779600544104 /* libicucore.tbd */,
+				1ABD3B8F1BFD778900544104 /* SystemConfiguration.framework */,
+				1ABD3B8D1BFD777E00544104 /* Security.framework */,
+				1ABD3B8B1BFD777500544104 /* CFNetwork.framework */,
+				1ABD3B871BFD775400544104 /* Firebase.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,6 +236,7 @@
 				1ABD3B3B1BFD3F6300544104 /* Sources */,
 				1ABD3B3C1BFD3F6300544104 /* Frameworks */,
 				1ABD3B3D1BFD3F6300544104 /* Resources */,
+				1ABD3B8A1BFD775400544104 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -259,8 +361,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1ABD3B451BFD3F6300544104 /* ViewController.swift in Sources */,
+				1ABD3B7F1BFD73D700544104 /* Response.swift in Sources */,
+				1ABD3B7B1BFD736700544104 /* Person.swift in Sources */,
+				1ABD3B781BFD72F800544104 /* FirebaseController.swift in Sources */,
+				1ABD3B821BFD73F800544104 /* Friendship.swift in Sources */,
+				1ABD3B861BFD740C00544104 /* Child.swift in Sources */,
 				1ABD3B431BFD3F6300544104 /* AppDelegate.swift in Sources */,
+				1ABD3B7D1BFD737000544104 /* Profile.swift in Sources */,
+				1ABD3B751BFD727700544104 /* ProfileViewController.swift in Sources */,
+				1ABD3B841BFD740400544104 /* Message.swift in Sources */,
+				1ABD3B731BFD726400544104 /* ChatViewController.swift in Sources */,
+				1ABD3B711BFD724D00544104 /* FriendshipViewController.swift in Sources */,
+				1ABD3B971BFD8B4500544104 /* ImageController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +512,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Double/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.Double;
@@ -411,6 +527,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = Double/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.Double;
