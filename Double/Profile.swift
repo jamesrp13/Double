@@ -49,14 +49,14 @@ struct Profile: FirebaseType {
     }
     
     init?(json: [String : AnyObject], identifier: String) {
-        var peopleArray: (Person, Person)? = nil
+        var peopleTuple: (Person, Person)? = nil
         var childrenArray: [Child]? = nil
         var friendshipArray: [Friendship]? = nil
         var responsesArray: [Response]? = nil
         
         // Fetch necessary data not included in json
         PersonController.fetchPeopleForProfileIdentifier(identifier) { (people) -> Void in
-            peopleArray = people
+            peopleTuple = people
         }
         
         ChildController.fetchChildrenForProfileIdentifier(identifier) { (children) -> Void in
@@ -75,7 +75,7 @@ struct Profile: FirebaseType {
             let relationshipStart = json[kRelationshipStart] as? NSDate,
             let location = json[kLocation] as? String,
             let imageEndPoint = json[kImageEndpoint] as? String,
-            let people = peopleArray,
+            let people = peopleTuple,
             let children = childrenArray,
             let friendships = friendshipArray,
             let responses = responsesArray else {return nil}

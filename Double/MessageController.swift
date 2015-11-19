@@ -7,3 +7,10 @@
 //
 
 import Foundation
+
+class MessageController {
+    
+    static func fetchMessagesForFriendshipIdentifier(friendshipIdentifier: String, completion: ([Message]) -> Void) {
+    
+    }
+}
