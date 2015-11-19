@@ -32,7 +32,7 @@ struct Profile: FirebaseType {
     var friendships: [Friendship]
     var responses: [Response]
     
-    // FirebaseType attributes
+    // FirebaseType attributes and failable initializer
     var identifier: String?
     
     var endpoint: String {
@@ -91,6 +91,20 @@ struct Profile: FirebaseType {
         self.friendships = friendships
         self.responses = responses
         
+    }
+    
+    // Standard initializer
+    init(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child], imageEndPoint: String, friendships: [Friendship], responses: [Response]) {
+        
+        self.people = people
+        self.married = married
+        self.relationshipStart = relationshipStart
+        self.about = about
+        self.location = location
+        self.children = children
+        self.imageEndPoint = imageEndPoint
+        self.friendships = friendships
+        self.responses = responses
     }
     
     

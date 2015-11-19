@@ -23,7 +23,7 @@ struct Person: FirebaseType {
     let dob: NSDate
     let gender: Gender
     
-    // FirebaseType attributes
+    // FirebaseType attributes and failable initializer
     var identifier: String?
     
     var endpoint: String {
@@ -35,17 +35,18 @@ struct Person: FirebaseType {
         return json
     }
     
-    init(name: String, dob: NSDate, gender: Gender) {
-        self.name = name
-        self.dob = dob
-        self.gender = gender
-    }
-    
     init?(json: [String : AnyObject], identifier: String) {
         guard let name = json[kName] as? String,
             let dob = json[kDob] as? NSDate,
             let gender = json[kGender] as? Gender else {return nil}
         
+        self.name = name
+        self.dob = dob
+        self.gender = gender
+    }
+    
+    // Standard initializer
+    init(name: String, dob: NSDate, gender: Gender) {
         self.name = name
         self.dob = dob
         self.gender = gender
