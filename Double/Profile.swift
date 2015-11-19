@@ -49,20 +49,48 @@ struct Profile: FirebaseType {
     }
     
     init?(json: [String : AnyObject], identifier: String) {
+        var peopleArray: (Person, Person)? = nil
+        var childrenArray: [Child]? = nil
+        var friendshipArray: [Friendship]? = nil
+        var responsesArray: [Response]? = nil
+        
+        // Fetch necessary data not included in json
+        PersonController.fetchPeopleForProfileIdentifier(identifier) { (people) -> Void in
+            peopleArray = people
+        }
+        
+        ChildController.fetchChildrenForProfileIdentifier(identifier) { (children) -> Void in
+            childrenArray = children
+        }
+        
+        FriendshipController.fetchFriendshipsForProfileIdentifier(identifier) { (friendships) -> Void in
+            friendshipArray = friendships
+        }
+        
+        ResponseController.fetchResponsesForProfileIdentifier(identifier) { (responses) -> Void in
+            responsesArray = responses
+        }
+        
         guard let married = json[kMarried] as? Bool,
             let relationshipStart = json[kRelationshipStart] as? NSDate,
             let location = json[kLocation] as? String,
-            let imageEndPoint = json[kImageEndpoint] as? String else {return nil}
+            let imageEndPoint = json[kImageEndpoint] as? String,
+            let people = peopleArray,
+            let children = childrenArray,
+            let friendships = friendshipArray,
+            let responses = responsesArray else {return nil}
         
+        self.identifier = identifier
         self.married = married
         self.relationshipStart = relationshipStart
         self.location = location
         self.imageEndPoint = imageEndPoint
         self.about = json[kAbout] as? String
-        self.people
-        self.children
-        self.friendships
-        self.responses
+        self.people = people
+        self.children = children
+        self.friendships = friendships
+        self.responses = responses
+        
     }
     
     

@@ -31,6 +31,12 @@
 		1ABD3B921BFD779600544104 /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B911BFD779600544104 /* libicucore.tbd */; };
 		1ABD3B941BFD77A900544104 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B931BFD77A900544104 /* libc++.tbd */; };
 		1ABD3B971BFD8B4500544104 /* ImageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B961BFD8B4500544104 /* ImageController.swift */; };
+		1ABD3B991BFE2D0200544104 /* PersonController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B981BFE2D0200544104 /* PersonController.swift */; };
+		1ABD3B9B1BFE2D1300544104 /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B9A1BFE2D1300544104 /* ProfileController.swift */; };
+		1ABD3B9D1BFE2D1C00544104 /* ResponseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B9C1BFE2D1C00544104 /* ResponseController.swift */; };
+		1ABD3B9F1BFE2D3000544104 /* FriendshipController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B9E1BFE2D3000544104 /* FriendshipController.swift */; };
+		1ABD3BA11BFE2D3A00544104 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3BA01BFE2D3A00544104 /* MessageController.swift */; };
+		1ABD3BA31BFE2D4F00544104 /* ChildController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3BA21BFE2D4F00544104 /* ChildController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,6 +100,12 @@
 		1ABD3B911BFD779600544104 /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		1ABD3B931BFD77A900544104 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		1ABD3B961BFD8B4500544104 /* ImageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageController.swift; sourceTree = "<group>"; };
+		1ABD3B981BFE2D0200544104 /* PersonController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersonController.swift; sourceTree = "<group>"; };
+		1ABD3B9A1BFE2D1300544104 /* ProfileController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
+		1ABD3B9C1BFE2D1C00544104 /* ResponseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseController.swift; sourceTree = "<group>"; };
+		1ABD3B9E1BFE2D3000544104 /* FriendshipController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendshipController.swift; sourceTree = "<group>"; };
+		1ABD3BA01BFE2D3A00544104 /* MessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
+		1ABD3BA21BFE2D4F00544104 /* ChildController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +208,12 @@
 			children = (
 				1ABD3B771BFD72F800544104 /* FirebaseController.swift */,
 				1ABD3B961BFD8B4500544104 /* ImageController.swift */,
+				1ABD3B981BFE2D0200544104 /* PersonController.swift */,
+				1ABD3B9A1BFE2D1300544104 /* ProfileController.swift */,
+				1ABD3B9C1BFE2D1C00544104 /* ResponseController.swift */,
+				1ABD3B9E1BFE2D3000544104 /* FriendshipController.swift */,
+				1ABD3BA01BFE2D3A00544104 /* MessageController.swift */,
+				1ABD3BA21BFE2D4F00544104 /* ChildController.swift */,
 			);
 			name = "Model Controllers";
 			sourceTree = "<group>";
@@ -363,10 +381,16 @@
 			files = (
 				1ABD3B7F1BFD73D700544104 /* Response.swift in Sources */,
 				1ABD3B7B1BFD736700544104 /* Person.swift in Sources */,
+				1ABD3B9D1BFE2D1C00544104 /* ResponseController.swift in Sources */,
 				1ABD3B781BFD72F800544104 /* FirebaseController.swift in Sources */,
+				1ABD3BA11BFE2D3A00544104 /* MessageController.swift in Sources */,
+				1ABD3B991BFE2D0200544104 /* PersonController.swift in Sources */,
+				1ABD3B9F1BFE2D3000544104 /* FriendshipController.swift in Sources */,
 				1ABD3B821BFD73F800544104 /* Friendship.swift in Sources */,
 				1ABD3B861BFD740C00544104 /* Child.swift in Sources */,
 				1ABD3B431BFD3F6300544104 /* AppDelegate.swift in Sources */,
+				1ABD3BA31BFE2D4F00544104 /* ChildController.swift in Sources */,
+				1ABD3B9B1BFE2D1300544104 /* ProfileController.swift in Sources */,
 				1ABD3B7D1BFD737000544104 /* Profile.swift in Sources */,
 				1ABD3B751BFD727700544104 /* ProfileViewController.swift in Sources */,
 				1ABD3B841BFD740400544104 /* Message.swift in Sources */,
