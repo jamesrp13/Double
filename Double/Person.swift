@@ -43,6 +43,7 @@ struct Person: FirebaseType {
         self.name = name
         self.dob = dob
         self.gender = gender
+        self.identifier = identifier
     }
     
     // Standard initializer

@@ -35,6 +35,7 @@ struct Message: FirebaseType {
         self.friendshipId = friendshipId
         self.profileId = profileId
         self.text = text
+        self.identifier = identifier
     }
     
     // Standard initializer
