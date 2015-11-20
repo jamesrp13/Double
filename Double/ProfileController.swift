@@ -13,6 +13,7 @@ class ProfileController {
     static let SharedInstance = ProfileController()
     
     var currentUserProfile: Profile = ProfileController.mockProfiles()[0]
+
     
     static func createProfile(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child], image: UIImage, friendships: [Friendship], responses: [Response], completion: (success: Bool, profile: Profile?) -> Void) {
         
@@ -29,7 +30,13 @@ class ProfileController {
     }
     
     static func mockProfiles() -> [Profile] {
-        let profile1 = Profile(people: (PersonController.mockPeople()[0], PersonController.mockPeople()[1]), married: true, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "", location: "84109", children: [ChildController.mockChildren()[0]], imageEndPoint: "", friendships: FriendshipController.mockFriendships(), responses: ResponseController.mockResponses(), identifier: "k92hd92h" )
+        //let relationshipStart = NSDate(timeIntervalSince1970: 0.0)
+       // let person1 = PersonController.mockPeople()[0]
+        //let person2 = PersonController.mockPeople()[1]
+        
+        //let profile0 = Profile(people: (person1, person2), married: true, relationshipStart: relationshipStart, about: "test", location: "84109", children: [], imageEndPoint: "nothing", friendships: [], responses: [])
+        
+        let profile1 = Profile(people: (PersonController.mockPeople()[0], PersonController.mockPeople()[1]), married: true, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: [ChildController.mockChildren()[0]], imageEndPoint: "", friendships: FriendshipController.mockFriendships(), responses: ResponseController.mockResponses(), identifier: "k92hd92h" )
         
         let profile2 = Profile(people: (PersonController.mockPeople()[2], PersonController.mockPeople()[3]), married: false, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Cool people", location: "84109", children: [], imageEndPoint: "", friendships: FriendshipController.mockFriendships(), responses: ResponseController.mockResponses(), identifier: "sonw9n4")
         

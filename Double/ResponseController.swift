@@ -15,7 +15,7 @@ class ResponseController {
     }
     
     static func mockResponses() -> [Response] {
-        let response1 = Response(profileViewedId: "820fhs8", like: true, identifier: ProfileController.SharedInstance.currentUserProfile.identifier!)
+        let response1 = Response(profileViewedId: "820fhs8", like: true, identifier: "02dkj")
         
         return [response1]
     }
