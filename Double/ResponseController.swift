@@ -13,4 +13,10 @@ class ResponseController {
     static func fetchResponsesForProfileIdentifier(profileIdentifier: String, completion: (responses: [Response]) -> Void) {
     
     }
+    
+    static func mockResponses() -> [Response] {
+        let response1 = Response(profileViewedId: "820fhs8", like: true, identifier: ProfileController.SharedInstance.currentUserProfile.identifier!)
+        
+        return [response1]
+    }
 }

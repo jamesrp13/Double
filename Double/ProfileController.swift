@@ -6,8 +6,34 @@
 //  Copyright © 2015 James Pacheco. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class ProfileController {
+    
+    static let SharedInstance = ProfileController()
+    
+    var currentUserProfile: Profile = ProfileController.mockProfiles()[0]
+    
+    static func createProfile(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child], image: UIImage, friendships: [Friendship], responses: [Response], completion: (success: Bool, profile: Profile?) -> Void) {
+        
+        ImageController.uploadImage(image) { (identifier) -> Void in
+            if let identifier = identifier {
+                var profile = Profile(people: people, married: married, relationshipStart: relationshipStart, about: about, location: location, children: children, imageEndPoint: identifier, friendships: friendships, responses: responses)
+                profile.save()
+                completion(success: true, profile: profile)
+            } else {
+                completion(success: false, profile: nil)
+            }
+        }
+        
+    }
+    
+    static func mockProfiles() -> [Profile] {
+        let profile1 = Profile(people: (PersonController.mockPeople()[0], PersonController.mockPeople()[1]), married: true, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "", location: "84109", children: [ChildController.mockChildren()[0]], imageEndPoint: "", friendships: FriendshipController.mockFriendships(), responses: ResponseController.mockResponses(), identifier: "k92hd92h" )
+        
+        let profile2 = Profile(people: (PersonController.mockPeople()[2], PersonController.mockPeople()[3]), married: false, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Cool people", location: "84109", children: [], imageEndPoint: "", friendships: FriendshipController.mockFriendships(), responses: ResponseController.mockResponses(), identifier: "sonw9n4")
+        
+        return [profile1, profile2]
+    }
     
 }

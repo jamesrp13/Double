@@ -94,7 +94,7 @@ struct Profile: FirebaseType {
     }
     
     // Standard initializer
-    init(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child], imageEndPoint: String, friendships: [Friendship], responses: [Response]) {
+    init(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child], imageEndPoint: String, friendships: [Friendship], responses: [Response], identifier: String? = nil) {
         
         self.people = people
         self.married = married
@@ -105,6 +105,7 @@ struct Profile: FirebaseType {
         self.imageEndPoint = imageEndPoint
         self.friendships = friendships
         self.responses = responses
+        self.identifier = identifier
     }
     
     

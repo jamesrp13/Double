@@ -13,15 +13,21 @@ struct Person: FirebaseType {
     private let kName = "name"
     private let kDob = "dob"
     private let kGender = "gender"
+    private let kAbout = "about"
     
-    enum Gender {
-        case Male
-        case Female
+    enum Gender: String {
+        case Male = "M"
+        case Female = "F"
     }
     
     let name: String
     let dob: NSDate
     let gender: Gender
+    let about: String?
+    
+    var age: Int {
+        return Int(dob.timeIntervalSinceNow) * (-1) / (365*24*60*60)
+    }
     
     // FirebaseType attributes and failable initializer
     var identifier: String?
@@ -31,7 +37,7 @@ struct Person: FirebaseType {
     }
     
     var jsonValue: [String: AnyObject] {
-        let json: [String: AnyObject] = [kName: name, kDob: dob, kGender: gender.hashValue]
+        let json: [String: AnyObject] = [kName: name, kDob: dob, kGender: gender.rawValue]
         return json
     }
     
@@ -44,14 +50,15 @@ struct Person: FirebaseType {
         self.dob = dob
         self.gender = gender
         self.identifier = identifier
+        self.about = json[kAbout] as? String
     }
     
     // Standard initializer
-    init(name: String, dob: NSDate, gender: Gender) {
+    init(name: String, dob: NSDate, gender: Gender, about: String? = nil) {
         self.name = name
         self.dob = dob
         self.gender = gender
+        self.about = about
     }
-    
     
 }

@@ -13,4 +13,9 @@ class FriendshipController {
     static func fetchFriendshipsForProfileIdentifier(profileIdentifier: String, completion: (friendships: [Friendship]) -> Void) {
         
     }
+    
+    static func mockFriendships() -> [Friendship] {
+        let friendship1 = Friendship(profileIdentifiers: ("k92hd92h", "sonw9n4"))
+        return [friendship1]
+    }
 }
