@@ -17,6 +17,9 @@ struct Profile: FirebaseType {
     private let kImageEndpoint = "imageEndpoint"
     
     let people: (Person, Person)
+    var coupleTitle: String {
+        return "\(people.0.name) and \(people.1.name)"
+    }
     var married: Bool
     var relationshipStart: NSDate
     var about: String?

@@ -29,6 +29,11 @@ class ProfileController {
         
     }
     
+    static func profileForIdentifier(profileIdentifier: String, completion: (profile: Profile?) -> Void) {
+        
+        completion(profile: mockProfiles()[1])
+    }
+    
     static func mockProfiles() -> [Profile] {
         //let relationshipStart = NSDate(timeIntervalSince1970: 0.0)
        // let person1 = PersonController.mockPeople()[0]

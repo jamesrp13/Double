@@ -9,13 +9,23 @@
 import Foundation
 
 class FriendshipController {
-    
+
     static func fetchFriendshipsForProfileIdentifier(profileIdentifier: String, completion: (friendships: [Friendship]) -> Void) {
         
     }
     
+    static func conversationsForFriendships(friendships: [Friendship]) -> [Friendship] {
+        var conversations: [Friendship] = []
+        for friendship in friendships {
+            if friendship.messages.count != 0 {
+                conversations.append(friendship)
+            }
+        }
+        return conversations
+    }
+    
     static func mockFriendships() -> [Friendship] {
-        let friendship1 = Friendship(profileIdentifiers: ("k92hd92h", "sonw9n4"))
+        let friendship1 = Friendship(profileIdentifiers: ("k92hd92h", "sonw9n4"), messages: MessageController.mockMessages())
         return [friendship1]
     }
 }

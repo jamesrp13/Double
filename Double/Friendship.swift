@@ -41,8 +41,9 @@ struct Friendship: FirebaseType {
     }
     
     // Standard initializer
-    init(profileIdentifiers: (String, String), messages: [Message] = []) {
+    init(profileIdentifiers: (String, String), messages: [Message] = [], identifier: String? = nil) {
         self.profileIdentifiers = profileIdentifiers
         self.messages = messages
+        self.identifier = identifier
     }
 }

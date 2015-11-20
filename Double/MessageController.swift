@@ -13,4 +13,11 @@ class MessageController {
     static func fetchMessagesForFriendshipIdentifier(friendshipIdentifier: String, completion: ([Message]) -> Void) {
     
     }
+    
+    
+    static func mockMessages() -> [Message] {
+        let message1 = Message(friendshipId: "92fido", profileId: "29fdjkw", text: "This is a test message")
+        
+        return [message1]
+    }
 }
