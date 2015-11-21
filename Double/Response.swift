@@ -9,10 +9,10 @@
 import Foundation
 
 struct Response: FirebaseType {
-    private let kProfileViewedId = "profileId"
+    private let kProfileViewedByIdentifier = "profileViewedByIdentifier"
     private let kLike = "like"
     
-    var profileViewedId: String
+    var profileViewedByIdentifier: String
     var like: Bool
     
     // FirebaseType attributes and failable initializer
@@ -22,24 +22,25 @@ struct Response: FirebaseType {
     }
     
     var jsonValue: [String: AnyObject] {
-        let json: [String: AnyObject] = [kProfileViewedId: profileViewedId, kLike: like]
+        let json: [String: AnyObject] = [profileViewedByIdentifier: like]
         return json
     }
     
     init?(json: [String : AnyObject], identifier: String) {
-        guard let profileViewedId = json[kProfileViewedId] as? String,
-            let like = json[kLike] as? Bool else {return nil}
+        let jsonAsArray = json.flatMap({$0})
+        let profileViewedByIdentifier = jsonAsArray[0].0
+        guard let like = jsonAsArray[0].1 as? Bool else {return nil}
         
-        self.profileViewedId = profileViewedId
+        self.profileViewedByIdentifier = profileViewedByIdentifier
         self.like = like
         self.identifier = identifier
     }
     
     // Standard initializer
-    init(profileViewedId: String, like: Bool, identifier: String) {
-        self.profileViewedId = profileViewedId
+    init(profileViewedByIdentifier: String, like: Bool, profileIdentifier: String) {
+        self.profileViewedByIdentifier = profileViewedByIdentifier
         self.like = like
-        self.identifier = identifier
+        self.identifier = profileIdentifier
     }
     
 }

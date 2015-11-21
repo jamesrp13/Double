@@ -26,6 +26,6 @@ class FriendshipController {
     
     static func mockFriendships() -> [Friendship] {
         let friendship1 = Friendship(profileIdentifiers: ("k92hd92h", "sonw9n4"), messages: MessageController.mockMessages())
-        return [friendship1]
+        return [friendship1, friendship1, friendship1, friendship1, friendship1]
     }
 }

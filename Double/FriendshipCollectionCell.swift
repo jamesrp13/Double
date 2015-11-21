@@ -8,8 +8,10 @@
 
 import UIKit
 
-class FriendshipCollectionCell: UITableViewCell {
-
+class FriendshipCollectionCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -19,6 +21,18 @@ class FriendshipCollectionCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return ProfileController.SharedInstance.currentUserProfile.friendships.count
+    }
+    
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+        if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("friendshipCell", forIndexPath: indexPath) as? FriendshipCell {
+            cell.updateWithFriendship(ProfileController.SharedInstance.currentUserProfile.friendships[indexPath.item])
+            return cell
+        }
+        return UICollectionViewCell()
     }
 
 }

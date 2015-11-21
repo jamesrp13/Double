@@ -29,7 +29,11 @@ class ProfileController {
         
     }
     
-    static func profileForIdentifier(profileIdentifier: String, completion: (profile: Profile?) -> Void) {
+    static func fetchProfilesForCurrentUser() {
+        //FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild
+    }
+    
+    static func fetchProfileForIdentifier(profileIdentifier: String, completion: (profile: Profile?) -> Void) {
         
         completion(profile: mockProfiles()[1])
     }

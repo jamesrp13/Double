@@ -15,13 +15,13 @@
 		1A82D9CD1BFFD5B000524AD2 /* FriendshipTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A82D9CC1BFFD5B000524AD2 /* FriendshipTableViewController.swift */; };
 		1A82D9CF1BFFDD0600524AD2 /* FriendshipCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A82D9CE1BFFDD0600524AD2 /* FriendshipCollectionCell.swift */; };
 		1A82D9D11BFFDD1400524AD2 /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A82D9D01BFFDD1400524AD2 /* ConversationCell.swift */; };
+		1A82D9D41C01149300524AD2 /* FriendshipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A82D9D31C01149300524AD2 /* FriendshipCell.swift */; };
 		1ABD3B431BFD3F6300544104 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B421BFD3F6300544104 /* AppDelegate.swift */; };
 		1ABD3B481BFD3F6300544104 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B461BFD3F6300544104 /* Main.storyboard */; };
 		1ABD3B4A1BFD3F6300544104 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B491BFD3F6300544104 /* Assets.xcassets */; };
 		1ABD3B4D1BFD3F6300544104 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B4B1BFD3F6300544104 /* LaunchScreen.storyboard */; };
 		1ABD3B581BFD3F6300544104 /* DoubleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B571BFD3F6300544104 /* DoubleTests.swift */; };
 		1ABD3B631BFD3F6300544104 /* DoubleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B621BFD3F6300544104 /* DoubleUITests.swift */; };
-		1ABD3B731BFD726400544104 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B721BFD726400544104 /* ChatViewController.swift */; };
 		1ABD3B781BFD72F800544104 /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B771BFD72F800544104 /* FirebaseController.swift */; };
 		1ABD3B7B1BFD736700544104 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B7A1BFD736700544104 /* Person.swift */; };
 		1ABD3B7D1BFD737000544104 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B7C1BFD737000544104 /* Profile.swift */; };
@@ -85,6 +85,7 @@
 		1A82D9CC1BFFD5B000524AD2 /* FriendshipTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FriendshipTableViewController.swift; path = ../FriendshipTableViewController.swift; sourceTree = "<group>"; };
 		1A82D9CE1BFFDD0600524AD2 /* FriendshipCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendshipCollectionCell.swift; sourceTree = "<group>"; };
 		1A82D9D01BFFDD1400524AD2 /* ConversationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
+		1A82D9D31C01149300524AD2 /* FriendshipCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendshipCell.swift; sourceTree = "<group>"; };
 		1ABD3B3F1BFD3F6300544104 /* Double.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Double.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABD3B421BFD3F6300544104 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1ABD3B471BFD3F6300544104 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -97,7 +98,6 @@
 		1ABD3B5E1BFD3F6300544104 /* DoubleUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DoubleUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABD3B621BFD3F6300544104 /* DoubleUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleUITests.swift; sourceTree = "<group>"; };
 		1ABD3B641BFD3F6300544104 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1ABD3B721BFD726400544104 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		1ABD3B771BFD72F800544104 /* FirebaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
 		1ABD3B7A1BFD736700544104 /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		1ABD3B7C1BFD737000544104 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
@@ -176,6 +176,7 @@
 			children = (
 				1A82D9CE1BFFDD0600524AD2 /* FriendshipCollectionCell.swift */,
 				1A82D9D01BFFDD1400524AD2 /* ConversationCell.swift */,
+				1A82D9D31C01149300524AD2 /* FriendshipCell.swift */,
 			);
 			name = "Friendship Cells";
 			sourceTree = "<group>";
@@ -238,7 +239,6 @@
 		1ABD3B761BFD728000544104 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1ABD3B721BFD726400544104 /* ChatViewController.swift */,
 				1A82D9CC1BFFD5B000524AD2 /* FriendshipTableViewController.swift */,
 				1A82D9C31BFFBB4300524AD2 /* ProfileTableViewController.swift */,
 			);
@@ -438,8 +438,8 @@
 				1ABD3B9B1BFE2D1300544104 /* ProfileController.swift in Sources */,
 				1A82D9C11BFFBA5E00524AD2 /* ProfileTitleCell.swift in Sources */,
 				1ABD3B7D1BFD737000544104 /* Profile.swift in Sources */,
+				1A82D9D41C01149300524AD2 /* FriendshipCell.swift in Sources */,
 				1ABD3B841BFD740400544104 /* Message.swift in Sources */,
-				1ABD3B731BFD726400544104 /* ChatViewController.swift in Sources */,
 				1A82D9CB1BFFBF2D00524AD2 /* ProfileAboutIndividualsCell.swift in Sources */,
 				1A82D9D11BFFDD1400524AD2 /* ConversationCell.swift in Sources */,
 				1A82D9C91BFFBF0E00524AD2 /* ProfileAboutCoupleCell.swift in Sources */,

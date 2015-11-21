@@ -14,9 +14,20 @@ class ResponseController {
     
     }
     
+    static func fetchResponsesForIdentifier(profileIdentifier: String) {
+        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(profileIdentifier).queryEqualToValue(profileIdentifier).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+            if let responseDictionaries = data.value as? [String: AnyObject] {
+                let responsesTuple = responseDictionaries.flatMap({$0})
+            
+            }
+        })
+    }
+    
     static func mockResponses() -> [Response] {
-        let response1 = Response(profileViewedId: "820fhs8", like: true, identifier: "02dkj")
+        let response1 = Response(profileViewedByIdentifier: "820fhs8", like: true, profileIdentifier: "02dkj")
         
         return [response1]
     }
+    
+    
 }
