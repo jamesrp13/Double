@@ -11,7 +11,11 @@ import UIKit
 class FriendshipTableViewController: UITableViewController {
 
     var conversations: [Friendship] {
-        return FriendshipController.conversationsForFriendships(ProfileController.SharedInstance.currentUserProfile.friendships)
+        if let friendships = ProfileController.SharedInstance.currentUserProfile.friendships {
+            return FriendshipController.conversationsForFriendships(friendships)
+        } else {
+            return []
+        }
     }
     
     override func viewDidLoad() {
@@ -35,13 +39,12 @@ class FriendshipTableViewController: UITableViewController {
         case 0:
             return 1
         case 1:
-            return FriendshipController.conversationsForFriendships(ProfileController.SharedInstance.currentUserProfile.friendships).count
+            return conversations.count
         default:
             return 0
         }
     }
 
-    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         switch indexPath.section {

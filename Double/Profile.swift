@@ -24,7 +24,7 @@ struct Profile: FirebaseType {
     var relationshipStart: NSDate
     var about: String?
     var location: String
-    var children: [Child]
+    var children: [Child]?
     var imageEndPoint: String
     var profilePicture: UIImage? {
         ImageController.imageForIdentifier(imageEndPoint) { (image) -> Void in
@@ -32,8 +32,8 @@ struct Profile: FirebaseType {
         }
         return nil
     }
-    var friendships: [Friendship]
-    var responses: [Response]
+    var friendships: [Friendship]?
+    var responses: [Response]?
     
     // FirebaseType attributes and failable initializer
     var identifier: String?
@@ -43,7 +43,7 @@ struct Profile: FirebaseType {
     }
     
     var jsonValue: [String: AnyObject] {
-        var json: [String: AnyObject] = [kMarried: married, kRelationshipStart: relationshipStart, kLocation: location, kImageEndpoint: imageEndPoint]
+        var json: [String: AnyObject] = [kMarried: married, kRelationshipStart: relationshipStart.timeIntervalSince1970, kLocation: location, kImageEndpoint: imageEndPoint]
         
         if let about = about {
             json.updateValue(about, forKey: kAbout)
@@ -70,22 +70,22 @@ struct Profile: FirebaseType {
             friendshipArray = friendships
         }
         
-        ResponseController.fetchResponsesForProfileIdentifier(identifier) { (responses) -> Void in
+        ResponseController.fetchResponsesForIdentifier(identifier) { (responses) -> Void in
             responsesArray = responses
         }
         
         guard let married = json[kMarried] as? Bool,
-            let relationshipStart = json[kRelationshipStart] as? NSDate,
             let location = json[kLocation] as? String,
             let imageEndPoint = json[kImageEndpoint] as? String,
             let people = peopleTuple,
             let children = childrenArray,
             let friendships = friendshipArray,
+            let relationshipTimeInterval = json[kRelationshipStart] as? NSTimeInterval,
             let responses = responsesArray else {return nil}
         
         self.identifier = identifier
         self.married = married
-        self.relationshipStart = relationshipStart
+        self.relationshipStart = NSDate(timeIntervalSince1970: relationshipTimeInterval)
         self.location = location
         self.imageEndPoint = imageEndPoint
         self.about = json[kAbout] as? String
@@ -97,7 +97,7 @@ struct Profile: FirebaseType {
     }
     
     // Standard initializer
-    init(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child], imageEndPoint: String, friendships: [Friendship], responses: [Response], identifier: String? = nil) {
+    init(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]? = nil, imageEndPoint: String, friendships: [Friendship]? = nil, responses: [Response]? = nil, identifier: String? = nil) {
         
         self.people = people
         self.married = married

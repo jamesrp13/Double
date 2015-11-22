@@ -15,12 +15,46 @@ class ProfileController {
     var currentUserProfile: Profile = ProfileController.mockProfiles()[0]
 
     
-    static func createProfile(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child], image: UIImage, friendships: [Friendship], responses: [Response], completion: (success: Bool, profile: Profile?) -> Void) {
+    static func createProfile(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, image: UIImage, friendships: [Friendship]?, responses: [Response]?, completion: (success: Bool, profile: Profile?) -> Void) {
         
         ImageController.uploadImage(image) { (identifier) -> Void in
             if let identifier = identifier {
                 var profile = Profile(people: people, married: married, relationshipStart: relationshipStart, about: about, location: location, children: children, imageEndPoint: identifier, friendships: friendships, responses: responses)
                 profile.save()
+                
+                // Set profileIdentifier for people, then save
+                var person1 = people.0
+                person1.profileIdentifier = profile.identifier
+                var person2 = people.1
+                person2.profileIdentifier = profile.identifier
+                person1.save()
+                person2.save()
+                
+                // Save children if not nil
+                if let children = children {
+                    for var child in children {
+                        child.profileIdentifier = profile.identifier
+                        child.save()
+                    }
+                }
+                // When profile is created, responses must be created in Firebase as well despite there being none, so let's create a false response from the profile's own profile
+                if let responses = responses {
+                    for var response in responses {
+                        response.identifier = profile.identifier
+                        response.save()
+                    }
+                } else {
+                    var response = Response(profileViewedByIdentifier: profile.identifier!, like: false, profileIdentifier: profile.identifier!)
+                    response.save()
+                }
+                
+                // Save friendships if any
+                if let friendships = friendships {
+                    for var friendship in friendships {
+                        friendship.save()
+                    }
+                }
+
                 completion(success: true, profile: profile)
             } else {
                 completion(success: false, profile: nil)
@@ -29,8 +63,13 @@ class ProfileController {
         
     }
     
-    static func fetchProfilesForCurrentUser() {
-        //FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild
+    static func fetchUnseenProfiles(completion: (profiles: [Profile]?) -> Void) {
+        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(SharedInstance.currentUserProfile.identifier!).queryEqualToValue(nil).queryLimitedToFirst(20).observeEventType(.Value, withBlock: { (data) -> Void in
+            if let responseDictionaries = data.value as? [String: AnyObject] {
+                let profileIdentifiers = responseDictionaries.flatMap({$0.0})
+                print(profileIdentifiers)
+            }
+        })
     }
     
     static func fetchProfileForIdentifier(profileIdentifier: String, completion: (profile: Profile?) -> Void) {

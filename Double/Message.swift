@@ -39,9 +39,10 @@ struct Message: FirebaseType {
     }
     
     // Standard initializer
-    init(friendshipId: String, profileId: String, text: String) {
+    init(friendshipId: String, profileId: String, text: String, identifier: String? = nil) {
         self.friendshipId = friendshipId
         self.profileId = profileId
         self.text = text
+        self.identifier = identifier
     }
 }

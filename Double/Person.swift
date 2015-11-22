@@ -14,6 +14,7 @@ struct Person: FirebaseType {
     private let kDob = "dob"
     private let kGender = "gender"
     private let kAbout = "about"
+    private let kProfileIdentifier = "profileIdentifier"
     
     enum Gender: String {
         case Male = "M"
@@ -24,6 +25,7 @@ struct Person: FirebaseType {
     let dob: NSDate
     let gender: Gender
     let about: String?
+    var profileIdentifier: String?
     
     var age: Int {
         return Int(dob.timeIntervalSinceNow) * (-1) / (365*24*60*60)
@@ -37,28 +39,34 @@ struct Person: FirebaseType {
     }
     
     var jsonValue: [String: AnyObject] {
-        let json: [String: AnyObject] = [kName: name, kDob: dob, kGender: gender.rawValue]
+        var json: [String: AnyObject] = [kName: name, kDob: dob.timeIntervalSince1970, kGender: gender.rawValue]
+        
+        if let profileIdentifier = profileIdentifier {
+            json.updateValue(profileIdentifier, forKey: kProfileIdentifier)
+        }
         return json
     }
     
     init?(json: [String : AnyObject], identifier: String) {
         guard let name = json[kName] as? String,
-            let dob = json[kDob] as? NSDate,
+            let dobTimeInverval = json[kDob] as? NSTimeInterval,
             let gender = json[kGender] as? Gender else {return nil}
         
         self.name = name
-        self.dob = dob
+        self.dob = NSDate(timeIntervalSince1970: dobTimeInverval)
         self.gender = gender
+        self.profileIdentifier = json[kProfileIdentifier] as? String
         self.identifier = identifier
         self.about = json[kAbout] as? String
     }
     
     // Standard initializer
-    init(name: String, dob: NSDate, gender: Gender, about: String? = nil) {
+    init(name: String, dob: NSDate, gender: Gender, about: String? = nil, profileIdentifier: String? = nil, identifier: String? = nil) {
         self.name = name
         self.dob = dob
         self.gender = gender
         self.about = about
+        self.profileIdentifier = profileIdentifier
     }
     
 }

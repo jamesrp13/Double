@@ -10,15 +10,11 @@ import Foundation
 
 class ResponseController {
     
-    static func fetchResponsesForProfileIdentifier(profileIdentifier: String, completion: (responses: [Response]) -> Void) {
-    
-    }
-    
-    static func fetchResponsesForIdentifier(profileIdentifier: String) {
-        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(profileIdentifier).queryEqualToValue(profileIdentifier).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
-            if let responseDictionaries = data.value as? [String: AnyObject] {
-                let responsesTuple = responseDictionaries.flatMap({$0})
-            
+    static func fetchResponsesForIdentifier(profileIdentifier: String, completion: (responses: [Response]) -> Void) {
+        FirebaseController.base.childByAppendingPath("responses").childByAppendingPath(profileIdentifier).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+            if let responseDictionaries = data.value as? [String: Bool] {
+                let response = Response(json: responseDictionaries, identifier: profileIdentifier)
+                print(response)
             }
         })
     }

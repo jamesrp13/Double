@@ -12,6 +12,7 @@ struct Child: FirebaseType {
     
     private let kDob = "dob"
     private let kGender = "gender"
+    private let kProfileIdentifier = "profileIdenifier"
     
     enum Gender {
         case Male
@@ -20,11 +21,15 @@ struct Child: FirebaseType {
     
     var dob: NSDate
     var gender: Gender
+    var profileIdentifier: String?
     
     // FirebaseType attributes and failable initializer
     var identifier: String?
     var jsonValue: [String: AnyObject] {
-        let json: [String: AnyObject] = [kDob: dob, kGender: gender.hashValue]
+        var json: [String: AnyObject] = [kDob: dob, kGender: gender.hashValue]
+        if let profileIdentifier = profileIdentifier {
+            json.updateValue(profileIdentifier, forKey: kProfileIdentifier)
+        }
         return json
     }
     var endpoint: String {
@@ -37,12 +42,15 @@ struct Child: FirebaseType {
         
         self.dob = dob
         self.gender = gender
+        self.profileIdentifier = json[kProfileIdentifier] as? String
         self.identifier = identifier
     }
     
     // Standard initializer
-    init(dob: NSDate, gender: Gender) {
+    init(dob: NSDate, gender: Gender, profileIdentifier: String? = nil, identifier: String? = nil) {
         self.dob = dob
         self.gender = gender
+        self.profileIdentifier = profileIdentifier
+        self.identifier = identifier
     }
 }
