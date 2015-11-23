@@ -11,7 +11,20 @@ import Foundation
 class PersonController {
     
     static func fetchPeopleForProfileIdentifier(profileIdentifier: String, completion: (people: (Person, Person)?) -> Void) {
-        
+        FirebaseController.base.childByAppendingPath("people").queryOrderedByChild("profileIdentifier").queryEqualToValue(profileIdentifier).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+            if let peopleDictionaries = data.value as? [String: AnyObject] {
+                let people = peopleDictionaries.flatMap({Person(json: $0.1 as! [String: AnyObject], identifier: $0.0)})
+                //print (data.value)
+                if people.count == 2 {
+                    let peopleTuple = (people[0], people[1])
+                    completion(people: peopleTuple)
+                } else {
+                    print("Looks like we don't have exactly two people matching this identifier: \(people)")
+                }
+            } else {
+                completion(people: nil)
+            }
+        })
     }
     
     static func mockPeople() -> [Person] {

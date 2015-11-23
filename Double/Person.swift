@@ -50,7 +50,8 @@ struct Person: FirebaseType {
     init?(json: [String : AnyObject], identifier: String) {
         guard let name = json[kName] as? String,
             let dobTimeInverval = json[kDob] as? NSTimeInterval,
-            let gender = json[kGender] as? Gender else {return nil}
+            let genderRawValue = json[kGender] as? String,
+            let gender = Gender(rawValue: genderRawValue) else {return nil}
         
         self.name = name
         self.dob = NSDate(timeIntervalSince1970: dobTimeInverval)

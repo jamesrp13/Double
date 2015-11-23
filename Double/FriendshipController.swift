@@ -10,9 +10,18 @@ import Foundation
 
 class FriendshipController {
 
-    static func fetchFriendshipsForProfileIdentifier(profileIdentifier: String, completion: (friendships: [Friendship]) -> Void) {
-        
+    static func fetchFriendshipsForProfileIdentifier(profileIdentifier: String, completion: (friendships: [Friendship]?) -> Void) {
+        FirebaseController.base.childByAppendingPath("friendships").queryOrderedByChild(profileIdentifier).queryEqualToValue(true).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+            if let friendshipDictionaries = data.value as? [String: AnyObject] {
+                let friendships = friendshipDictionaries.flatMap({Friendship(json: $0.1 as! [String: AnyObject], identifier: $0.0)
+                })
+                completion(friendships: friendships)
+            } else {
+                completion(friendships: nil)
+            }
+        })
     }
+    
     
     static func conversationsForFriendships(friendships: [Friendship]) -> [Friendship] {
         var conversations: [Friendship] = []

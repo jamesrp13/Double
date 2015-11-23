@@ -64,10 +64,17 @@ class ProfileController {
     }
     
     static func fetchUnseenProfiles(completion: (profiles: [Profile]?) -> Void) {
+        
+        // Fetches from Firebase a dictionary of responses to find profiles that have not yet been viewed
         FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(SharedInstance.currentUserProfile.identifier!).queryEqualToValue(nil).queryLimitedToFirst(20).observeEventType(.Value, withBlock: { (data) -> Void in
             if let responseDictionaries = data.value as? [String: AnyObject] {
                 let profileIdentifiers = responseDictionaries.flatMap({$0.0})
-                print(profileIdentifiers)
+                for profileIdentifier in profileIdentifiers {
+                    
+                    FirebaseController.base.childByAppendingPath("profiles/\(profileIdentifier)").observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+                        print(data.value)
+                    })
+                }
             }
         })
     }
@@ -84,7 +91,7 @@ class ProfileController {
         
         //let profile0 = Profile(people: (person1, person2), married: true, relationshipStart: relationshipStart, about: "test", location: "84109", children: [], imageEndPoint: "nothing", friendships: [], responses: [])
         
-        let profile1 = Profile(people: (PersonController.mockPeople()[0], PersonController.mockPeople()[1]), married: true, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: [ChildController.mockChildren()[0]], imageEndPoint: "", friendships: FriendshipController.mockFriendships(), responses: ResponseController.mockResponses(), identifier: "k92hd92h" )
+        let profile1 = Profile(people: (PersonController.mockPeople()[0], PersonController.mockPeople()[1]), married: true, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: [ChildController.mockChildren()[0]], imageEndPoint: "", friendships: FriendshipController.mockFriendships(), responses: ResponseController.mockResponses(), identifier: "-K3pg5XfBBcEwOQk50Li" )
         
         let profile2 = Profile(people: (PersonController.mockPeople()[2], PersonController.mockPeople()[3]), married: false, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Cool people", location: "84109", children: [], imageEndPoint: "", friendships: FriendshipController.mockFriendships(), responses: ResponseController.mockResponses(), identifier: "sonw9n4")
         

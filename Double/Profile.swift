@@ -78,10 +78,7 @@ struct Profile: FirebaseType {
             let location = json[kLocation] as? String,
             let imageEndPoint = json[kImageEndpoint] as? String,
             let people = peopleTuple,
-            let children = childrenArray,
-            let friendships = friendshipArray,
-            let relationshipTimeInterval = json[kRelationshipStart] as? NSTimeInterval,
-            let responses = responsesArray else {return nil}
+            let relationshipTimeInterval = json[kRelationshipStart] as? NSTimeInterval else {return nil}
         
         self.identifier = identifier
         self.married = married
@@ -90,14 +87,14 @@ struct Profile: FirebaseType {
         self.imageEndPoint = imageEndPoint
         self.about = json[kAbout] as? String
         self.people = people
-        self.children = children
-        self.friendships = friendships
-        self.responses = responses
+        self.children = childrenArray
+        self.friendships = friendshipArray
+        self.responses = responsesArray
         
     }
     
     // Standard initializer
-    init(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]? = nil, imageEndPoint: String, friendships: [Friendship]? = nil, responses: [Response]? = nil, identifier: String? = nil) {
+    init(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, imageEndPoint: String, friendships: [Friendship]? = nil, responses: [Response]? = nil, identifier: String? = nil) {
         
         self.people = people
         self.married = married

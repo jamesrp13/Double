@@ -20,10 +20,12 @@ class ProfileTableViewController: UITableViewController {
 //                print(profile!.identifier!)
 //            }
 //        }
+
         
         ProfileController.fetchUnseenProfiles { (profiles) -> Void in
             
         }
+
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false

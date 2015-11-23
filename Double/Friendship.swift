@@ -10,15 +10,13 @@ import Foundation
 
 struct Friendship: FirebaseType {
     
-    private let kProfileIdentifiers = "profileIdentifiers"
-    
     var profileIdentifiers: (String, String)
     var messages: [Message]
     
     // FirebaseType attributes and failable initializer
     var identifier: String?
     var jsonValue: [String: AnyObject] {
-        let json: [String: AnyObject] = [kProfileIdentifiers: [profileIdentifiers.0, profileIdentifiers.1]]
+        let json: [String: AnyObject] = [profileIdentifiers.0: true, profileIdentifiers.1: true]
         return json
     }
     var endpoint: String {
@@ -32,10 +30,11 @@ struct Friendship: FirebaseType {
             messageArray = messages
         }
         
-        guard let profileIdentifiers = json[kProfileIdentifiers] as? (String, String),
+        let profileIdentifiers = json.flatMap({$0.0})
+        guard profileIdentifiers.count == 2,
             let messages = messageArray else {return nil}
         
-        self.profileIdentifiers = profileIdentifiers
+        self.profileIdentifiers = (profileIdentifiers[0], profileIdentifiers[1])
         self.messages = messages
         self.identifier = identifier
     }

@@ -10,8 +10,17 @@ import Foundation
 
 class ChildController {
     
-    static func fetchChildrenForProfileIdentifier(profileIdentifier: String, completion: (children: [Child]) -> Void) {
+    static func fetchChildrenForProfileIdentifier(profileIdentifier: String, completion: (children: [Child]?) -> Void) {
+        FirebaseController.base.childByAppendingPath("children").queryOrderedByChild("profileIdentifier").queryEqualToValue(profileIdentifier).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+            if let childrenDictionaries = data.value as? [String: AnyObject] {
+                let children = childrenDictionaries.flatMap({Child(json: $0.1 as! [String: AnyObject], identifier: $0.0)})
+                    completion(children: children)
         
+            } else {
+                completion(children: nil)
+            }
+        })
+
     }
     
     static func mockChildren() -> [Child] {
