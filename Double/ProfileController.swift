@@ -14,7 +14,6 @@ class ProfileController {
     
     var currentUserProfile: Profile = ProfileController.mockProfiles()[0]
     
-    
     static func createProfile(var people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, image: UIImage, completion: (profile: Profile?) -> Void) {
         
         ImageController.uploadImage(image) { (identifier) -> Void in

@@ -24,11 +24,11 @@ class ResponseController {
     
 
     
-//    static func createResponse(profileViewed: String, profileViewedBy: String = ProfileController.SharedInstance.currentUserProfile.identifier!, liked: Bool, completion: (success: Bool, response: Response?) -> Void ) {
-//        var response = Response(profileViewedByIdentifier: profileViewedBy, like: liked, profileIdentifier: profileViewed)
-//        response.save()
-//        FirebaseController.base.childByAppendingPath("profiles").childByAppendingPath(profileViewed).childByAppendingPath("responses").childByAppendingPath(profileViewed).updateChildValues(response.jsonValue)
-//    }
+    static func createResponse(profileViewed: String, profileViewedBy: String = ProfileController.SharedInstance.currentUserProfile.identifier!, liked: Bool, completion: (responses: Responses?) -> Void ) {
+        var response = Responses(profileViewedByIdentifier: profileViewedBy, like: liked, profileIdentifier: profileViewed)
+        response.save()
+        completion(responses: response)
+    }
     
     static func deleteResponsesForProfileIdentifier(profileIdentifier: String) {
         // Delete responses about this profile
