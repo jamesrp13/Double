@@ -23,6 +23,10 @@ class ChildController {
 
     }
     
+    static func deleteChild(child: Child) {
+        child.delete()
+    }
+    
     static func mockChildren() -> [Child] {
         let child1 = Child(dob: NSDate(timeIntervalSinceNow: (-1.0)*365*24*60*60), gender: Child.Gender.Female)
         let child2 = Child(dob: NSDate(timeIntervalSinceNow: (-1.0)*365*24*60*60), gender: Child.Gender.Male)

@@ -11,7 +11,7 @@ import Foundation
 struct Friendship: FirebaseType {
     
     var profileIdentifiers: (String, String)
-    var messages: [Message]
+    var messages: [Message]?
     
     // FirebaseType attributes and failable initializer
     var identifier: String?
@@ -19,9 +19,11 @@ struct Friendship: FirebaseType {
         let json: [String: AnyObject] = [profileIdentifiers.0: true, profileIdentifiers.1: true]
         return json
     }
+    
     var endpoint: String {
         return "friendships"
     }
+    
     init?(json: [String : AnyObject], identifier: String) {
         
         var messageArray: [Message]? = nil
@@ -40,7 +42,7 @@ struct Friendship: FirebaseType {
     }
     
     // Standard initializer
-    init(profileIdentifiers: (String, String), messages: [Message] = [], identifier: String? = nil) {
+    init(profileIdentifiers: (String, String), messages: [Message]? = nil, identifier: String? = nil) {
         self.profileIdentifiers = profileIdentifiers
         self.messages = messages
         self.identifier = identifier

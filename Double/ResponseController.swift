@@ -11,10 +11,13 @@ import Foundation
 class ResponseController {
     
     static func fetchResponsesForIdentifier(profileIdentifier: String, completion: (responses: [Response]?) -> Void) {
-        FirebaseController.base.childByAppendingPath("responses").childByAppendingPath(profileIdentifier).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+        FirebaseController.base.childByAppendingPath("responses/\(profileIdentifier)").observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+
             if let responseDictionaries = data.value as? [String: Bool] {
-                let response = Response(json: responseDictionaries, identifier: profileIdentifier)
-                print(response)
+                let responses = responseDictionaries.flatMap({Response(profileViewedByIdentifier: $0.0, like: $0.1, profileIdentifier: profileIdentifier)})
+                completion(responses: responses)
+            } else {
+            completion(responses: nil)
             }
         })
     }
@@ -24,6 +27,10 @@ class ResponseController {
 //        response.save()
 //        FirebaseController.base.childByAppendingPath("profiles").childByAppendingPath(profileViewed).childByAppendingPath("responses").childByAppendingPath(profileViewed).updateChildValues(response.jsonValue)
 //    }
+    
+    static func deleteResponse(response: Response) {
+        response.delete()
+    }
     
     static func mockResponses() -> [Response] {
         let response1 = Response(profileViewedByIdentifier: "-K3payZu8I9HP6MG1ovV", like: true, profileIdentifier: "-K3payZogAH6iaX0I-VM")

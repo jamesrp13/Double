@@ -21,6 +21,20 @@ class ImageController {
         
     }
     
+    static func replaceImage(image: UIImage, identifier: String, completion: (identifier: String?) -> Void) {
+        if let base64Image = image.base64String {
+            let base = FirebaseController.base.childByAppendingPath("images/\(identifier)")
+            base.setValue(base64Image)
+            completion(identifier: base.key)
+        } else {
+            completion(identifier: nil)
+        }
+    }
+    
+    static func deleteImage(identifier: String) {
+        FirebaseController.base.childByAppendingPath("images").childByAppendingPath(identifier).removeValue()
+    }
+    
     static func imageForIdentifier(identifier: String, completion: (image: UIImage?) -> Void) {
         completion(image: UIImage(named: "testImage"))
 //        FirebaseController.dataAtEndpoint("/images/\(identifier)") { (data) -> Void in
