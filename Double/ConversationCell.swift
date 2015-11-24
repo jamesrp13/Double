@@ -33,8 +33,10 @@ class ConversationCell: UITableViewCell {
                 ImageController.imageForIdentifier(profile.imageEndPoint, completion: { (image) -> Void in
                     self.profileImageView.image = image
                 })
-                self.conversationTitleLabel.text = profile.coupleTitle
-                self.messagePreviewLabel.text = friendship.messages.last?.text
+                if let messages = friendship.messages {
+                    self.conversationTitleLabel.text = profile.coupleTitle
+                    self.messagePreviewLabel.text = messages.last?.text
+                }
             }
         }
     }

@@ -27,6 +27,10 @@ class PersonController {
         })
     }
     
+    static func deletePerson(person: Person) {
+        person.delete()
+    }
+    
     static func mockPeople() -> [Person] {
         let person1 = Person(name: "James", dob: NSDate(timeIntervalSince1970: 0.0), gender: Person.Gender.Male)
         let person2 = Person(name: "Jodie", dob: NSDate(timeIntervalSince1970: 0.0), gender: Person.Gender.Female)

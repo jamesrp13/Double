@@ -26,11 +26,22 @@ class FriendshipController {
     static func conversationsForFriendships(friendships: [Friendship]) -> [Friendship] {
         var conversations: [Friendship] = []
         for friendship in friendships {
-            if friendship.messages.count != 0 {
+            if let _ = friendship.messages {
                 conversations.append(friendship)
             }
         }
         return conversations
+    }
+    
+    static func deleteFriendship(friendship: Friendship) {
+        friendship.delete()
+        
+        if let messages = friendship.messages {
+            for message in messages {
+                MessageController.deleteMessage(message)
+            }
+        }
+        
     }
     
     static func mockFriendships() -> [Friendship] {

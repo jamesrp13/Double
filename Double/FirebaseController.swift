@@ -66,7 +66,7 @@ extension FirebaseType {
     
     func delete() {
         if let identifier = self.identifier {
-            let endpointBase: Firebase = FirebaseController.base.childByAppendingPath(identifier)
+            let endpointBase: Firebase = FirebaseController.base.childByAppendingPath(endpoint).childByAppendingPath(identifier)
             
             endpointBase.removeValue()
         }

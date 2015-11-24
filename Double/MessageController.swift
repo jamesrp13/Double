@@ -15,6 +15,10 @@ class MessageController {
     }
     
     
+    static func deleteMessage(message: Message) {
+        message.delete()
+    }
+    
     static func mockMessages() -> [Message] {
         let message1 = Message(friendshipId: "92fido", profileId: "29fdjkw", text: "This is a test message")
         

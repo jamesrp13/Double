@@ -74,11 +74,11 @@ struct Profile: FirebaseType {
             responsesArray = responses
         }
         
-        guard let married = json[kMarried] as? Bool,
-            let location = json[kLocation] as? String,
-            let imageEndPoint = json[kImageEndpoint] as? String,
-            let people = peopleTuple,
-            let relationshipTimeInterval = json[kRelationshipStart] as? NSTimeInterval else {return nil}
+        guard let married = json[kMarried] as? Bool else {return nil}
+        guard let location = json[kLocation] as? String else {return nil}
+        guard let imageEndPoint = json[kImageEndpoint] as? String else {return nil}
+        guard let people = peopleTuple else {return nil}
+        guard let relationshipTimeInterval = json[kRelationshipStart] as? NSTimeInterval else {return nil}
         
         self.identifier = identifier
         self.married = married
@@ -92,6 +92,27 @@ struct Profile: FirebaseType {
         self.responses = responsesArray
         
     }
+    
+    init?(json: [String : AnyObject], people: (Person, Person), children: [Child]?, friendships: [Friendship]?, responses: [Response]?, identifier: String) {
+        
+        guard let married = json[kMarried] as? Bool,
+            let location = json[kLocation] as? String,
+            let imageEndPoint = json[kImageEndpoint] as? String,
+            let relationshipTimeInterval = json[kRelationshipStart] as? NSTimeInterval else {return nil}
+        
+        self.identifier = identifier
+        self.married = married
+        self.relationshipStart = NSDate(timeIntervalSince1970: relationshipTimeInterval)
+        self.location = location
+        self.imageEndPoint = imageEndPoint
+        self.about = json[kAbout] as? String
+        self.people = people
+        self.children = children
+        self.friendships = friendships
+        self.responses = responses
+        
+    }
+
     
     // Standard initializer
     init(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, imageEndPoint: String, friendships: [Friendship]? = nil, responses: [Response]? = nil, identifier: String? = nil) {
