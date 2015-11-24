@@ -10,21 +10,31 @@ import Foundation
 
 class ChildController {
     
-    static func fetchChildrenForProfileIdentifier(profileIdentifier: String, completion: (children: [Child]?) -> Void) {
+    static func fetchChildrenDataForProfileIdentifier(profileIdentifier: String, completion: (childrenDictionary: [String: AnyObject]?) -> Void) {
         FirebaseController.base.childByAppendingPath("children").queryOrderedByChild("profileIdentifier").queryEqualToValue(profileIdentifier).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
             if let childrenDictionaries = data.value as? [String: AnyObject] {
-                let children = childrenDictionaries.flatMap({Child(json: $0.1 as! [String: AnyObject], identifier: $0.0)})
-                    completion(children: children)
-        
+                    completion(childrenDictionary: childrenDictionaries)
             } else {
-                completion(children: nil)
+                completion(childrenDictionary: nil)
             }
         })
 
     }
     
-    static func deleteChild(child: Child) {
-        child.delete()
+    static func saveChildren(children: [Child]?) {
+        if let children = children {
+            for var child in children {
+                child.save()
+            }
+        }
+    }
+    
+    static func deleteChildren(children: [Child]?) {
+        if let children = children {
+            for child in children {
+                child.delete()
+            }
+        }
     }
     
     static func mockChildren() -> [Child] {

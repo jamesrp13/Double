@@ -8,9 +8,9 @@
 
 import Foundation
 
-struct Response: FirebaseType {
+struct Responses: FirebaseType {
     
-    var responseDictionary: [String: Bool]
+    var responsesDictionary: [String: Bool]
     
     // FirebaseType attributes and failable initializer
     var identifier: String?
@@ -19,19 +19,19 @@ struct Response: FirebaseType {
     }
     
     var jsonValue: [String: AnyObject] {
-        return responseDictionary
+        return responsesDictionary
     }
     
     init?(json: [String : AnyObject], identifier: String) {
         guard let json = json as? [String: Bool] else {return nil}
         
-        self.responseDictionary = json
+        self.responsesDictionary = json
         self.identifier = identifier
     }
     
     // Standard initializer
     init(profileViewedByIdentifier: String, like: Bool, profileIdentifier: String) {
-        self.responseDictionary = [profileViewedByIdentifier: like]
+        self.responsesDictionary = [profileViewedByIdentifier: like]
         self.identifier = profileIdentifier
     }
     

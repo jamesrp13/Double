@@ -11,11 +11,7 @@ import UIKit
 class FriendshipTableViewController: UITableViewController {
 
     var conversations: [Friendship] {
-        if let friendships = ProfileController.SharedInstance.currentUserProfile.friendships {
-            return FriendshipController.conversationsForFriendships(friendships)
-        } else {
-            return []
-        }
+            return FriendshipController.conversationsForFriendships(FriendshipController.SharedInstance.friendships)
     }
     
     override func viewDidLoad() {

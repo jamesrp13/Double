@@ -24,16 +24,12 @@ class FriendshipCollectionCell: UITableViewCell, UICollectionViewDataSource, UIC
     }
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let friendships = ProfileController.SharedInstance.currentUserProfile.friendships {
-            return friendships.count
-        } else {
-            return 0
-        }
+        return FriendshipController.SharedInstance.friendships.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCellWithReuseIdentifier("friendshipCell", forIndexPath: indexPath) as? FriendshipCell {
-            cell.updateWithFriendship(ProfileController.SharedInstance.currentUserProfile.friendships![indexPath.item])
+            cell.updateWithFriendship(FriendshipController.SharedInstance.friendships[indexPath.item])
             return cell
         }
         return UICollectionViewCell()

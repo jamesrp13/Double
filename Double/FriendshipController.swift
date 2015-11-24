@@ -10,6 +10,10 @@ import Foundation
 
 class FriendshipController {
 
+    static let SharedInstance = FriendshipController()
+    
+    var friendships: [Friendship] = []
+    
     static func fetchFriendshipsForProfileIdentifier(profileIdentifier: String, completion: (friendships: [Friendship]?) -> Void) {
         FirebaseController.base.childByAppendingPath("friendships").queryOrderedByChild(profileIdentifier).queryEqualToValue(true).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
             if let friendshipDictionaries = data.value as? [String: AnyObject] {
