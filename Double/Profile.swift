@@ -74,19 +74,20 @@ struct Profile: FirebaseType {
         guard let childDictionaries = json[kChildren] as? [String: AnyObject] else {return nil}
             children = childDictionaries.flatMap({Child(json: $0.1 as! [String: AnyObject], identifier: $0.0)})
     
+        guard let profileDictionary = json[kProfiles] as? [String: AnyObject] else {return nil}
         
-        guard let married = json[kMarried] as? Bool else {return nil}
-        guard let location = json[kLocation] as? String else {return nil}
-        guard let imageEndPoint = json[kImageEndpoint] as? String else {return nil}
+        guard let married = profileDictionary[kMarried] as? Bool else {return nil}
+        guard let location = profileDictionary[kLocation] as? String else {return nil}
+        guard let imageEndPoint = profileDictionary[kImageEndpoint] as? String else {return nil}
         guard let people = peopleTuple else {return nil}
-        guard let relationshipTimeInterval = json[kRelationshipStart] as? NSTimeInterval else {return nil}
+        guard let relationshipTimeInterval = profileDictionary[kRelationshipStart] as? NSTimeInterval else {return nil}
         
         self.identifier = identifier
         self.married = married
         self.relationshipStart = NSDate(timeIntervalSince1970: relationshipTimeInterval)
         self.location = location
         self.imageEndPoint = imageEndPoint
-        self.about = json[kAbout] as? String
+        self.about = profileDictionary[kAbout] as? String
         self.people = people
         self.children = children
     }

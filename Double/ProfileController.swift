@@ -22,11 +22,14 @@ class ProfileController {
                 var profile = Profile(people: people, married: married, relationshipStart: relationshipStart, about: about, location: location, children: children, imageEndPoint: identifier)
                 profile.save()
                 
+                // Save children
+                ChildController.saveChildren(children)
+                
                 // Set profileIdentifier for people, then save everything
                 people.0.profileIdentifier = profile.identifier!
+                people.0.save()
                 people.1.profileIdentifier = profile.identifier!
-                
-                saveProfile(profile)
+                people.1.save()
                 
                 // When profile is created, responses must be created in Firebase as well despite there being none, so let's create a false response from the profile's own profile
                 var response = Responses(profileViewedByIdentifier: profile.identifier!, like: false, profileIdentifier: profile.identifier!)
@@ -66,6 +69,7 @@ class ProfileController {
         PersonController.deletePeople(profile.people)
         ImageController.deleteImage(profile.imageEndPoint)
         ChildController.deleteChildren(profile.children)
+        ResponseController.deleteResponsesForProfileIdentifier(profile.identifier!)
     }
     
     static func fetchUnseenProfiles(completion: (profiles: [Profile]?) -> Void) {
@@ -75,7 +79,6 @@ class ProfileController {
             if let responseDictionaries = data.value as? [String: AnyObject] {
                 let profileIdentifiers = responseDictionaries.flatMap({$0.0})
                 
-                
                 var profiles: [Profile] = []
                 let tunnel = dispatch_group_create()
                 
@@ -84,8 +87,8 @@ class ProfileController {
                     fetchProfileForIdentifier(profileIdentifier, completion: { (profile) -> Void in
                         if let profile = profile {
                             profiles.append(profile)
-                            dispatch_group_leave(tunnel)
                         }
+                        dispatch_group_leave(tunnel)
                     })
                 }
                 

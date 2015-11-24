@@ -22,15 +22,27 @@ class ResponseController {
         })
     }
     
+
+    
 //    static func createResponse(profileViewed: String, profileViewedBy: String = ProfileController.SharedInstance.currentUserProfile.identifier!, liked: Bool, completion: (success: Bool, response: Response?) -> Void ) {
 //        var response = Response(profileViewedByIdentifier: profileViewedBy, like: liked, profileIdentifier: profileViewed)
 //        response.save()
 //        FirebaseController.base.childByAppendingPath("profiles").childByAppendingPath(profileViewed).childByAppendingPath("responses").childByAppendingPath(profileViewed).updateChildValues(response.jsonValue)
 //    }
     
-    static func deleteResponse(responses: Responses) {
-        responses.delete()
+    static func deleteResponsesForProfileIdentifier(profileIdentifier: String) {
+        // Delete responses about this profile
+        fetchResponsesForIdentifier(profileIdentifier) { (responses) -> Void in
+            if let responses = responses {
+                responses.delete()
+            }
+        }
+        
+        // Delete responses made by this profile
+        
     }
+    
+    
     
     static func mockResponses() -> Responses {
         let responses = Responses(profileViewedByIdentifier: "-K3payZu8I9HP6MG1ovV", like: true, profileIdentifier: "-K3payZogAH6iaX0I-VM")

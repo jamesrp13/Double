@@ -21,15 +21,14 @@ class ProfileTableViewController: UITableViewController {
             }
         }
 
-//        ProfileController.fetchUnseenProfiles { (profiles) -> Void in
-//            if let profiles = profiles {
-//                print(profiles.count)
-//                for profile in profiles {
-//                    ProfileController.deleteProfile(profile)
-//                }
-//            }
-//
-//        }
+        ProfileController.fetchUnseenProfiles { (profiles) -> Void in
+            if let profiles = profiles {
+                print(profiles.count)
+                for profile in profiles {
+                    ProfileController.deleteProfile(profile)
+                }
+            }
+        }
         
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
