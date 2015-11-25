@@ -13,6 +13,36 @@ class ProfileController {
     static let SharedInstance = ProfileController()
     
     var currentUserProfile: Profile = ProfileController.mockProfiles()[0]
+    var profilesBeingViewed: [Profile] = []
+    var responsesFromProfilesBeingViewed: [String: Bool] = [:]
+    
+    static func fetchResponsesFromProfilesBeingViewed() {
+        var responseDictionary: [String: Bool] = [:]
+        
+        for profile in SharedInstance.profilesBeingViewed {
+            ResponseController.observeResponsesForIdentifier(SharedInstance.currentUserProfile.identifier!, completion: { (responses) -> Void in
+                if let responses = responses {
+                    if let response = responses.responsesDictionary[profile.identifier!] {
+                        responseDictionary.updateValue(response, forKey: profile.identifier!)
+                    }
+                }
+            })
+        }
+        SharedInstance.responsesFromProfilesBeingViewed = responseDictionary
+    }
+    
+    static func checkForMatch(profileIdentifier: String) {
+        if let liked = SharedInstance.responsesFromProfilesBeingViewed[profileIdentifier] {
+            if liked {
+                FriendshipController.createFriendship(profileIdentifier, profileIdentifier2: SharedInstance.currentUserProfile.identifier!)
+                print("It's a match!")
+            } else {
+                print("We'll let you know if they are interested in meeting up")
+            }
+        } else {
+            print("We'll let you know if they are interested in meeting up")
+        }
+    }
     
     static func createProfile(var people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, image: UIImage, completion: (profile: Profile?) -> Void) {
         
@@ -106,6 +136,7 @@ class ProfileController {
         FirebaseController.base.childByAppendingPath("profiles/\(profileIdentifier)").observeSingleEventOfType(.Value, withBlock: { (profileSnapshot) -> Void in
             
             if let profileAttributeDictionary = profileSnapshot.value as? [String: AnyObject] {
+               
                 // Fetch data for people and children
                 ChildController.fetchChildrenDataForProfileIdentifier(profileIdentifier, completion: { (childrenDictionary) -> Void in
                     

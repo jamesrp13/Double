@@ -10,7 +10,12 @@ import UIKit
 
 class ProfileTableViewController: UITableViewController {
 
-    var profilesBeingViewed: [Profile] = []
+    var profilesBeingViewed: [Profile] {
+        if ProfileController.SharedInstance.profilesBeingViewed.count <= 10 {
+            checkForMoreProfiles()
+        }
+        return ProfileController.SharedInstance.profilesBeingViewed
+    }
     var isViewingOwnProfile = false
     
     @IBOutlet weak var evaluationStackView: UIStackView!
@@ -18,19 +23,26 @@ class ProfileTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
   
-//        for var i=0; i<20; i++ {
+//        for var i=0; i<100; i++ {
+//            
 //            ProfileController.createProfile((PersonController.mockPeople()[0], PersonController.mockPeople()[1]), married: (i%2==0 ? true:false), relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "\(i)", location: "84109", children: nil, image: UIImage(named: "testImage")!) { (profile) -> Void in
+//
 //            }
 //        }
         
+        
+        
 //        ProfileController.fetchUnseenProfiles { (profiles) -> Void in
 //            if let profiles = profiles {
-//                self.profilesBeingViewed = profiles
-//                self.tableView.reloadData()
+//                for var i=0; i<profiles.count; i++ {
+//                    if i%3==0 {
+//                        var response = Responses(profileViewedByIdentifier: profiles[i].identifier!, like: (i%2==0 ? false:true), profileIdentifier: ProfileController.SharedInstance.currentUserProfile.identifier!)
+//                        response.save()
+//                    }
+//                }
 //            }
 //        }
 
-        FirebaseController.base.childByAppendingPath("friendships").childByAutoId().setValue(true)
     }
 
     override func didReceiveMemoryWarning() {
@@ -48,12 +60,27 @@ class ProfileTableViewController: UITableViewController {
 
     @IBAction func likeButtonTapped(sender: AnyObject) {
         ResponseController.createResponse(profilesBeingViewed[0].identifier!, liked: true) { (responses) -> Void in
+            ProfileController.checkForMatch(self.profilesBeingViewed[0].identifier!)
             self.removeProfileFromViewingList()
         }
     }
     
+    func checkForMoreProfiles() {
+        ProfileController.fetchUnseenProfiles { (profiles) -> Void in
+            if let profiles = profiles {
+                for profile in profiles {
+                    ProfileController.SharedInstance.profilesBeingViewed.append(profile)
+                }
+                
+                ProfileController.fetchResponsesFromProfilesBeingViewed()
+                self.tableView.reloadData()
+            }
+        }
+
+    }
+    
     func removeProfileFromViewingList() {
-        profilesBeingViewed.removeFirst()
+        ProfileController.SharedInstance.profilesBeingViewed.removeFirst()
         tableView.reloadData()
     }
     

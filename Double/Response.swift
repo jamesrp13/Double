@@ -34,5 +34,4 @@ struct Responses: FirebaseType {
         self.responsesDictionary = [profileViewedByIdentifier: like]
         self.identifier = profileIdentifier
     }
-    
 }

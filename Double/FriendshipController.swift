@@ -37,6 +37,11 @@ class FriendshipController {
         return conversations
     }
     
+    static func createFriendship(profileIdentifier1: String, profileIdentifier2: String) {
+        var friendship = Friendship(profileIdentifiers: (profileIdentifier1, profileIdentifier2))
+        friendship.save()
+    }
+    
     static func deleteFriendship(friendship: Friendship) {
         friendship.delete()
         
