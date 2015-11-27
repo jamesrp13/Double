@@ -19,16 +19,21 @@ class ProfileController {
     static func fetchResponsesFromProfilesBeingViewed() {
         var responseDictionary: [String: Bool] = [:]
         
+        let tunnel = dispatch_group_create()
         for profile in SharedInstance.profilesBeingViewed {
+            dispatch_group_enter(tunnel)
             ResponseController.observeResponsesForIdentifier(SharedInstance.currentUserProfile.identifier!, completion: { (responses) -> Void in
                 if let responses = responses {
                     if let response = responses.responsesDictionary[profile.identifier!] {
                         responseDictionary.updateValue(response, forKey: profile.identifier!)
                     }
                 }
+                dispatch_group_leave(tunnel)
             })
         }
-        SharedInstance.responsesFromProfilesBeingViewed = responseDictionary
+        dispatch_group_notify(tunnel, dispatch_get_main_queue()) { () -> Void in
+            SharedInstance.responsesFromProfilesBeingViewed = responseDictionary
+        }
     }
     
     static func checkForMatch(profileIdentifier: String) {
