@@ -13,41 +13,27 @@ class ProfileController {
     static let SharedInstance = ProfileController()
     
     var currentUserProfile: Profile = ProfileController.mockProfiles()[0]
-    var profilesBeingViewed: [Profile] = []
+    
+    var profilesBeingViewed: [Profile] = [] {
+        didSet {
+            if profilesBeingViewed.count <= 10 {
+                ProfileController.fetchProfilesForDisplay()
+                NSNotificationCenter.defaultCenter().postNotificationName("ProfilesChanged", object: self)
+            }
+        }
+    }
+    
+    var profileIdentifiers: [String] {
+        var profileIdentifiers: [String] = []
+        for profile in profilesBeingViewed {
+            profileIdentifiers.append(profile.identifier!)
+        }
+        return profileIdentifiers
+    }
+    
     var responsesFromProfilesBeingViewed: [String: Bool] = [:]
     
-    static func fetchResponsesFromProfilesBeingViewed() {
-        var responseDictionary: [String: Bool] = [:]
-        
-        let tunnel = dispatch_group_create()
-        for profile in SharedInstance.profilesBeingViewed {
-            dispatch_group_enter(tunnel)
-            ResponseController.observeResponsesForIdentifier(SharedInstance.currentUserProfile.identifier!, completion: { (responses) -> Void in
-                if let responses = responses {
-                    if let response = responses.responsesDictionary[profile.identifier!] {
-                        responseDictionary.updateValue(response, forKey: profile.identifier!)
-                    }
-                }
-                dispatch_group_leave(tunnel)
-            })
-        }
-        dispatch_group_notify(tunnel, dispatch_get_main_queue()) { () -> Void in
-            SharedInstance.responsesFromProfilesBeingViewed = responseDictionary
-        }
-    }
-    
-    static func checkForMatch(profileIdentifier: String) {
-        if let liked = SharedInstance.responsesFromProfilesBeingViewed[profileIdentifier] {
-            if liked {
-                FriendshipController.createFriendship(profileIdentifier, profileIdentifier2: SharedInstance.currentUserProfile.identifier!)
-                print("It's a match!")
-            } else {
-                print("We'll let you know if they are interested in meeting up")
-            }
-        } else {
-            print("We'll let you know if they are interested in meeting up")
-        }
-    }
+    // MARK: - CRUD
     
     static func createProfile(var people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, image: UIImage, completion: (profile: Profile?) -> Void) {
         
@@ -104,6 +90,22 @@ class ProfileController {
         ImageController.deleteImage(profile.imageEndPoint)
         ChildController.deleteChildren(profile.children)
         ResponseController.deleteResponsesForProfileIdentifier(profile.identifier!)
+    }
+    
+    // MARK: - Prepare profiles for viewing
+    
+    static func fetchProfilesForDisplay() {
+        if SharedInstance.profilesBeingViewed.count <= 10 {
+            fetchUnseenProfiles { (profiles) -> Void in
+                if let profiles = profiles {
+                    for profile in profiles {
+                        ProfileController.SharedInstance.profilesBeingViewed.append(profile)
+                    }
+                    
+                    ProfileController.fetchResponsesFromProfilesBeingViewed()
+                }
+            }
+        }
     }
     
     static func fetchUnseenProfiles(completion: (profiles: [Profile]?) -> Void) {
@@ -164,6 +166,39 @@ class ProfileController {
                 completion(profile: nil)
             }
         })
+    }
+    
+    static func fetchResponsesFromProfilesBeingViewed() {
+        var responseDictionary: [String: Bool] = [:]
+        
+        let tunnel = dispatch_group_create()
+        for profile in SharedInstance.profilesBeingViewed {
+            dispatch_group_enter(tunnel)
+            ResponseController.observeResponsesForIdentifier(SharedInstance.currentUserProfile.identifier!, completion: { (responses) -> Void in
+                if let responses = responses {
+                    if let response = responses.responsesDictionary[profile.identifier!] {
+                        responseDictionary.updateValue(response, forKey: profile.identifier!)
+                    }
+                }
+                dispatch_group_leave(tunnel)
+            })
+        }
+        dispatch_group_notify(tunnel, dispatch_get_main_queue()) { () -> Void in
+            SharedInstance.responsesFromProfilesBeingViewed = responseDictionary
+        }
+    }
+    
+    static func checkForMatch(profileIdentifier: String) {
+        if let liked = SharedInstance.responsesFromProfilesBeingViewed[profileIdentifier] {
+            if liked {
+                FriendshipController.createFriendship(profileIdentifier, profileIdentifier2: SharedInstance.currentUserProfile.identifier!)
+                print("It's a match!")
+            } else {
+                print("We'll let you know if they are interested in meeting up")
+            }
+        } else {
+            print("We'll let you know if they are interested in meeting up")
+        }
     }
     
     static func mockProfiles() -> [Profile] {

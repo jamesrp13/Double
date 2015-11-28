@@ -26,18 +26,11 @@ struct Friendship: FirebaseType {
     
     init?(json: [String : AnyObject], identifier: String) {
         
-        var messageArray: [Message]? = nil
-        
-        MessageController.fetchMessagesForFriendshipIdentifier(identifier) { (messages) -> Void in
-            messageArray = messages
-        }
-        
         let profileIdentifiers = json.flatMap({$0.0})
-        guard profileIdentifiers.count == 2,
-            let messages = messageArray else {return nil}
+        guard profileIdentifiers.count == 2 else {return nil}
         
         self.profileIdentifiers = (profileIdentifiers[0], profileIdentifiers[1])
-        self.messages = messages
+        self.messages = nil
         self.identifier = identifier
     }
     

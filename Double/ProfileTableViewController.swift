@@ -11,17 +11,17 @@ import UIKit
 class ProfileTableViewController: UITableViewController {
 
     var profilesBeingViewed: [Profile] {
-        if ProfileController.SharedInstance.profilesBeingViewed.count <= 10 {
-            checkForMoreProfiles()
-        }
         return ProfileController.SharedInstance.profilesBeingViewed
     }
+    
     var isViewingOwnProfile = false
     
     @IBOutlet weak var evaluationStackView: UIStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: "ProfilesChanged", object: nil)
   
 //        for var i=0; i<100; i++ {
 //            
@@ -42,12 +42,19 @@ class ProfileTableViewController: UITableViewController {
 //                }
 //            }
 //        }
+        
+//        var message = Message(friendshipId: "-K49LD03sCBF5aV10q0W", profileId: "-K3vyxVu1d0xOd3SBjB9", text: "Hello. This is a test")
+//        message.save()
 
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func updateTableView() {
+        tableView.reloadData()
     }
 
     // MARK: - Reject and Like button actions
@@ -63,20 +70,6 @@ class ProfileTableViewController: UITableViewController {
             ProfileController.checkForMatch(self.profilesBeingViewed[0].identifier!)
             self.removeProfileFromViewingList()
         }
-    }
-    
-    func checkForMoreProfiles() {
-        ProfileController.fetchUnseenProfiles { (profiles) -> Void in
-            if let profiles = profiles {
-                for profile in profiles {
-                    ProfileController.SharedInstance.profilesBeingViewed.append(profile)
-                }
-                
-                ProfileController.fetchResponsesFromProfilesBeingViewed()
-                self.tableView.reloadData()
-            }
-        }
-
     }
     
     func removeProfileFromViewingList() {

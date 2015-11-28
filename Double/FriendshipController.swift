@@ -12,10 +12,47 @@ class FriendshipController {
 
     static let SharedInstance = FriendshipController()
     
-    var friendships: [Friendship] = []
+    static let kFriendshipsChanged = "FriendshipsChanged"
     
-    static func fetchFriendshipsForProfileIdentifier(profileIdentifier: String, completion: (friendships: [Friendship]?) -> Void) {
-        FirebaseController.base.childByAppendingPath("friendships").queryOrderedByChild(profileIdentifier).queryEqualToValue(true).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+    var friendships: [Friendship] = [] {
+        didSet {
+            NSNotificationCenter.defaultCenter().postNotificationName(FriendshipController.kFriendshipsChanged, object: self)
+        }
+    }
+    
+    var friendshipIdentifiers: [String] {
+        var friendshipIdentifiers: [String] = []
+        for friendship in friendships {
+            friendshipIdentifiers.append(friendship.identifier!)
+        }
+        return friendshipIdentifiers
+    }
+    
+    static func observeFriendshipsForCurrentUser() {
+        FriendshipController.observeFriendshipsForProfileIdentifier(ProfileController.SharedInstance.currentUserProfile.identifier!) { (friendships) -> Void in
+            if var friendships = friendships {
+                var modifiedFriendships: [Friendship] = []
+                let tunnel = dispatch_group_create()
+                for var friendship in friendships {
+                    dispatch_group_enter(tunnel)
+                    MessageController.observeMessagesForFriendshipIdentifier(friendship.identifier!, completion: { (messages) -> Void in
+                        if let messages = messages {
+                            friendship.messages = messages
+                        }
+                        print(friendship.identifier!)
+                        modifiedFriendships.append(friendship)
+                        dispatch_group_leave(tunnel)
+                    })
+                }
+                dispatch_group_notify(tunnel, dispatch_get_main_queue(), { () -> Void in
+                    SharedInstance.friendships = modifiedFriendships
+                })
+            }
+        }
+    }
+    
+    static func observeFriendshipsForProfileIdentifier(profileIdentifier: String, completion: (friendships: [Friendship]?) -> Void) {
+        FirebaseController.base.childByAppendingPath("friendships").queryOrderedByChild(profileIdentifier).queryEqualToValue(true).observeEventType(.Value, withBlock: { (data) -> Void in
             if let friendshipDictionaries = data.value as? [String: AnyObject] {
                 let friendships = friendshipDictionaries.flatMap({Friendship(json: $0.1 as! [String: AnyObject], identifier: $0.0)
                 })
@@ -33,6 +70,7 @@ class FriendshipController {
             if let _ = friendship.messages {
                 conversations.append(friendship)
             }
+            print(friendship.identifier!)
         }
         return conversations
     }

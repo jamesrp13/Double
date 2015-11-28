@@ -10,11 +10,16 @@ import UIKit
 
 class FriendshipCollectionCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate {
     
+    var friendships: [Friendship] {
+        return FriendshipController.SharedInstance.friendships
+    }
+
+    
     @IBOutlet weak var collectionView: UICollectionView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateCollectionView", name: FriendshipController.kFriendshipsChanged, object: nil)
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -23,8 +28,12 @@ class FriendshipCollectionCell: UITableViewCell, UICollectionViewDataSource, UIC
         // Configure the view for the selected state
     }
     
+    func updateCollectionView() {
+        collectionView.reloadData()
+    }
+    
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return FriendshipController.SharedInstance.friendships.count
+        return friendships.count
     }
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {

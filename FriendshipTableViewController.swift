@@ -11,12 +11,6 @@ import UIKit
 class FriendshipTableViewController: UITableViewController {
 
     var friendships: [Friendship] {
-        FriendshipController.fetchFriendshipsForProfileIdentifier(ProfileController.SharedInstance.currentUserProfile.identifier!) { (friendships) -> Void in
-            if let friendships = friendships {
-                FriendshipController.SharedInstance.friendships = friendships
-            }
-        }
-        //print(FriendshipController.SharedInstance.friendships)
         return FriendshipController.SharedInstance.friendships
     }
     
@@ -26,7 +20,13 @@ class FriendshipTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: FriendshipController.kFriendshipsChanged, object: nil)
+     
+    }
+    
+    func updateTableView() {
+        tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
