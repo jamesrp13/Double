@@ -23,10 +23,9 @@ class MessageController {
 
     }
     
-    static func deleteMessage(message: Message) {
-        
-        message.delete()
-        
+    static func createMessage(friendship: Friendship, text: String, senderProfileIdentifier: String) {
+        var message = Message(friendshipId: friendship.identifier!, profileId: senderProfileIdentifier, text: text)
+        message.save()
     }
     
     static func mockMessages() -> [Message] {

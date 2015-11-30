@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A75329B1C0CB9F400F42FFA /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A75329A1C0CB9F400F42FFA /* ChatTableViewController.swift */; };
+		1A75329D1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A75329C1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift */; };
+		1A75329F1C0CBAC400F42FFA /* ChatRightAlignedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A75329E1C0CBAC400F42FFA /* ChatRightAlignedTableViewCell.swift */; };
+		1A7533001C0D10C300F42FFA /* NewChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A7532FF1C0D10C300F42FFA /* NewChatTableViewCell.swift */; };
 		1A82D9C11BFFBA5E00524AD2 /* ProfileTitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A82D9C01BFFBA5E00524AD2 /* ProfileTitleCell.swift */; };
 		1A82D9C41BFFBB4300524AD2 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A82D9C31BFFBB4300524AD2 /* ProfileTableViewController.swift */; };
 		1A82D9C71BFFBEC200524AD2 /* ProfileImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A82D9C61BFFBEC200524AD2 /* ProfileImageCell.swift */; };
@@ -77,6 +81,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1A75329A1C0CB9F400F42FFA /* ChatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewController.swift; sourceTree = "<group>"; };
+		1A75329C1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLeftAlignedTableViewCell.swift; sourceTree = "<group>"; };
+		1A75329E1C0CBAC400F42FFA /* ChatRightAlignedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRightAlignedTableViewCell.swift; sourceTree = "<group>"; };
+		1A7532FF1C0D10C300F42FFA /* NewChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewChatTableViewCell.swift; sourceTree = "<group>"; };
 		1A82D9C01BFFBA5E00524AD2 /* ProfileTitleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTitleCell.swift; sourceTree = "<group>"; };
 		1A82D9C31BFFBB4300524AD2 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		1A82D9C61BFFBEC200524AD2 /* ProfileImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileImageCell.swift; sourceTree = "<group>"; };
@@ -151,9 +159,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1A7532A01C0CBACD00F42FFA /* Chat Cells */ = {
+			isa = PBXGroup;
+			children = (
+				1A75329C1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift */,
+				1A75329E1C0CBAC400F42FFA /* ChatRightAlignedTableViewCell.swift */,
+				1A7532FF1C0D10C300F42FFA /* NewChatTableViewCell.swift */,
+			);
+			name = "Chat Cells";
+			sourceTree = "<group>";
+		};
 		1A82D9C21BFFBA6600524AD2 /* View Objects */ = {
 			isa = PBXGroup;
 			children = (
+				1A7532A01C0CBACD00F42FFA /* Chat Cells */,
 				1A82D9C51BFFBB8F00524AD2 /* Profile Cells */,
 				1A82D9D21BFFDD1F00524AD2 /* Friendship Cells */,
 			);
@@ -239,8 +258,9 @@
 		1ABD3B761BFD728000544104 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				1A82D9CC1BFFD5B000524AD2 /* FriendshipTableViewController.swift */,
 				1A82D9C31BFFBB4300524AD2 /* ProfileTableViewController.swift */,
+				1A82D9CC1BFFD5B000524AD2 /* FriendshipTableViewController.swift */,
+				1A75329A1C0CB9F400F42FFA /* ChatTableViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -422,10 +442,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				1ABD3B7F1BFD73D700544104 /* Response.swift in Sources */,
+				1A75329D1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift in Sources */,
 				1A82D9CF1BFFDD0600524AD2 /* FriendshipCollectionCell.swift in Sources */,
 				1A82D9C71BFFBEC200524AD2 /* ProfileImageCell.swift in Sources */,
 				1ABD3B7B1BFD736700544104 /* Person.swift in Sources */,
 				1ABD3B9D1BFE2D1C00544104 /* ResponseController.swift in Sources */,
+				1A75329F1C0CBAC400F42FFA /* ChatRightAlignedTableViewCell.swift in Sources */,
 				1ABD3B781BFD72F800544104 /* FirebaseController.swift in Sources */,
 				1ABD3BA11BFE2D3A00544104 /* MessageController.swift in Sources */,
 				1ABD3B991BFE2D0200544104 /* PersonController.swift in Sources */,
@@ -435,11 +457,13 @@
 				1ABD3B431BFD3F6300544104 /* AppDelegate.swift in Sources */,
 				1A82D9C41BFFBB4300524AD2 /* ProfileTableViewController.swift in Sources */,
 				1ABD3BA31BFE2D4F00544104 /* ChildController.swift in Sources */,
+				1A75329B1C0CB9F400F42FFA /* ChatTableViewController.swift in Sources */,
 				1ABD3B9B1BFE2D1300544104 /* ProfileController.swift in Sources */,
 				1A82D9C11BFFBA5E00524AD2 /* ProfileTitleCell.swift in Sources */,
 				1ABD3B7D1BFD737000544104 /* Profile.swift in Sources */,
 				1A82D9D41C01149300524AD2 /* FriendshipCell.swift in Sources */,
 				1ABD3B841BFD740400544104 /* Message.swift in Sources */,
+				1A7533001C0D10C300F42FFA /* NewChatTableViewCell.swift in Sources */,
 				1A82D9CB1BFFBF2D00524AD2 /* ProfileAboutIndividualsCell.swift in Sources */,
 				1A82D9D11BFFDD1400524AD2 /* ConversationCell.swift in Sources */,
 				1A82D9C91BFFBF0E00524AD2 /* ProfileAboutCoupleCell.swift in Sources */,

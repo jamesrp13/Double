@@ -12,8 +12,10 @@ class FriendshipCell: UICollectionViewCell {
     
     @IBOutlet weak var coupleTitleLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
+    var friendship: Friendship? = nil
  
     func updateWithFriendship(friendship: Friendship) {
+        self.friendship = friendship
         let profileIdentifer = friendship.profileIdentifiers.0 == ProfileController.SharedInstance.currentUserProfile.identifier! ? friendship.profileIdentifiers.1:friendship.profileIdentifiers.0
         ProfileController.fetchProfileForIdentifier(profileIdentifer) { (profile) -> Void in
             if let profile = profile {
