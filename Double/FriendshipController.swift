@@ -16,7 +16,22 @@ class FriendshipController {
     
     var friendships: [Friendship] = [] {
         didSet {
-            NSNotificationCenter.defaultCenter().postNotificationName(FriendshipController.kFriendshipsChanged, object: self)
+            if oldValue != self.friendships {
+                for var friendship in friendships {
+                    FriendshipController.observeConversationForFriendshipIdentifier(friendship.identifier!, completion: { (messages) -> (Void) in
+                        if let messages = messages {
+                            friendship.messages = messages
+                            
+                            if let index = self.friendships.indexOf({ (friendship) -> Bool in
+                                return true
+                            }) {
+                                self.friendships[index] = friendship
+                            }
+                        }
+                    })
+                }
+                NSNotificationCenter.defaultCenter().postNotificationName(FriendshipController.kFriendshipsChanged, object: self)
+            }
         }
     }
     
@@ -30,25 +45,21 @@ class FriendshipController {
     
     static func observeFriendshipsForCurrentUser() {
         FriendshipController.observeFriendshipsForProfileIdentifier(ProfileController.SharedInstance.currentUserProfile.identifier!) { (friendships) -> Void in
-            if var friendships = friendships {
-                var modifiedFriendships: [Friendship] = []
-                let tunnel = dispatch_group_create()
-                for var friendship in friendships {
-                    dispatch_group_enter(tunnel)
-                    MessageController.observeMessagesForFriendshipIdentifier(friendship.identifier!, completion: { (messages) -> Void in
-                        if let messages = messages {
-                            friendship.messages = messages
-                        }
-                        print(friendship.identifier!)
-                        modifiedFriendships.append(friendship)
-                        dispatch_group_leave(tunnel)
-                    })
-                }
-                dispatch_group_notify(tunnel, dispatch_get_main_queue(), { () -> Void in
-                    SharedInstance.friendships = modifiedFriendships
-                })
+            if let friendships = friendships {
+                SharedInstance.friendships = friendships
             }
         }
+    }
+    
+    
+    static func observeConversationForFriendshipIdentifier(friendshipIdentifier: String, completion: (messages: [Message]?) -> (Void)) {
+        MessageController.observeMessagesForFriendshipIdentifier(friendshipIdentifier, completion: { (messages) -> Void in
+            if let messages = messages {
+                completion(messages: messages)
+            } else {
+                completion(messages: nil)
+            }
+        })
     }
     
     static func observeFriendshipsForProfileIdentifier(profileIdentifier: String, completion: (friendships: [Friendship]?) -> Void) {
@@ -56,7 +67,7 @@ class FriendshipController {
             if let friendshipDictionaries = data.value as? [String: AnyObject] {
                 let friendships = friendshipDictionaries.flatMap({Friendship(json: $0.1 as! [String: AnyObject], identifier: $0.0)
                 })
-                completion(friendships: friendships)
+                completion(friendships: friendships.sort({$0.identifier! < $1.identifier!}))
             } else {
                 completion(friendships: nil)
             }
@@ -70,7 +81,6 @@ class FriendshipController {
             if let _ = friendship.messages {
                 conversations.append(friendship)
             }
-            print(friendship.identifier!)
         }
         return conversations
     }

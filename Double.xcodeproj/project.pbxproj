@@ -29,7 +29,7 @@
 		1ABD3B781BFD72F800544104 /* FirebaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B771BFD72F800544104 /* FirebaseController.swift */; };
 		1ABD3B7B1BFD736700544104 /* Person.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B7A1BFD736700544104 /* Person.swift */; };
 		1ABD3B7D1BFD737000544104 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B7C1BFD737000544104 /* Profile.swift */; };
-		1ABD3B7F1BFD73D700544104 /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B7E1BFD73D700544104 /* Response.swift */; };
+		1ABD3B7F1BFD73D700544104 /* Responses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B7E1BFD73D700544104 /* Responses.swift */; };
 		1ABD3B821BFD73F800544104 /* Friendship.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B811BFD73F800544104 /* Friendship.swift */; };
 		1ABD3B841BFD740400544104 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B831BFD740400544104 /* Message.swift */; };
 		1ABD3B861BFD740C00544104 /* Child.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B851BFD740C00544104 /* Child.swift */; };
@@ -109,7 +109,7 @@
 		1ABD3B771BFD72F800544104 /* FirebaseController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FirebaseController.swift; sourceTree = "<group>"; };
 		1ABD3B7A1BFD736700544104 /* Person.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Person.swift; sourceTree = "<group>"; };
 		1ABD3B7C1BFD737000544104 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
-		1ABD3B7E1BFD73D700544104 /* Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		1ABD3B7E1BFD73D700544104 /* Responses.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Responses.swift; sourceTree = "<group>"; };
 		1ABD3B811BFD73F800544104 /* Friendship.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Friendship.swift; sourceTree = "<group>"; };
 		1ABD3B831BFD740400544104 /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		1ABD3B851BFD740C00544104 /* Child.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Child.swift; sourceTree = "<group>"; };
@@ -285,7 +285,7 @@
 			children = (
 				1ABD3B7A1BFD736700544104 /* Person.swift */,
 				1ABD3B7C1BFD737000544104 /* Profile.swift */,
-				1ABD3B7E1BFD73D700544104 /* Response.swift */,
+				1ABD3B7E1BFD73D700544104 /* Responses.swift */,
 				1ABD3B811BFD73F800544104 /* Friendship.swift */,
 				1ABD3B831BFD740400544104 /* Message.swift */,
 				1ABD3B851BFD740C00544104 /* Child.swift */,
@@ -441,7 +441,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1ABD3B7F1BFD73D700544104 /* Response.swift in Sources */,
+				1ABD3B7F1BFD73D700544104 /* Responses.swift in Sources */,
 				1A75329D1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift in Sources */,
 				1A82D9CF1BFFDD0600524AD2 /* FriendshipCollectionCell.swift in Sources */,
 				1A82D9C71BFFBEC200524AD2 /* ProfileImageCell.swift in Sources */,

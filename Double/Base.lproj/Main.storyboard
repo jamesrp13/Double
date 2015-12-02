@@ -448,8 +448,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <stackView key="tableFooterView" opaque="NO" contentMode="scaleToFill" spacing="5" id="VXN-oI-wm7">
+                            <rect key="frame" x="0.0" y="224" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D67-jO-jYO">
+                                    <rect key="frame" x="0.0" y="0.0" width="279" height="30"/>
+                                    <animations/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                </textField>
+                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="van-gu-m0I">
+                                    <rect key="frame" x="284" y="0.0" width="36" height="30"/>
+                                    <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="iLL-bf-I6H"/>
+                                    </constraints>
+                                    <state key="normal" title="Send"/>
+                                    <connections>
+                                        <action selector="sendButtonTapped:" destination="Llv-Pw-CVa" eventType="touchUpInside" id="f88-GN-KZH"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <animations/>
+                        </stackView>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChatRightAlignedTableViewCell" id="4iT-9e-urL" customClass="ChatRightAlignedTableViewCell" customModule="Double" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ChatRightAlignedTableViewCell" id="4iT-9e-urL" customClass="ChatRightAlignedTableViewCell" customModule="Double" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4iT-9e-urL" id="dEr-LX-J6X">
@@ -481,7 +505,7 @@
                                     <outlet property="messageLabel" destination="Ozx-cH-h1k" id="bov-Mi-LaU"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ChatLeftAlignedTableViewCell" id="smT-LO-pWc" customClass="ChatLeftAlignedTableViewCell" customModule="Double" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ChatLeftAlignedTableViewCell" id="smT-LO-pWc" customClass="ChatLeftAlignedTableViewCell" customModule="Double" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="136" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="smT-LO-pWc" id="rNH-CQ-tqi">
@@ -507,7 +531,7 @@
                                     <outlet property="messageLabel" destination="W9M-LI-lnw" id="JA0-pj-Oe2"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewChatTableViewCell" id="AUa-7U-5H9" customClass="NewChatTableViewCell" customModule="Double" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NewChatTableViewCell" id="AUa-7U-5H9" customClass="NewChatTableViewCell" customModule="Double" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="180" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AUa-7U-5H9" id="um4-cl-9nn">
@@ -538,6 +562,9 @@
                     </tableView>
                     <nil key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <connections>
+                        <outlet property="messageTextField" destination="D67-jO-jYO" id="qvh-SK-Lfi"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uov-Rf-SZr" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

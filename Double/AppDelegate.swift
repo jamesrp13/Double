@@ -7,24 +7,23 @@
 //
 
 import UIKit
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
+    
+    override init() {
+        super.init()
+        //Firebase.defaultConfig().persistenceEnabled = true
+        FirebaseController.loadNecessaryDataFromNetwork()
+    }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
         
-        loadNecessaryDataFromNetwork()
-        
         return true
-    }
-    
-    func loadNecessaryDataFromNetwork() {
-        ProfileController.fetchProfilesForDisplay()
-        FriendshipController.observeFriendshipsForCurrentUser()
     }
 
     func applicationWillResignActive(application: UIApplication) {
@@ -43,7 +42,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        loadNecessaryDataFromNetwork()
+        //loadNecessaryDataFromNetwork()
     }
 
     func applicationWillTerminate(application: UIApplication) {

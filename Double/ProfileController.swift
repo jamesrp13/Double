@@ -16,18 +16,24 @@ class ProfileController {
     
     var profilesBeingViewed: [Profile] = [] {
         didSet {
-            if profilesBeingViewed.count <= 10 {
-                ProfileController.fetchProfilesForDisplay()
+            if profilesBeingViewed.count < 10 && !ProfileController.SharedInstance.isOutOfProfiles {
+                ProfileController.fetchProfileForDisplay()
+            }
+            if oldValue.count == 0 || (oldValue[0].identifier! != profilesBeingViewed[0].identifier!) {
                 NSNotificationCenter.defaultCenter().postNotificationName("ProfilesChanged", object: self)
             }
         }
     }
+    
+    var isOutOfProfiles = false
     
     var profileIdentifiers: [String] {
         var profileIdentifiers: [String] = []
         for profile in profilesBeingViewed {
             profileIdentifiers.append(profile.identifier!)
         }
+        NSUserDefaults.standardUserDefaults().setObject(profileIdentifiers, forKey: "profileIdentifiers")
+        NSUserDefaults.standardUserDefaults().synchronize()
         return profileIdentifiers
     }
     
@@ -94,24 +100,33 @@ class ProfileController {
     
     // MARK: - Prepare profiles for viewing
     
-    static func fetchProfilesForDisplay() {
-        if SharedInstance.profilesBeingViewed.count <= 10 {
-            fetchUnseenProfiles { (profiles) -> Void in
-                if let profiles = profiles {
-                    for profile in profiles {
-                        ProfileController.SharedInstance.profilesBeingViewed.append(profile)
-                    }
-                    
-                    ProfileController.fetchResponsesFromProfilesBeingViewed()
+    static func fetchProfileForDisplay() {
+        fetchUnseenProfile { (profiles) -> Void in
+            if let profiles = profiles {
+                guard profiles.count > 0 else {
+                    SharedInstance.isOutOfProfiles = true
+                    return
                 }
+                
+                if SharedInstance.isOutOfProfiles {
+                    SharedInstance.isOutOfProfiles = false
+                }
+    
+                ResponseController.createResponse(profiles[0].identifier!, liked: false, completion: { (responses) -> Void in
+                    if let _ = responses {
+                        ProfileController.SharedInstance.profilesBeingViewed += profiles
+                        
+                        ProfileController.fetchResponsesFromProfilesBeingViewed()
+                    }
+                })
             }
         }
     }
     
-    static func fetchUnseenProfiles(completion: (profiles: [Profile]?) -> Void) {
+    static func fetchUnseenProfile(completion: (profiles: [Profile]?) -> Void) {
 
         // Fetches from Firebase a dictionary of responses to find profiles that have not yet been viewed
-        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(SharedInstance.currentUserProfile.identifier!).queryEqualToValue(nil).queryLimitedToFirst(20).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(SharedInstance.currentUserProfile.identifier!).queryEqualToValue(nil).queryLimitedToFirst(1).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
             if let responseDictionaries = data.value as? [String: AnyObject] {
                 let profileIdentifiers = responseDictionaries.flatMap({$0.0})
                 
@@ -131,6 +146,7 @@ class ProfileController {
                 dispatch_group_notify(tunnel, dispatch_get_main_queue()) { () -> Void in
                     completion(profiles: profiles)
                 }
+                
             } else {
                 completion(profiles: nil)
             }
@@ -169,22 +185,15 @@ class ProfileController {
     }
     
     static func fetchResponsesFromProfilesBeingViewed() {
-        var responseDictionary: [String: Bool] = [:]
-        
-        let tunnel = dispatch_group_create()
+
         for profile in SharedInstance.profilesBeingViewed {
-            dispatch_group_enter(tunnel)
             ResponseController.observeResponsesForIdentifier(SharedInstance.currentUserProfile.identifier!, completion: { (responses) -> Void in
                 if let responses = responses {
                     if let response = responses.responsesDictionary[profile.identifier!] {
-                        responseDictionary.updateValue(response, forKey: profile.identifier!)
+                        SharedInstance.responsesFromProfilesBeingViewed.updateValue(response, forKey: profile.identifier!)
                     }
                 }
-                dispatch_group_leave(tunnel)
             })
-        }
-        dispatch_group_notify(tunnel, dispatch_get_main_queue()) { () -> Void in
-            SharedInstance.responsesFromProfilesBeingViewed = responseDictionary
         }
     }
     
@@ -200,6 +209,7 @@ class ProfileController {
             print("We'll let you know if they are interested in meeting up")
         }
     }
+
     
     static func mockProfiles() -> [Profile] {
         let couples = [(PersonController.mockPeople()[0], PersonController.mockPeople()[1]), (PersonController.mockPeople()[2], PersonController.mockPeople()[3])]

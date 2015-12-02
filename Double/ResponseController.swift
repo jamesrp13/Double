@@ -38,7 +38,13 @@ class ResponseController {
     static func createResponse(profileViewed: String, profileViewedBy: String = ProfileController.SharedInstance.currentUserProfile.identifier!, liked: Bool, completion: (responses: Responses?) -> Void ) {
         var response = Responses(profileViewedByIdentifier: profileViewedBy, like: liked, profileIdentifier: profileViewed)
         response.save()
-        completion(responses: response)
+        FirebaseController.base.childByAppendingPath("responses").childByAppendingPath(profileViewed).childByAppendingPath(profileViewedBy).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+            if let _ = data {
+                completion(responses: response)
+            } else {
+                completion(responses: nil)
+            }
+        })
     }
     
     static func deleteResponsesForProfileIdentifier(profileIdentifier: String) {

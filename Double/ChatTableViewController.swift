@@ -8,19 +8,30 @@
 
 import UIKit
 
-class ChatTableViewController: UITableViewController {
+class ChatTableViewController: UITableViewController, UITextFieldDelegate {
 
+    @IBOutlet weak var messageTextField: UITextField!
+    
     var friendship: Friendship? = nil {
         didSet {
+            messages = friendship?.messages
+            if let friendship = friendship {
+                MessageController.observeLastMessageForFriendshipIdentifier(friendship.identifier!) { (message) -> Void in
+                    if var messages = self.messages, let message = message {
+                        if messages.last!.identifier! != message.identifier! {
+                            messages.append(message)
+                            self.messages = messages
+                        }
+                    }
+                }
+            }
             tableView.reloadData()
         }
     }
     
-    var messages: [Message]? {
-        if let friendship = friendship {
-            return friendship.messages
-        } else {
-            return nil
+    var messages: [Message]? = nil {
+        didSet {
+            tableView.reloadData()
         }
     }
     
@@ -32,7 +43,21 @@ class ChatTableViewController: UITableViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func sendButtonTapped(sender: AnyObject) {
+        guard let text = messageTextField.text, friendship = self.friendship where text.characters.count > 0 else {return}
+        
+        MessageController.createMessage(friendship, text: text, senderProfileIdentifier: ProfileController.SharedInstance.currentUserProfile.identifier!)
+        
+        messageTextField.text = nil
+        messageTextField.resignFirstResponder()
+    }
 
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        sendButtonTapped(self)
+        return true
+    }
+    
     // MARK: - Table view data source
 
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Friendship: FirebaseType {
+struct Friendship: FirebaseType, Equatable {
     
     var profileIdentifiers: (String, String)
     var messages: [Message]?
@@ -40,4 +40,11 @@ struct Friendship: FirebaseType {
         self.messages = messages
         self.identifier = identifier
     }
+}
+
+func == (lhs: Friendship, rhs: Friendship) -> Bool {
+    guard (lhs.profileIdentifiers.0 == rhs.profileIdentifiers.0 || lhs.profileIdentifiers.0 == rhs.profileIdentifiers.1) &&
+        (rhs.profileIdentifiers.0 == lhs.profileIdentifiers.1 || rhs.profileIdentifiers.0 == lhs.profileIdentifiers.0) &&
+        lhs.identifier == rhs.identifier else {return false}
+    return true
 }

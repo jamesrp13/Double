@@ -11,6 +11,7 @@ import UIKit
 class FriendshipTableViewController: UITableViewController {
 
     var friendships: [Friendship] {
+        
         return FriendshipController.SharedInstance.friendships
     }
     
