@@ -17,10 +17,14 @@ class ChatTableViewController: UITableViewController, UITextFieldDelegate {
             messages = friendship?.messages
             if let friendship = friendship {
                 MessageController.observeLastMessageForFriendshipIdentifier(friendship.identifier!) { (message) -> Void in
-                    if var messages = self.messages, let message = message {
-                        if messages.last!.identifier! != message.identifier! {
-                            messages.append(message)
-                            self.messages = messages
+                    if let message = message {
+                        if var messages = self.messages {
+                            if messages.last!.identifier! != message.identifier! {
+                                messages.append(message)
+                                self.messages = messages
+                            }
+                        } else {
+                            self.messages = [message]
                         }
                     }
                 }
