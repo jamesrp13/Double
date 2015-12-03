@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Message: FirebaseType {
+struct Message: FirebaseType, Equatable {
     private let kFriendshipId = "friendshipId"
     private let kProfileId = "profileId"
     private let kText = "text"
@@ -45,4 +45,8 @@ struct Message: FirebaseType {
         self.text = text
         self.identifier = identifier
     }
+}
+
+func == (lhs: Message, rhs: Message) -> Bool {
+    return lhs.identifier! == rhs.identifier!
 }

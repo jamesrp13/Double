@@ -11,7 +11,7 @@ import Foundation
 class MessageController {
     
     static func observeMessagesForFriendshipIdentifier(friendshipIdentifier: String, completion: ([Message]?) -> Void) {
-        FirebaseController.base.childByAppendingPath("messages").queryOrderedByChild("friendshipId").queryEqualToValue(friendshipIdentifier).observeEventType(.Value, withBlock: { (data) -> Void in
+        FirebaseController.base.childByAppendingPath("messages").queryOrderedByChild("friendshipId").queryEqualToValue(friendshipIdentifier).queryLimitedToLast(50).observeEventType(.Value, withBlock: { (data) -> Void in
             if let messageDictionaries = data.value as? [String: AnyObject] {
                 let messages = messageDictionaries.flatMap({Message(json: $0.1 as! [String: AnyObject], identifier: $0.0)
                 })

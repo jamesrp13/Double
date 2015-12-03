@@ -16,20 +16,39 @@ class ProfileTableViewController: UITableViewController {
     
     var isViewingOwnProfile = false
     
+    var seenDictionary: [String: Int] {
+        
+        if let seenDictionary = NSUserDefaults.standardUserDefaults().objectForKey("seenDictionary") as? [String: Int] {
+            return seenDictionary
+        } else {
+            return [:]
+        }
+    }
+    
     @IBOutlet weak var evaluationStackView: UIStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: "ProfilesChanged", object: nil)
-  
+        
+        for (key, value) in seenDictionary {
+            print("\(key) was seen \(value) times")
+        }
+//        var seenDictionary: [String: Int] = [:]
+//        
 //        for var i=0; i<100; i++ {
 //            
 //            ProfileController.createProfile((PersonController.mockPeople()[0], PersonController.mockPeople()[1]), married: (i%2==0 ? true:false), relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "\(i)", location: "84109", children: nil, image: UIImage(named: "testImage")!) { (profile) -> Void in
-//                
+//                if let profile = profile {
+//                    seenDictionary.updateValue(0, forKey: profile.identifier!)
+//                }
 //            }
 //        }
 //
+//        NSUserDefaults.standardUserDefaults().setObject(seenDictionary, forKey: "seenDictionary")
+//        NSUserDefaults.standardUserDefaults().synchronize()
+
         
         
 //        ProfileController.fetchUnseenProfiles { (profiles) -> Void in
@@ -61,6 +80,7 @@ class ProfileTableViewController: UITableViewController {
     
     @IBAction func rejectButtonTapped(sender: AnyObject) {
         ResponseController.createResponse(profilesBeingViewed[0].identifier!, liked: false) { (responses) -> Void in
+            self.addViewToList()
             self.removeProfileFromViewingList()
         }
     }
@@ -68,8 +88,22 @@ class ProfileTableViewController: UITableViewController {
     @IBAction func likeButtonTapped(sender: AnyObject) {
         ResponseController.createResponse(profilesBeingViewed[0].identifier!, liked: true) { (responses) -> Void in
             ProfileController.checkForMatch(self.profilesBeingViewed[0].identifier!)
+            self.addViewToList()
             self.removeProfileFromViewingList()
         }
+    }
+    
+    func addViewToList() {
+        var newSeenDictionary = seenDictionary
+        if let value = seenDictionary[profilesBeingViewed[0].identifier!] {
+            if value == 1 {
+                print("\rLooks like \(profilesBeingViewed[0].identifier!) was seen twice \r")
+            }
+            newSeenDictionary.updateValue(value + 1, forKey: profilesBeingViewed[0].identifier!)
+        }
+        
+        NSUserDefaults.standardUserDefaults().setObject(newSeenDictionary, forKey: "seenDictionary")
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     func removeProfileFromViewingList() {

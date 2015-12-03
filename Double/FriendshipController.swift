@@ -16,16 +16,18 @@ class FriendshipController {
     
     var friendships: [Friendship] = [] {
         didSet {
-            if oldValue != self.friendships {
-                for var friendship in friendships {
+            if oldValue != friendships {
+                for (index, var friendship) in friendships.enumerate() {
                     FriendshipController.observeConversationForFriendshipIdentifier(friendship.identifier!, completion: { (messages) -> (Void) in
-                        if let messages = messages {
-                            friendship.messages = messages
-                            
-                            if let index = self.friendships.indexOf({ (friendship) -> Bool in
-                                return true
-                            }) {
-                                self.friendships[index] = friendship
+                        if let newMessages = messages {
+                            if let oldMessages = friendship.messages {
+                                if oldMessages != newMessages {
+                                    friendship.messages = newMessages
+                                        self.friendships[index] = friendship
+                                    }
+                            } else {
+                                friendship.messages = newMessages
+                                    self.friendships[index] = friendship   
                             }
                         }
                     })
@@ -82,7 +84,7 @@ class FriendshipController {
                 conversations.append(friendship)
             }
         }
-        return conversations
+        return conversations.sort({$0.messages!.last!.identifier! > $1.messages!.last!.identifier!})
     }
     
     static func createFriendship(profileIdentifier1: String, profileIdentifier2: String) {

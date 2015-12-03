@@ -16,7 +16,7 @@ class FriendshipTableViewController: UITableViewController {
     }
     
     var conversations: [Friendship] {
-            return FriendshipController.conversationsForFriendships(FriendshipController.SharedInstance.friendships)
+            return FriendshipController.conversationsForFriendships(friendships)
     }
     
     override func viewDidLoad() {
@@ -26,8 +26,15 @@ class FriendshipTableViewController: UITableViewController {
      
     }
     
-    func updateTableView() {
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
         tableView.reloadData()
+    }
+    
+    func updateTableView() {
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            self.tableView.reloadData()
+        }
     }
 
     override func didReceiveMemoryWarning() {

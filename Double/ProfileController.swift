@@ -19,9 +19,11 @@ class ProfileController {
             if profilesBeingViewed.count < 10 && !ProfileController.SharedInstance.isOutOfProfiles {
                 ProfileController.fetchProfileForDisplay()
             }
-            if oldValue.count == 0 || (oldValue[0].identifier! != profilesBeingViewed[0].identifier!) {
+            if profilesBeingViewed.count > 0 && (oldValue.count == 0 || (oldValue[0].identifier! != profilesBeingViewed[0].identifier!)) {
                 NSNotificationCenter.defaultCenter().postNotificationName("ProfilesChanged", object: self)
+                
             }
+            ProfileController.SharedInstance.saveProfileIdentifiersToPersistentStore()
         }
     }
     
@@ -32,12 +34,16 @@ class ProfileController {
         for profile in profilesBeingViewed {
             profileIdentifiers.append(profile.identifier!)
         }
-        NSUserDefaults.standardUserDefaults().setObject(profileIdentifiers, forKey: "profileIdentifiers")
-        NSUserDefaults.standardUserDefaults().synchronize()
         return profileIdentifiers
     }
     
     var responsesFromProfilesBeingViewed: [String: Bool] = [:]
+    
+    func saveProfileIdentifiersToPersistentStore() {
+        NSUserDefaults.standardUserDefaults().setObject(profileIdentifiers, forKey: "profileIdentifiers")
+        NSUserDefaults.standardUserDefaults().synchronize()
+
+    }
     
     // MARK: - CRUD
     
@@ -101,7 +107,7 @@ class ProfileController {
     // MARK: - Prepare profiles for viewing
     
     static func fetchProfileForDisplay() {
-        fetchUnseenProfile { (profiles) -> Void in
+        fetchUnseenProfiles { (profiles) -> Void in
             if let profiles = profiles {
                 guard profiles.count > 0 else {
                     SharedInstance.isOutOfProfiles = true
@@ -111,22 +117,28 @@ class ProfileController {
                 if SharedInstance.isOutOfProfiles {
                     SharedInstance.isOutOfProfiles = false
                 }
-    
-                ResponseController.createResponse(profiles[0].identifier!, liked: false, completion: { (responses) -> Void in
-                    if let _ = responses {
-                        ProfileController.SharedInstance.profilesBeingViewed += profiles
-                        
-                        ProfileController.fetchResponsesFromProfilesBeingViewed()
-                    }
+                
+                let tunnel = dispatch_group_create()
+                for profile in profiles {
+                    dispatch_group_enter(tunnel)
+                    ResponseController.createResponse(profile.identifier!, liked: false, completion: { (responses) -> Void in
+                        if let _ = responses {
+                            dispatch_group_leave(tunnel)
+                        }
+                    })
+                }
+                dispatch_group_notify(tunnel, dispatch_get_main_queue(), { () -> Void in
+                    ProfileController.SharedInstance.profilesBeingViewed += profiles
+                    ProfileController.observeResponsesFromProfiles(profiles)
                 })
             }
         }
     }
     
-    static func fetchUnseenProfile(completion: (profiles: [Profile]?) -> Void) {
+    static func fetchUnseenProfiles(completion: (profiles: [Profile]?) -> Void) {
 
         // Fetches from Firebase a dictionary of responses to find profiles that have not yet been viewed
-        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(SharedInstance.currentUserProfile.identifier!).queryEqualToValue(nil).queryLimitedToFirst(1).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(SharedInstance.currentUserProfile.identifier!).queryLimitedToFirst(10).queryEndingAtValue(false).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
             if let responseDictionaries = data.value as? [String: AnyObject] {
                 let profileIdentifiers = responseDictionaries.flatMap({$0.0})
                 
@@ -145,10 +157,12 @@ class ProfileController {
                 
                 dispatch_group_notify(tunnel, dispatch_get_main_queue()) { () -> Void in
                     completion(profiles: profiles)
+                    print("\rWe pulled down \(profiles.count) profiles\r")
                 }
                 
             } else {
                 completion(profiles: nil)
+                print("\rThere are no more profiles to be seen\r")
             }
         })
     }
@@ -184,10 +198,9 @@ class ProfileController {
         })
     }
     
-    static func fetchResponsesFromProfilesBeingViewed() {
-
-        for profile in SharedInstance.profilesBeingViewed {
-            ResponseController.observeResponsesForIdentifier(SharedInstance.currentUserProfile.identifier!, completion: { (responses) -> Void in
+    static func observeResponsesFromProfiles(profiles: [Profile]) {
+        for profile in profiles {
+            ResponseController.observeResponsesForIdentifier(profile.identifier!, completion: { (responses) -> Void in
                 if let responses = responses {
                     if let response = responses.responsesDictionary[profile.identifier!] {
                         SharedInstance.responsesFromProfilesBeingViewed.updateValue(response, forKey: profile.identifier!)
@@ -197,16 +210,17 @@ class ProfileController {
         }
     }
     
+    
     static func checkForMatch(profileIdentifier: String) {
         if let liked = SharedInstance.responsesFromProfilesBeingViewed[profileIdentifier] {
             if liked {
                 FriendshipController.createFriendship(profileIdentifier, profileIdentifier2: SharedInstance.currentUserProfile.identifier!)
-                print("It's a match!")
+                print("It's a match with \(profileIdentifier)!")
             } else {
-                print("We'll let you know if they are interested in meeting up")
+                print("We'll let you know if \(profileIdentifier) are interested in meeting up")
             }
         } else {
-            print("We'll let you know if they are interested in meeting up")
+            print("We'll let you know if \(profileIdentifier) are interested in meeting up")
         }
     }
 

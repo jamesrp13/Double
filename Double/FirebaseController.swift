@@ -59,8 +59,11 @@ class FirebaseController {
         dispatch_group_notify(tunnel, dispatch_get_main_queue()) { () -> Void in
             if profiles.count > 0 {
                 ProfileController.SharedInstance.profilesBeingViewed = profiles
+                ProfileController.observeResponsesFromProfiles(profiles)
+                print("\(profiles.count) profile identifiers in persistent storage")
             } else {
                 ProfileController.fetchProfileForDisplay()
+                print("No profile identifiers in persistent storage -- fetching profiles for display")
             }
 
         }
