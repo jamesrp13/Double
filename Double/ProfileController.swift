@@ -200,7 +200,7 @@ class ProfileController {
     
     static func observeResponsesFromProfiles(profiles: [Profile]) {
         for profile in profiles {
-            ResponseController.observeResponsesForIdentifier(profile.identifier!, completion: { (responses) -> Void in
+            ResponseController.observeResponsesFromIdentifier(profile.identifier!, completion: { (responses) -> Void in
                 if let responses = responses {
                     if let response = responses.responsesDictionary[profile.identifier!] {
                         SharedInstance.responsesFromProfilesBeingViewed.updateValue(response, forKey: profile.identifier!)

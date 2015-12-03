@@ -32,9 +32,10 @@ class ProfileTableViewController: UITableViewController {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: "ProfilesChanged", object: nil)
         
-        for (key, value) in seenDictionary {
-            print("\(key) was seen \(value) times")
-        }
+//        for (key, value) in seenDictionary {
+//            print("\(key): \(value)")
+//        }
+        
 //        var seenDictionary: [String: Int] = [:]
 //        
 //        for var i=0; i<100; i++ {
@@ -42,29 +43,17 @@ class ProfileTableViewController: UITableViewController {
 //            ProfileController.createProfile((PersonController.mockPeople()[0], PersonController.mockPeople()[1]), married: (i%2==0 ? true:false), relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "\(i)", location: "84109", children: nil, image: UIImage(named: "testImage")!) { (profile) -> Void in
 //                if let profile = profile {
 //                    seenDictionary.updateValue(0, forKey: profile.identifier!)
+//                    if i%3==0 {
+//                        var response = Responses(profileViewedByIdentifier: profile.identifier!, like: (i%2==0 ? false:true), profileIdentifier: ProfileController.SharedInstance.currentUserProfile.identifier!)
+//                        response.save()
+//                    }
+//
 //                }
 //            }
 //        }
 //
 //        NSUserDefaults.standardUserDefaults().setObject(seenDictionary, forKey: "seenDictionary")
 //        NSUserDefaults.standardUserDefaults().synchronize()
-
-        
-        
-//        ProfileController.fetchUnseenProfiles { (profiles) -> Void in
-//            if let profiles = profiles {
-//                for var i=0; i<profiles.count; i++ {
-//                    if i%3==0 {
-//                        var response = Responses(profileViewedByIdentifier: profiles[i].identifier!, like: (i%2==0 ? false:true), profileIdentifier: ProfileController.SharedInstance.currentUserProfile.identifier!)
-//                        response.save()
-//                    }
-//                }
-//            }
-//        }
-        
-//        var message = Message(friendshipId: "-K49LD03sCBF5aV10q0W", profileId: "-K3vyxVu1d0xOd3SBjB9", text: "Hello. This is a test")
-//        message.save()
-
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,6 +63,7 @@ class ProfileTableViewController: UITableViewController {
     
     func updateTableView() {
         tableView.reloadData()
+        //likeButtonTapped(self)
     }
 
     // MARK: - Reject and Like button actions

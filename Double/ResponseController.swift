@@ -22,11 +22,11 @@ class ResponseController {
         })
     }
     
-    static func observeResponsesForIdentifier(profileIdentifier: String, completion: (responses: Responses?) -> Void) {
-        FirebaseController.base.childByAppendingPath("responses/\(profileIdentifier)").observeEventType(.Value, withBlock: { (data) -> Void in
+    static func observeResponsesFromIdentifier(profileIdentifier: String, completion: (responses: Responses?) -> Void) {
+        FirebaseController.base.childByAppendingPath("responses/\(ProfileController.SharedInstance.currentUserProfile.identifier!)/\(profileIdentifier)").observeEventType(.Value, withBlock: { (data) -> Void in
             
-            if let responseDictionaries = data.value as? [String: Bool] {
-                let responses = Responses(json: responseDictionaries, identifier: profileIdentifier)
+            if let value = data.value as? Bool {
+                let responses = Responses(profileViewedByIdentifier: profileIdentifier, like: value, profileIdentifier: ProfileController.SharedInstance.currentUserProfile.identifier!)
                 completion(responses: responses)
             } else {
                 completion(responses: nil)
