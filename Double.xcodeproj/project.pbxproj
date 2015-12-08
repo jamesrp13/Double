@@ -20,6 +20,12 @@
 		1A82D9CF1BFFDD0600524AD2 /* FriendshipCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A82D9CE1BFFDD0600524AD2 /* FriendshipCollectionCell.swift */; };
 		1A82D9D11BFFDD1400524AD2 /* ConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A82D9D01BFFDD1400524AD2 /* ConversationCell.swift */; };
 		1A82D9D41C01149300524AD2 /* FriendshipCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A82D9D31C01149300524AD2 /* FriendshipCell.swift */; };
+		1AA725531C136F6300F90F92 /* Account.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA725521C136F6300F90F92 /* Account.swift */; };
+		1AA725551C13720900F90F92 /* AccountController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA725541C13720900F90F92 /* AccountController.swift */; };
+		1AA725581C15545200F90F92 /* LoginSignupPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA725571C15545200F90F92 /* LoginSignupPickerViewController.swift */; };
+		1AA7255A1C15548100F90F92 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA725591C15548100F90F92 /* LoginViewController.swift */; };
+		1AA7255C1C15551F00F90F92 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA7255B1C15551F00F90F92 /* CreateAccountViewController.swift */; };
+		1AA7255E1C15553600F90F92 /* BasicInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA7255D1C15553600F90F92 /* BasicInfoViewController.swift */; };
 		1ABD3B431BFD3F6300544104 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B421BFD3F6300544104 /* AppDelegate.swift */; };
 		1ABD3B481BFD3F6300544104 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B461BFD3F6300544104 /* Main.storyboard */; };
 		1ABD3B4A1BFD3F6300544104 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B491BFD3F6300544104 /* Assets.xcassets */; };
@@ -34,7 +40,6 @@
 		1ABD3B841BFD740400544104 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B831BFD740400544104 /* Message.swift */; };
 		1ABD3B861BFD740C00544104 /* Child.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B851BFD740C00544104 /* Child.swift */; };
 		1ABD3B881BFD775400544104 /* Firebase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B871BFD775400544104 /* Firebase.framework */; };
-		1ABD3B891BFD775400544104 /* Firebase.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B871BFD775400544104 /* Firebase.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		1ABD3B8C1BFD777500544104 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B8B1BFD777500544104 /* CFNetwork.framework */; };
 		1ABD3B8E1BFD777E00544104 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B8D1BFD777E00544104 /* Security.framework */; };
 		1ABD3B901BFD778900544104 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1ABD3B8F1BFD778900544104 /* SystemConfiguration.framework */; };
@@ -47,6 +52,7 @@
 		1ABD3B9F1BFE2D3000544104 /* FriendshipController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B9E1BFE2D3000544104 /* FriendshipController.swift */; };
 		1ABD3BA11BFE2D3A00544104 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3BA01BFE2D3A00544104 /* MessageController.swift */; };
 		1ABD3BA31BFE2D4F00544104 /* ChildController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3BA21BFE2D4F00544104 /* ChildController.swift */; };
+		1AD29FD11C10E1760062D4D3 /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD29FD01C10E1760062D4D3 /* EditProfileTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -73,7 +79,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				1ABD3B891BFD775400544104 /* Firebase.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,6 +99,12 @@
 		1A82D9CE1BFFDD0600524AD2 /* FriendshipCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendshipCollectionCell.swift; sourceTree = "<group>"; };
 		1A82D9D01BFFDD1400524AD2 /* ConversationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		1A82D9D31C01149300524AD2 /* FriendshipCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendshipCell.swift; sourceTree = "<group>"; };
+		1AA725521C136F6300F90F92 /* Account.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Account.swift; sourceTree = "<group>"; };
+		1AA725541C13720900F90F92 /* AccountController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountController.swift; sourceTree = "<group>"; };
+		1AA725571C15545200F90F92 /* LoginSignupPickerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginSignupPickerViewController.swift; sourceTree = "<group>"; };
+		1AA725591C15548100F90F92 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		1AA7255B1C15551F00F90F92 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
+		1AA7255D1C15553600F90F92 /* BasicInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicInfoViewController.swift; sourceTree = "<group>"; };
 		1ABD3B3F1BFD3F6300544104 /* Double.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Double.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABD3B421BFD3F6300544104 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1ABD3B471BFD3F6300544104 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -126,6 +137,7 @@
 		1ABD3B9E1BFE2D3000544104 /* FriendshipController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendshipController.swift; sourceTree = "<group>"; };
 		1ABD3BA01BFE2D3A00544104 /* MessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		1ABD3BA21BFE2D4F00544104 /* ChildController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildController.swift; sourceTree = "<group>"; };
+		1AD29FD01C10E1760062D4D3 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditProfileTableViewController.swift; path = ../EditProfileTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,8 +174,8 @@
 		1A7532A01C0CBACD00F42FFA /* Chat Cells */ = {
 			isa = PBXGroup;
 			children = (
-				1A75329C1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift */,
 				1A75329E1C0CBAC400F42FFA /* ChatRightAlignedTableViewCell.swift */,
+				1A75329C1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift */,
 				1A7532FF1C0D10C300F42FFA /* NewChatTableViewCell.swift */,
 			);
 			name = "Chat Cells";
@@ -261,6 +273,11 @@
 				1A82D9C31BFFBB4300524AD2 /* ProfileTableViewController.swift */,
 				1A82D9CC1BFFD5B000524AD2 /* FriendshipTableViewController.swift */,
 				1A75329A1C0CB9F400F42FFA /* ChatTableViewController.swift */,
+				1AD29FD01C10E1760062D4D3 /* EditProfileTableViewController.swift */,
+				1AA725571C15545200F90F92 /* LoginSignupPickerViewController.swift */,
+				1AA725591C15548100F90F92 /* LoginViewController.swift */,
+				1AA7255B1C15551F00F90F92 /* CreateAccountViewController.swift */,
+				1AA7255D1C15553600F90F92 /* BasicInfoViewController.swift */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -276,6 +293,7 @@
 				1ABD3B9E1BFE2D3000544104 /* FriendshipController.swift */,
 				1ABD3BA01BFE2D3A00544104 /* MessageController.swift */,
 				1ABD3BA21BFE2D4F00544104 /* ChildController.swift */,
+				1AA725541C13720900F90F92 /* AccountController.swift */,
 			);
 			name = "Model Controllers";
 			sourceTree = "<group>";
@@ -289,6 +307,7 @@
 				1ABD3B811BFD73F800544104 /* Friendship.swift */,
 				1ABD3B831BFD740400544104 /* Message.swift */,
 				1ABD3B851BFD740C00544104 /* Child.swift */,
+				1AA725521C136F6300F90F92 /* Account.swift */,
 			);
 			name = "Model Objects";
 			sourceTree = "<group>";
@@ -375,7 +394,7 @@
 				TargetAttributes = {
 					1ABD3B3E1BFD3F6300544104 = {
 						CreatedOnToolsVersion = 7.1.1;
-						DevelopmentTeam = LWPMR5Q9R2;
+						DevelopmentTeam = 2HKCZL2J7X;
 					};
 					1ABD3B521BFD3F6300544104 = {
 						CreatedOnToolsVersion = 7.1.1;
@@ -443,14 +462,18 @@
 			files = (
 				1ABD3B7F1BFD73D700544104 /* Responses.swift in Sources */,
 				1A75329D1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift in Sources */,
+				1AD29FD11C10E1760062D4D3 /* EditProfileTableViewController.swift in Sources */,
 				1A82D9CF1BFFDD0600524AD2 /* FriendshipCollectionCell.swift in Sources */,
 				1A82D9C71BFFBEC200524AD2 /* ProfileImageCell.swift in Sources */,
+				1AA7255E1C15553600F90F92 /* BasicInfoViewController.swift in Sources */,
+				1AA725531C136F6300F90F92 /* Account.swift in Sources */,
 				1ABD3B7B1BFD736700544104 /* Person.swift in Sources */,
 				1ABD3B9D1BFE2D1C00544104 /* ResponseController.swift in Sources */,
 				1A75329F1C0CBAC400F42FFA /* ChatRightAlignedTableViewCell.swift in Sources */,
 				1ABD3B781BFD72F800544104 /* FirebaseController.swift in Sources */,
 				1ABD3BA11BFE2D3A00544104 /* MessageController.swift in Sources */,
 				1ABD3B991BFE2D0200544104 /* PersonController.swift in Sources */,
+				1AA725581C15545200F90F92 /* LoginSignupPickerViewController.swift in Sources */,
 				1ABD3B9F1BFE2D3000544104 /* FriendshipController.swift in Sources */,
 				1ABD3B821BFD73F800544104 /* Friendship.swift in Sources */,
 				1ABD3B861BFD740C00544104 /* Child.swift in Sources */,
@@ -459,12 +482,15 @@
 				1ABD3BA31BFE2D4F00544104 /* ChildController.swift in Sources */,
 				1A75329B1C0CB9F400F42FFA /* ChatTableViewController.swift in Sources */,
 				1ABD3B9B1BFE2D1300544104 /* ProfileController.swift in Sources */,
+				1AA7255A1C15548100F90F92 /* LoginViewController.swift in Sources */,
 				1A82D9C11BFFBA5E00524AD2 /* ProfileTitleCell.swift in Sources */,
 				1ABD3B7D1BFD737000544104 /* Profile.swift in Sources */,
+				1AA7255C1C15551F00F90F92 /* CreateAccountViewController.swift in Sources */,
 				1A82D9D41C01149300524AD2 /* FriendshipCell.swift in Sources */,
 				1ABD3B841BFD740400544104 /* Message.swift in Sources */,
 				1A7533001C0D10C300F42FFA /* NewChatTableViewCell.swift in Sources */,
 				1A82D9CB1BFFBF2D00524AD2 /* ProfileAboutIndividualsCell.swift in Sources */,
+				1AA725551C13720900F90F92 /* AccountController.swift in Sources */,
 				1A82D9D11BFFDD1400524AD2 /* ConversationCell.swift in Sources */,
 				1A82D9C91BFFBF0E00524AD2 /* ProfileAboutCoupleCell.swift in Sources */,
 				1ABD3B971BFD8B4500544104 /* ImageController.swift in Sources */,
@@ -608,6 +634,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -616,6 +644,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.Double;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -623,6 +652,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",

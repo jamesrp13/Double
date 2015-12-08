@@ -11,7 +11,7 @@ import UIKit
 struct Profile: FirebaseType {
     
     // Constants for fetching data from Firebase dictionaries
-    private let kMarried = "married"
+    private let kRelationshipStatus = "relationshipStatus"
     private let kRelationshipStart = "NSDate"
     private let kAbout = "about"
     private let kLocation = "location"
@@ -20,9 +20,15 @@ struct Profile: FirebaseType {
     private let kPeople = "people"
     private let kChildren = "children"
     
+    enum RelationshipStatus: String {
+        case Dating = "Dating"
+        case Engaged = "Engaged"
+        case Married = "Married"
+    }
+    
     // Profile attributes
     let people: (Person, Person)
-    var married: Bool
+    var relationshipStatus: RelationshipStatus
     var relationshipStart: NSDate
     var about: String?
     var location: String
@@ -41,6 +47,23 @@ struct Profile: FirebaseType {
         return nil
     }
     
+    var relationshipLength: String? {
+        var lengthString = ""
+        let years = relationshipStart.timeIntervalSinceNow/(-365)/24/60/60
+        let months = (relationshipStart.timeIntervalSinceNow)/(-24)/60/60/30
+        if years < 1 {
+            lengthString = Int(round(months)) == 1 ? "\(Int(round(months))) month":"\(Int(round(months))) months"
+        } else {
+            if months%12 >= 4 && months%12 <= 8 {
+                lengthString = "\(Int(round(years))) and a half years"
+            } else {
+                lengthString = Int(round(years)) == 1 ? "\(Int(round(years))) year":"\(Int(round(years))) years"
+            }
+        }
+        return lengthString
+    }
+
+    
     // FirebaseType attributes and failable initializer
     var identifier: String?
     
@@ -49,7 +72,7 @@ struct Profile: FirebaseType {
     }
     
     var jsonValue: [String: AnyObject] {
-        var json: [String: AnyObject] = [kMarried: married, kRelationshipStart: relationshipStart.timeIntervalSince1970, kLocation: location, kImageEndpoint: imageEndPoint]
+        var json: [String: AnyObject] = [kRelationshipStatus: relationshipStatus.rawValue, kRelationshipStart: relationshipStart.timeIntervalSince1970, kLocation: location, kImageEndpoint: imageEndPoint]
         
         if let about = about {
             json.updateValue(about, forKey: kAbout)
@@ -76,14 +99,14 @@ struct Profile: FirebaseType {
     
         guard let profileDictionary = json[kProfiles] as? [String: AnyObject] else {return nil}
         
-        guard let married = profileDictionary[kMarried] as? Bool else {return nil}
+        guard let relationshipStatus = profileDictionary[kRelationshipStatus] as? RelationshipStatus else {return nil}
         guard let location = profileDictionary[kLocation] as? String else {return nil}
         guard let imageEndPoint = profileDictionary[kImageEndpoint] as? String else {return nil}
         guard let people = peopleTuple else {return nil}
         guard let relationshipTimeInterval = profileDictionary[kRelationshipStart] as? NSTimeInterval else {return nil}
         
         self.identifier = identifier
-        self.married = married
+        self.relationshipStatus = relationshipStatus
         self.relationshipStart = NSDate(timeIntervalSince1970: relationshipTimeInterval)
         self.location = location
         self.imageEndPoint = imageEndPoint
@@ -112,10 +135,10 @@ struct Profile: FirebaseType {
 
     
     // Standard initializer
-    init(people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, imageEndPoint: String, identifier: String? = nil) {
+    init(people: (Person, Person), relationshipStatus: RelationshipStatus, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, imageEndPoint: String, identifier: String?) {
         
         self.people = people
-        self.married = married
+        self.relationshipStatus = relationshipStatus
         self.relationshipStart = relationshipStart
         self.about = about
         self.location = location

@@ -16,7 +16,7 @@ class FriendshipCell: UICollectionViewCell {
  
     func updateWithFriendship(friendship: Friendship) {
         self.friendship = friendship
-        let profileIdentifer = friendship.profileIdentifiers.0 == ProfileController.SharedInstance.currentUserProfile.identifier! ? friendship.profileIdentifiers.1:friendship.profileIdentifiers.0
+        let profileIdentifer = friendship.profileIdentifiers.0 == ProfileController.SharedInstance.currentUserProfile!.identifier! ? friendship.profileIdentifiers.1:friendship.profileIdentifiers.0
         ProfileController.fetchProfileForIdentifier(profileIdentifer) { (profile) -> Void in
             if let profile = profile {
                 ImageController.imageForIdentifier(profile.imageEndPoint, completion: { (image) -> Void in

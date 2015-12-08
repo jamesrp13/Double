@@ -27,6 +27,13 @@ class ProfileTableViewController: UITableViewController {
     
     @IBOutlet weak var evaluationStackView: UIStackView!
     
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(true)
+        if ProfileController.SharedInstance.currentUserProfile == nil {
+            performSegueWithIdentifier("toLoginSignup", sender: self)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -54,6 +61,12 @@ class ProfileTableViewController: UITableViewController {
 //
 //        NSUserDefaults.standardUserDefaults().setObject(seenDictionary, forKey: "seenDictionary")
 //        NSUserDefaults.standardUserDefaults().synchronize()
+        
+//        AccountController.createAccount("jamesrp13@gmail.com", password: "password1", passwordRetyped: "password1") { (account) -> Void in
+//            if let account = account {
+//                print(account)
+//            }
+//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -116,8 +129,8 @@ class ProfileTableViewController: UITableViewController {
         
         let cell: UITableViewCell
         
-        let profile = isViewingOwnProfile ? ProfileController.SharedInstance.currentUserProfile:profilesBeingViewed[0]
-
+        if let profile = isViewingOwnProfile ? ProfileController.SharedInstance.currentUserProfile:profilesBeingViewed[0] {
+            
             switch indexPath.row {
             case 0:
                 if let unwrappedCell = self.tableView.dequeueReusableCellWithIdentifier("profileTitleCell", forIndexPath: indexPath) as? ProfileTitleCell {
@@ -155,8 +168,10 @@ class ProfileTableViewController: UITableViewController {
                 return cell
                 
             }
-        
-        return cell
+            
+            return cell
+        }
+        return UITableViewCell()
 
     }
 

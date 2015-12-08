@@ -15,6 +15,7 @@ class ProfileImageCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -25,8 +26,14 @@ class ProfileImageCell: UITableViewCell {
     
     func updateWithProfile(profile: Profile) {
         ImageController.imageForIdentifier(profile.imageEndPoint) { (image) -> Void in
+            self.profileImageView.contentMode = .ScaleAspectFit
             self.profileImageView.image = image
         }
+    }
+    
+    func updateWithImage(image: UIImage?) {
+        self.profileImageView.contentMode = .ScaleAspectFit
+        self.profileImageView.image = image
     }
 
 }

@@ -46,9 +46,11 @@ class FriendshipController {
     }
     
     static func observeFriendshipsForCurrentUser() {
-        FriendshipController.observeFriendshipsForProfileIdentifier(ProfileController.SharedInstance.currentUserProfile.identifier!) { (friendships) -> Void in
-            if let friendships = friendships {
-                SharedInstance.friendships = friendships
+        if let profile = ProfileController.SharedInstance.currentUserProfile {
+            FriendshipController.observeFriendshipsForProfileIdentifier(profile.identifier!) { (friendships) -> Void in
+                if let friendships = friendships {
+                    SharedInstance.friendships = friendships
+                }
             }
         }
     }

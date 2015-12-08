@@ -23,19 +23,20 @@ class ResponseController {
     }
     
     static func observeResponsesFromIdentifier(profileIdentifier: String, completion: (responses: Responses?) -> Void) {
-        FirebaseController.base.childByAppendingPath("responses/\(ProfileController.SharedInstance.currentUserProfile.identifier!)/\(profileIdentifier)").observeEventType(.Value, withBlock: { (data) -> Void in
-            
-            if let value = data.value as? Bool {
-                let responses = Responses(profileViewedByIdentifier: profileIdentifier, like: value, profileIdentifier: ProfileController.SharedInstance.currentUserProfile.identifier!)
-                completion(responses: responses)
-            } else {
-                completion(responses: nil)
-            }
-        })
-
+        if let profile = ProfileController.SharedInstance.currentUserProfile {
+            FirebaseController.base.childByAppendingPath("responses/\(profile.identifier!)/\(profileIdentifier)").observeEventType(.Value, withBlock: { (data) -> Void in
+                
+                if let value = data.value as? Bool {
+                    let responses = Responses(profileViewedByIdentifier: profileIdentifier, like: value, profileIdentifier: profile.identifier!)
+                    completion(responses: responses)
+                } else {
+                    completion(responses: nil)
+                }
+            })
+        }
     }
     
-    static func createResponse(profileViewed: String, profileViewedBy: String = ProfileController.SharedInstance.currentUserProfile.identifier!, liked: Bool, completion: (responses: Responses?) -> Void ) {
+    static func createResponse(profileViewed: String, profileViewedBy: String = ProfileController.SharedInstance.currentUserProfile!.identifier!, liked: Bool, completion: (responses: Responses?) -> Void ) {
         var response = Responses(profileViewedByIdentifier: profileViewedBy, like: liked, profileIdentifier: profileViewed)
         response.save()
         FirebaseController.base.childByAppendingPath("responses").childByAppendingPath(profileViewed).childByAppendingPath(profileViewedBy).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in

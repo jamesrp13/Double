@@ -51,7 +51,7 @@ class ChatTableViewController: UITableViewController, UITextFieldDelegate {
     @IBAction func sendButtonTapped(sender: AnyObject) {
         guard let text = messageTextField.text, friendship = self.friendship where text.characters.count > 0 else {return}
         
-        MessageController.createMessage(friendship, text: text, senderProfileIdentifier: ProfileController.SharedInstance.currentUserProfile.identifier!)
+        MessageController.createMessage(friendship, text: text, senderProfileIdentifier: ProfileController.SharedInstance.currentUserProfile!.identifier!)
         
         messageTextField.text = nil
         messageTextField.resignFirstResponder()
@@ -80,7 +80,7 @@ class ChatTableViewController: UITableViewController, UITextFieldDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let messages = messages {
-            if messages[indexPath.row].profileId == ProfileController.SharedInstance.currentUserProfile.identifier! {
+            if messages[indexPath.row].profileId == ProfileController.SharedInstance.currentUserProfile!.identifier! {
                 let cell = tableView.dequeueReusableCellWithIdentifier("ChatRightAlignedTableViewCell") as! ChatRightAlignedTableViewCell
                 cell.updateWithMessage(messages[indexPath.row])
                 return cell

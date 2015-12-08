@@ -12,7 +12,9 @@ class ProfileController {
     
     static let SharedInstance = ProfileController()
     
-    var currentUserProfile: Profile = ProfileController.mockProfiles()[0]
+    var currentUserProfile: Profile? = nil
+    
+    var currentUserIdentifier: String? = nil
     
     var profilesBeingViewed: [Profile] = [] {
         didSet {
@@ -47,11 +49,11 @@ class ProfileController {
     
     // MARK: - CRUD
     
-    static func createProfile(var people: (Person, Person), married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, image: UIImage, completion: (profile: Profile?) -> Void) {
+    static func createProfile(var people: (Person, Person), relationshipStatus: Profile.RelationshipStatus, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, image: UIImage, identifier: String, completion: (profile: Profile?) -> Void) {
         
         ImageController.uploadImage(image) { (identifier) -> Void in
             if let identifier = identifier {
-                var profile = Profile(people: people, married: married, relationshipStart: relationshipStart, about: about, location: location, children: children, imageEndPoint: identifier)
+                var profile = Profile(people: people, relationshipStatus: relationshipStatus, relationshipStart: relationshipStart, about: about, location: location, children: children, imageEndPoint: identifier, identifier: identifier)
                 profile.save()
                 
                 // Save children
@@ -75,20 +77,20 @@ class ProfileController {
         
     }
     
-    static func updateProfile(oldProfile: Profile, image: UIImage, married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, imageEndPoint: String, completion: (success: Bool, profile: Profile?) -> Void) {
-        
-        ImageController.replaceImage(image, identifier: oldProfile.imageEndPoint) { (identifier) -> Void in
-            if let identifier = identifier {
-                let profile = Profile(people: oldProfile.people, married: married, relationshipStart: relationshipStart, about: about, location: location, children: children, imageEndPoint: identifier, identifier: oldProfile.identifier!)
-                
-                ProfileController.saveProfile(profile)
-                
-                completion(success: true, profile: profile)
-            } else {
-                completion(success: false, profile: nil)
-            }
-        }
-    }
+//    static func updateProfile(oldProfile: Profile, image: UIImage, married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, imageEndPoint: String, completion: (success: Bool, profile: Profile?) -> Void) {
+//        
+//        ImageController.replaceImage(image, identifier: oldProfile.imageEndPoint) { (identifier) -> Void in
+//            if let identifier = identifier {
+//                let profile = Profile(people: oldProfile.people, married: married, relationshipStart: relationshipStart, about: about, location: location, children: children, imageEndPoint: identifier, identifier: oldProfile.identifier!)
+//                
+//                ProfileController.saveProfile(profile)
+//                
+//                completion(success: true, profile: profile)
+//            } else {
+//                completion(success: false, profile: nil)
+//            }
+//        }
+//    }
     
     static func saveProfile(var profile: Profile) {
         PersonController.savePeople(profile.people)
@@ -138,7 +140,7 @@ class ProfileController {
     static func fetchUnseenProfiles(completion: (profiles: [Profile]?) -> Void) {
 
         // Fetches from Firebase a dictionary of responses to find profiles that have not yet been viewed
-        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(SharedInstance.currentUserProfile.identifier!).queryLimitedToFirst(10).queryEndingAtValue(false).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(SharedInstance.currentUserProfile!.identifier!).queryLimitedToFirst(10).queryEndingAtValue(false).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
             if let responseDictionaries = data.value as? [String: AnyObject] {
                 let profileIdentifiers = responseDictionaries.flatMap({$0.0})
                 
@@ -214,7 +216,7 @@ class ProfileController {
     static func checkForMatch(profileIdentifier: String) {
         if let liked = SharedInstance.responsesFromProfilesBeingViewed[profileIdentifier] {
             if liked {
-                FriendshipController.createFriendship(profileIdentifier, profileIdentifier2: SharedInstance.currentUserProfile.identifier!)
+                FriendshipController.createFriendship(profileIdentifier, profileIdentifier2: SharedInstance.currentUserProfile!.identifier!)
                 print("It's a match with \(profileIdentifier)!")
             } else {
                 print("We'll let you know if \(profileIdentifier) are interested in meeting up")
@@ -230,9 +232,9 @@ class ProfileController {
         
         let children = [ChildController.mockChildren()[0]]
         
-        let profile1 = Profile(people: couples[0], married: true, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: [children[0]], imageEndPoint: "", identifier: "K3pg5XfBBcEwOQk50Li")
+        let profile1 = Profile(people: couples[0], relationshipStatus: Profile.RelationshipStatus(rawValue: "Married")!, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: [children[0]], imageEndPoint: "", identifier: "K3pg5XfBBcEwOQk50Li")
         
-        let profile2 = Profile(people: couples[1], married: true, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: nil, imageEndPoint: "", identifier: "K3pg5XfBBcEwO2ndof0")
+        let profile2 = Profile(people: couples[1], relationshipStatus: Profile.RelationshipStatus(rawValue: "Married")!, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: nil, imageEndPoint: "", identifier: "K3pg5XfBBcEwO2ndof0")
         
         return [profile1, profile2]
     }
