@@ -53,6 +53,7 @@ class AccountController {
                         ProfileController.fetchProfileForIdentifier(account.identifier!, completion: { (profile) -> Void in
                             if let profile = profile {
                                 ProfileController.SharedInstance.currentUserProfile = profile
+                                FirebaseController.loadNecessaryDataFromNetwork()
                             }
                             completion(account: account)
                         })

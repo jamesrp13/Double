@@ -99,7 +99,8 @@ struct Profile: FirebaseType {
     
         guard let profileDictionary = json[kProfiles] as? [String: AnyObject] else {return nil}
         
-        guard let relationshipStatus = profileDictionary[kRelationshipStatus] as? RelationshipStatus else {return nil}
+        guard let relationshipStatusString = profileDictionary[kRelationshipStatus] as? String,
+            relationshipStatus = Profile.RelationshipStatus(rawValue: relationshipStatusString) else {return nil}
         guard let location = profileDictionary[kLocation] as? String else {return nil}
         guard let imageEndPoint = profileDictionary[kImageEndpoint] as? String else {return nil}
         guard let people = peopleTuple else {return nil}

@@ -49,11 +49,11 @@ class ProfileController {
     
     // MARK: - CRUD
     
-    static func createProfile(var people: (Person, Person), relationshipStatus: Profile.RelationshipStatus, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, image: UIImage, identifier: String, completion: (profile: Profile?) -> Void) {
+    static func createProfile(var people: (Person, Person), relationshipStatus: Profile.RelationshipStatus, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, image: UIImage, profileIdentifier: String, completion: (profile: Profile?) -> Void) {
         
-        ImageController.uploadImage(image) { (identifier) -> Void in
-            if let identifier = identifier {
-                var profile = Profile(people: people, relationshipStatus: relationshipStatus, relationshipStart: relationshipStart, about: about, location: location, children: children, imageEndPoint: identifier, identifier: identifier)
+        ImageController.uploadImage(image) { (imageIdentifier) -> Void in
+            if let imageIdentifier = imageIdentifier {
+                var profile = Profile(people: people, relationshipStatus: relationshipStatus, relationshipStart: relationshipStart, about: about, location: location, children: children, imageEndPoint: imageIdentifier, identifier: profileIdentifier)
                 profile.save()
                 
                 // Save children

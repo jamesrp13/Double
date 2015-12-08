@@ -73,10 +73,14 @@ class BasicInfoViewController: UIViewController {
                 let gender2 = gender2SegmentedControl.selectedSegmentIndex == 0 ? "M":"F"
                 let person1 = Person(name: name1TextField.text!, dob: person1DatePicker.date, gender: Person.Gender(rawValue: gender1)!)
                 let person2 = Person(name: name2TextField.text!, dob: person2DatePicker.date, gender: Person.Gender(rawValue: gender2)!)
+                let relationshipStatusInt = relationshipSegmentedControl.selectedSegmentIndex
+                let relationshipStatus = relationshipStatusInt == 0 ? "Dating":(relationshipStatusInt == 1 ? "Engaged":"Married")
+                
                 
                 editProfileView.people = (person1, person2)
                 editProfileView.relationshipStart = relationshipDatePicker.date
-                editProfileView.relationshipStatus = relationshipSegmentedControl.selectedSegmentIndex
+                editProfileView.relationshipStatus = relationshipStatus
+                editProfileView.account = account
             }
         }
     }

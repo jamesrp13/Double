@@ -10,6 +10,8 @@ import UIKit
 
 class EditProfileTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
+    var account: Account? = nil
+    
     var image: UIImage? = nil {
         didSet {
             tableView.reloadData()
@@ -22,7 +24,7 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
         }
     }
     
-    var relationshipStatus: Int? = nil {
+    var relationshipStatus: String? = nil {
         didSet {
             tableView.reloadData()
         }
@@ -194,9 +196,9 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
             let oldPerson1 = profile.people.0
             let oldPerson2 = profile.people.1
             let newPerson1 = Person(name: oldPerson1.name, dob: oldPerson1.dob, gender: oldPerson1.gender, about: profileAboutIndividualsCell.firstPersonAboutTextView.text, profileIdentifier: profile.identifier!, identifier: oldPerson1.identifier)
-           let newPerson2 = Person(name: oldPerson2.name, dob: oldPerson2.dob, gender: oldPerson2.gender, about: profileAboutIndividualsCell.secondPersonAboutTextView.text, profileIdentifier: profile.identifier!, identifier: oldPerson2.identifier)
+            let newPerson2 = Person(name: oldPerson2.name, dob: oldPerson2.dob, gender: oldPerson2.gender, about: profileAboutIndividualsCell.secondPersonAboutTextView.text, profileIdentifier: profile.identifier!, identifier: oldPerson2.identifier)
             
-            ProfileController.createProfile((newPerson1, newPerson2), relationshipStatus: Profile.RelationshipStatus(rawValue: profileAboutCoupleCell.relationshipStatus!)!, relationshipStart: profileAboutCoupleCell.relationshipStart!, about: nil, location: "84109", children: nil, image: image, identifier: profile.identifier!, completion: { (profile) -> Void in
+            ProfileController.createProfile((newPerson1, newPerson2), relationshipStatus: Profile.RelationshipStatus(rawValue: profileAboutCoupleCell.relationshipStatus!)!, relationshipStart: profileAboutCoupleCell.relationshipStart!, about: nil, location: "84109", children: nil, image: image, profileIdentifier: profile.identifier!, completion: { (profile) -> Void in
                 if let profile = profile {
                     ProfileController.SharedInstance.currentUserProfile = profile
                 } else {
@@ -205,9 +207,24 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
             })
         } else {
             guard let people = people,
-                relationshipStatus = relationshipStatus,
-                relationshipStart = relationshipStart else {return}
+                account = account,
+                relationshipStatus = Profile.RelationshipStatus(rawValue: relationshipStatus!) else {return}
             
+            let oldPerson1 = people.0
+            let oldPerson2 = people.1
+            let newPerson1 = Person(name: oldPerson1.name, dob: oldPerson1.dob, gender: oldPerson1.gender, about: profileAboutIndividualsCell.firstPersonAboutTextView.text, profileIdentifier: account.identifier!, identifier: oldPerson1.identifier)
+            let newPerson2 = Person(name: oldPerson2.name, dob: oldPerson2.dob, gender: oldPerson2.gender, about: profileAboutIndividualsCell.secondPersonAboutTextView.text, profileIdentifier: account.identifier!, identifier: oldPerson2.identifier)
+            
+            ProfileController.createProfile((newPerson1, newPerson2), relationshipStatus: relationshipStatus, relationshipStart: profileAboutCoupleCell.relationshipStart!, about: nil, location: "84109", children: nil, image: image, profileIdentifier: account.identifier!, completion: { (profile) -> Void in
+                if let profile = profile {
+                    ProfileController.SharedInstance.currentUserProfile = profile
+                    FirebaseController.loadNecessaryDataFromNetwork()
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                } else {
+                    print("profile not created")
+                }
+            })
+
         }
     }
 
