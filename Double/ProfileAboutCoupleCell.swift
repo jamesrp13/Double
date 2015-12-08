@@ -46,15 +46,20 @@ class ProfileAboutCoupleCell: UITableViewCell {
     }
     
     func updateWithProfile(profile: Profile) {
-        if let about = profile.about {
-            aboutLabel.text = about
+        let person1 = profile.people.0
+        let person2 = profile.people.1
+        let relationshipStatus = profile.relationshipStatus
+        if let relationshipLength = profile.relationshipLength {
+            aboutLabel.text = "\(person1.name) and \(person2.name) have been \(relationshipStatus) for \(relationshipLength)."
         }
     }
     
     func updateWithPeople(people: (Person, Person), relationshipStatus: String, relationshipStart: NSDate) {
         self.relationshipStart = relationshipStart
         self.relationshipStatus = relationshipStatus
-        aboutLabel.text = "\(people.0.name) and \(people.1.name) have been \(relationshipStatus) for \(relationshipLength)."
+        if let relationshipLength = relationshipLength {
+            aboutLabel.text = "\(people.0.name) and \(people.1.name) have been \(relationshipStatus) for \(relationshipLength)."
+        }
     }
     
 }

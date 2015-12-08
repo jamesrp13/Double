@@ -44,6 +44,10 @@ struct Person: FirebaseType {
         if let profileIdentifier = profileIdentifier {
             json.updateValue(profileIdentifier, forKey: kProfileIdentifier)
         }
+        
+        if let about = about {
+            json.updateValue(about, forKey: kAbout)
+        }
         return json
     }
     

@@ -39,6 +39,11 @@ class ProfileTableViewController: UITableViewController {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: "ProfilesChanged", object: nil)
         
+        tableView.estimatedRowHeight = 30
+        tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.setNeedsLayout()
+        self.tableView.layoutIfNeeded()
+        
 //        for (key, value) in seenDictionary {
 //            print("\(key): \(value)")
 //        }

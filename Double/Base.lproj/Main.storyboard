@@ -250,16 +250,13 @@
                                         <rect key="frame" x="0.0" y="0.0" width="248" height="30"/>
                                         <animations/>
                                         <state key="normal" title="Create an account"/>
-                                        <connections>
-                                            <segue destination="26s-Ep-Pqt" kind="show" identifier="fromPickerToCreate" id="5mV-tk-ZRx"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Kw-1Y-2Ib">
                                         <rect key="frame" x="0.0" y="30" width="248" height="30"/>
                                         <animations/>
                                         <state key="normal" title="Already have an account?"/>
                                         <connections>
-                                            <segue destination="D6c-v5-gC6" kind="show" identifier="fromPickerToLogin" id="SPh-Fv-vBY"/>
+                                            <segue destination="Mhm-7F-VjB" kind="show" identifier="fromPickerToLogin" id="HVQ-hD-DFf"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -751,7 +748,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="abX-dt-rD6" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1245" y="-199"/>
+            <point key="canvasLocation" x="824" y="-199"/>
         </scene>
         <!--Create Account View Controller-->
         <scene sceneID="vh0-Hh-lnC">
@@ -780,9 +777,6 @@
                                         <rect key="frame" x="0.0" y="30" width="248" height="30"/>
                                         <animations/>
                                         <state key="normal" title="Already have an account?"/>
-                                        <connections>
-                                            <segue destination="D6c-v5-gC6" kind="show" identifier="fromCreateToLogin" id="fmm-wV-II7"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <animations/>
@@ -1242,32 +1236,11 @@
             </objects>
             <point key="canvasLocation" x="1545" y="-747"/>
         </scene>
-        <!--Navigation Controller-->
-        <scene sceneID="ADr-J3-Tfo">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="D6c-v5-gC6" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="EAl-9P-cFz">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Mhm-7F-VjB" kind="relationship" relationship="rootViewController" id="1AU-3l-0m7"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="uMU-ql-lpp" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="824" y="-199"/>
-        </scene>
     </scenes>
     <resources>
         <image name="ProfileImagePlaceholder" width="310" height="310"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="SPh-Fv-vBY"/>
-        <segue reference="OnT-8y-CKa"/>
         <segue reference="Mdh-yY-4zp"/>
     </inferredMetricsTieBreakers>
 </document>
