@@ -16,21 +16,23 @@ class ProfileTableViewController: UITableViewController {
     
     var isViewingOwnProfile = false
     
-    var seenDictionary: [String: Int] {
-        
-        if let seenDictionary = NSUserDefaults.standardUserDefaults().objectForKey("seenDictionary") as? [String: Int] {
-            return seenDictionary
-        } else {
-            return [:]
-        }
-    }
+//    var seenDictionary: [String: Int] {
+//        
+//        if let seenDictionary = NSUserDefaults.standardUserDefaults().objectForKey("seenDictionary") as? [String: Int] {
+//            return seenDictionary
+//        } else {
+//            return [:]
+//        }
+//    }
     
     @IBOutlet weak var evaluationStackView: UIStackView!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        if ProfileController.SharedInstance.currentUserProfile == nil {
+        if ProfileController.SharedInstance.currentUserProfile == nil && ProfileController.SharedInstance.currentUserIdentifier == nil {
             performSegueWithIdentifier("toLoginSignup", sender: self)
+        } else if ProfileController.SharedInstance.currentUserProfile == nil && ProfileController.SharedInstance.currentUserIdentifier != nil {
+            performSegueWithIdentifier("toBasicInfo", sender: self)
         }
     }
     
@@ -88,7 +90,7 @@ class ProfileTableViewController: UITableViewController {
     
     @IBAction func rejectButtonTapped(sender: AnyObject) {
         ResponseController.createResponse(profilesBeingViewed[0].identifier!, liked: false) { (responses) -> Void in
-            self.addViewToList()
+//            self.addViewToList()
             self.removeProfileFromViewingList()
         }
     }
@@ -96,23 +98,23 @@ class ProfileTableViewController: UITableViewController {
     @IBAction func likeButtonTapped(sender: AnyObject) {
         ResponseController.createResponse(profilesBeingViewed[0].identifier!, liked: true) { (responses) -> Void in
             ProfileController.checkForMatch(self.profilesBeingViewed[0].identifier!)
-            self.addViewToList()
+//            self.addViewToList()
             self.removeProfileFromViewingList()
         }
     }
     
-    func addViewToList() {
-        var newSeenDictionary = seenDictionary
-        if let value = seenDictionary[profilesBeingViewed[0].identifier!] {
-            if value == 1 {
-                print("\rLooks like \(profilesBeingViewed[0].identifier!) was seen twice \r")
-            }
-            newSeenDictionary.updateValue(value + 1, forKey: profilesBeingViewed[0].identifier!)
-        }
-        
-        NSUserDefaults.standardUserDefaults().setObject(newSeenDictionary, forKey: "seenDictionary")
-        NSUserDefaults.standardUserDefaults().synchronize()
-    }
+//    func addViewToList() {
+//        var newSeenDictionary = seenDictionary
+//        if let value = seenDictionary[profilesBeingViewed[0].identifier!] {
+//            if value == 1 {
+//                print("\rLooks like \(profilesBeingViewed[0].identifier!) was seen twice \r")
+//            }
+//            newSeenDictionary.updateValue(value + 1, forKey: profilesBeingViewed[0].identifier!)
+//        }
+//        
+//        NSUserDefaults.standardUserDefaults().setObject(newSeenDictionary, forKey: "seenDictionary")
+//        NSUserDefaults.standardUserDefaults().synchronize()
+//    }
     
     func removeProfileFromViewingList() {
         ProfileController.SharedInstance.profilesBeingViewed.removeFirst()

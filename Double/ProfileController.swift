@@ -18,18 +18,24 @@ class ProfileController {
     
     var profilesBeingViewed: [Profile] = [] {
         didSet {
-            if profilesBeingViewed.count < 10 && !ProfileController.SharedInstance.isOutOfProfiles {
-                ProfileController.fetchProfileForDisplay()
-            }
-            if profilesBeingViewed.count > 0 && (oldValue.count == 0 || (oldValue[0].identifier! != profilesBeingViewed[0].identifier!)) {
-                NSNotificationCenter.defaultCenter().postNotificationName("ProfilesChanged", object: self)
-                
+            if oldValue.count != 0 && profilesBeingViewed.count > 0{
+                if profilesBeingViewed.count < 10 && (oldValue[0].identifier! != profilesBeingViewed[0].identifier!) {
+                    ProfileController.fetchProfileForDisplay()
+                }
+                if profilesBeingViewed.count > 0 && (oldValue[0].identifier! != profilesBeingViewed[0].identifier!) {
+                    NSNotificationCenter.defaultCenter().postNotificationName("ProfilesChanged", object: self)
+                }
+            } else {
+                if profilesBeingViewed.count < 10 {
+                    ProfileController.fetchProfileForDisplay()
+                }
+                if profilesBeingViewed.count > 0 {
+                    NSNotificationCenter.defaultCenter().postNotificationName("ProfilesChanged", object: self)
+                }
             }
             ProfileController.SharedInstance.saveProfileIdentifiersToPersistentStore()
         }
     }
-    
-    var isOutOfProfiles = false
     
     var profileIdentifiers: [String] {
         var profileIdentifiers: [String] = []
@@ -42,9 +48,10 @@ class ProfileController {
     var responsesFromProfilesBeingViewed: [String: Bool] = [:]
     
     func saveProfileIdentifiersToPersistentStore() {
-        NSUserDefaults.standardUserDefaults().setObject(profileIdentifiers, forKey: "profileIdentifiers")
-        NSUserDefaults.standardUserDefaults().synchronize()
-
+        if let profile = ProfileController.SharedInstance.currentUserProfile {
+            NSUserDefaults.standardUserDefaults().setObject(profileIdentifiers, forKey: "\(profile.identifier!)profileIdentifiers")
+            NSUserDefaults.standardUserDefaults().synchronize()
+        }
     }
     
     // MARK: - CRUD
@@ -111,14 +118,7 @@ class ProfileController {
     static func fetchProfileForDisplay() {
         fetchUnseenProfiles { (profiles) -> Void in
             if let profiles = profiles {
-                guard profiles.count > 0 else {
-                    SharedInstance.isOutOfProfiles = true
-                    return
-                }
-                
-                if SharedInstance.isOutOfProfiles {
-                    SharedInstance.isOutOfProfiles = false
-                }
+                guard profiles.count > 0 else {return}
                 
                 let tunnel = dispatch_group_create()
                 for profile in profiles {
@@ -140,7 +140,7 @@ class ProfileController {
     static func fetchUnseenProfiles(completion: (profiles: [Profile]?) -> Void) {
 
         // Fetches from Firebase a dictionary of responses to find profiles that have not yet been viewed
-        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(SharedInstance.currentUserProfile!.identifier!).queryLimitedToFirst(10).queryEndingAtValue(false).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+        FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild(SharedInstance.currentUserProfile!.identifier!).queryLimitedToFirst(10).queryEndingAtValue(nil).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
             if let responseDictionaries = data.value as? [String: AnyObject] {
                 let profileIdentifiers = responseDictionaries.flatMap({$0.0})
                 

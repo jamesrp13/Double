@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     var account: Account? = nil
     
@@ -38,18 +38,18 @@ class LoginViewController: UIViewController {
         AccountController.authenticateAccount(email, password: password, completion: { (account) -> Void in
             if let account = account {
                 ProfileController.fetchProfileForIdentifier(account.identifier!, completion: { (profile) -> Void in
-                    if let profile = profile{
-                        ProfileController.SharedInstance.currentUserProfile = profile
-                        FirebaseController.loadNecessaryDataFromNetwork()
-                        self.dismissViewControllerAnimated(true, completion: nil)
-                    } else {
-                        print("No profile associated with this account")
-                    }
+                    self.dismissViewControllerAnimated(true, completion: nil)
                 })
             } else {
                 self.presentAlert("Authentication failed", message: "Please check your email and password and try again.")
             }
         })
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        emailTextField.resignFirstResponder()
+        passwordTextField.resignFirstResponder()
+        return true
     }
 
     /*

@@ -17,9 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     override init() {
         super.init()
         //Firebase.defaultConfig().persistenceEnabled = true
-        if ProfileController.SharedInstance.currentUserProfile != nil {
-            FirebaseController.loadNecessaryDataFromNetwork()
-        }
+        FirebaseController.loadNecessaryDataFromNetwork()
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {

@@ -55,6 +55,7 @@ class AccountController {
                                 ProfileController.SharedInstance.currentUserProfile = profile
                                 FirebaseController.loadNecessaryDataFromNetwork()
                             }
+                            ProfileController.SharedInstance.currentUserIdentifier = account.identifier!
                             completion(account: account)
                         })
                     } else {

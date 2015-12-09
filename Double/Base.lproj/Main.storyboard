@@ -17,7 +17,7 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <stackView key="tableFooterView" opaque="NO" contentMode="scaleToFill" distribution="fillEqually" id="RyN-Pz-cj6" userLabel="Evaluation Stack View">
-                            <rect key="frame" x="0.0" y="268" width="320" height="55"/>
+                            <rect key="frame" x="0.0" y="376" width="320" height="55"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LTd-nx-gZf">
@@ -76,14 +76,14 @@
                                     <outlet property="titleLabel" destination="1jr-T4-iZn" id="Pnd-Y1-RCf"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileImageCell" id="lQZ-sh-sMW" customClass="ProfileImageCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="136" width="320" height="44"/>
+                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileImageCell" rowHeight="152" id="lQZ-sh-sMW" customClass="ProfileImageCell" customModule="Double" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="136" width="320" height="152"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lQZ-sh-sMW" id="eO9-zb-NI2">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="152"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qqj-ID-k4B">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="ProfileImagePlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="qqj-ID-k4B">
                                             <rect key="frame" x="20" y="0.0" width="280" height="280"/>
                                             <animations/>
                                             <constraints>
@@ -93,6 +93,7 @@
                                     </subviews>
                                     <animations/>
                                     <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="qqj-ID-k4B" secondAttribute="bottom" id="11z-eD-urJ"/>
                                         <constraint firstItem="qqj-ID-k4B" firstAttribute="top" secondItem="eO9-zb-NI2" secondAttribute="top" id="Dfe-eY-YNg"/>
                                         <constraint firstAttribute="bottom" secondItem="qqj-ID-k4B" secondAttribute="bottom" id="YSq-P5-1ZR"/>
                                         <constraint firstItem="qqj-ID-k4B" firstAttribute="top" secondItem="eO9-zb-NI2" secondAttribute="top" id="bzL-b6-jVm"/>
@@ -117,7 +118,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileAboutCoupleCell" id="Fnc-EN-Gln" customClass="ProfileAboutCoupleCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="180" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="288" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fnc-EN-Gln" id="esQ-YU-yYc">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -145,7 +146,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileAboutIndividualsCell" id="acj-va-dZT" customClass="ProfileAboutIndividualsCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="224" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="332" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="acj-va-dZT" id="NZo-8Y-7td">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -225,6 +226,7 @@
                     <connections>
                         <outlet property="evaluationStackView" destination="RyN-Pz-cj6" id="66A-lz-yfx"/>
                         <segue destination="vaf-Hs-hkV" kind="presentation" identifier="toLoginSignup" id="POA-Aw-27R"/>
+                        <segue destination="gzg-CI-fYU" kind="presentation" identifier="toBasicInfo" id="ByD-vv-d2u"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RUt-lV-qDX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -250,6 +252,9 @@
                                         <rect key="frame" x="0.0" y="0.0" width="248" height="30"/>
                                         <animations/>
                                         <state key="normal" title="Create an account"/>
+                                        <connections>
+                                            <segue destination="26s-Ep-Pqt" kind="show" identifier="fromPickerToCreate" id="vNJ-vm-iKU"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Kw-1Y-2Ib">
                                         <rect key="frame" x="0.0" y="30" width="248" height="30"/>
@@ -713,6 +718,9 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="Mhm-7F-VjB" id="39h-Yk-huA"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="y62-38-a1o">
                                         <rect key="frame" x="0.0" y="30" width="189" height="30"/>
@@ -721,7 +729,10 @@
                                             <constraint firstAttribute="width" constant="189" id="Vb9-0C-UOq"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="Mhm-7F-VjB" id="ed6-sL-lrb"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <animations/>
@@ -806,6 +817,9 @@
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="26s-Ep-Pqt" id="aXy-ol-dWq"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="EtK-RW-AU1">
                                         <rect key="frame" x="0.0" y="42" width="189" height="30"/>
@@ -814,7 +828,10 @@
                                             <constraint firstAttribute="width" constant="189" id="qOV-dJ-33A"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="26s-Ep-Pqt" id="LiN-cX-V6k"/>
+                                        </connections>
                                     </textField>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Please re-enter password..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CYl-bW-GvX">
                                         <rect key="frame" x="0.0" y="72" width="189" height="30"/>
@@ -823,7 +840,10 @@
                                             <constraint firstAttribute="width" constant="189" id="ys6-gv-TjT"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <textInputTraits key="textInputTraits"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="26s-Ep-Pqt" id="P1S-UL-tkm"/>
+                                        </connections>
                                     </textField>
                                 </subviews>
                                 <animations/>
@@ -866,8 +886,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cah-YG-FOA">
-                                <rect key="frame" x="0.0" y="20" width="320" height="416"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cah-YG-FOA">
+                                <rect key="frame" x="0.0" y="20" width="320" height="460"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="double" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rif-Zk-6RP">
                                         <rect key="frame" x="134" y="0.0" width="53" height="21"/>
@@ -878,23 +898,23 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="giF-g5-tkp">
-                                        <rect key="frame" x="0.0" y="21" width="320" height="366"/>
+                                        <rect key="frame" x="16" y="143" width="288" height="170"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now let's get some basic info about the two of you for your profile:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xrB-jK-mcu">
-                                                <rect key="frame" x="0.0" y="0.0" width="320" height="24"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="288" height="24"/>
                                                 <animations/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="dQD-gw-n9m">
-                                                <rect key="frame" x="0.0" y="24" width="320" height="274"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="dQD-gw-n9m">
+                                                <rect key="frame" x="0.0" y="24" width="288" height="88"/>
                                                 <subviews>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ipo-aP-zKG">
-                                                        <rect key="frame" x="0.0" y="0.0" width="160" height="274"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ipo-aP-zKG">
+                                                        <rect key="frame" x="0.0" y="0.0" width="144" height="88"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First name..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="m29-nt-zvR">
-                                                                <rect key="frame" x="0.0" y="0.0" width="160" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="30"/>
                                                                 <animations/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="189" id="Oxy-D3-oo7"/>
@@ -906,16 +926,29 @@
                                                                         <exclude reference="Oxy-D3-oo7"/>
                                                                     </mask>
                                                                 </variation>
+                                                                <connections>
+                                                                    <outlet property="delegate" destination="gzg-CI-fYU" id="NLK-iH-pwl"/>
+                                                                </connections>
                                                             </textField>
-                                                            <datePicker contentMode="scaleAspectFit" verticalCompressionResistancePriority="749" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="U01-3a-Kcc">
-                                                                <rect key="frame" x="0.0" y="30" width="160" height="216"/>
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="DOB..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sVU-ds-rMP">
+                                                                <rect key="frame" x="0.0" y="30" width="144" height="30"/>
                                                                 <animations/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="471207123.05093098">
-                                                                    <!--2015-12-07 18:52:03 +0000-->
-                                                                </date>
-                                                            </datePicker>
-                                                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9Gn-at-DvA">
-                                                                <rect key="frame" x="0.0" y="246" width="160" height="29"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="189" id="wra-jB-9EC"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                <textInputTraits key="textInputTraits"/>
+                                                                <variation key="default">
+                                                                    <mask key="constraints">
+                                                                        <exclude reference="wra-jB-9EC"/>
+                                                                    </mask>
+                                                                </variation>
+                                                                <connections>
+                                                                    <outlet property="delegate" destination="gzg-CI-fYU" id="jzK-GZ-Oo5"/>
+                                                                </connections>
+                                                            </textField>
+                                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9Gn-at-DvA">
+                                                                <rect key="frame" x="0.0" y="60" width="144" height="29"/>
                                                                 <animations/>
                                                                 <segments>
                                                                     <segment title="Male"/>
@@ -925,11 +958,11 @@
                                                         </subviews>
                                                         <animations/>
                                                     </stackView>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Cu9-W3-HWe">
-                                                        <rect key="frame" x="160" y="0.0" width="160" height="274"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Cu9-W3-HWe">
+                                                        <rect key="frame" x="144" y="0.0" width="144" height="88"/>
                                                         <subviews>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First name..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l1e-rF-0Wl">
-                                                                <rect key="frame" x="0.0" y="0.0" width="160" height="30"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="30"/>
                                                                 <animations/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="189" id="e6I-bi-ggi"/>
@@ -941,16 +974,29 @@
                                                                         <exclude reference="e6I-bi-ggi"/>
                                                                     </mask>
                                                                 </variation>
+                                                                <connections>
+                                                                    <outlet property="delegate" destination="gzg-CI-fYU" id="u4u-uQ-iyB"/>
+                                                                </connections>
                                                             </textField>
-                                                            <datePicker contentMode="scaleAspectFit" verticalCompressionResistancePriority="749" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="0H4-T8-nOD">
-                                                                <rect key="frame" x="0.0" y="30" width="160" height="216"/>
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="DOB..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b12-Bc-HHx">
+                                                                <rect key="frame" x="0.0" y="30" width="144" height="30"/>
                                                                 <animations/>
-                                                                <date key="date" timeIntervalSinceReferenceDate="471207141.15008599">
-                                                                    <!--2015-12-07 18:52:21 +0000-->
-                                                                </date>
-                                                            </datePicker>
-                                                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qqo-BJ-fVf">
-                                                                <rect key="frame" x="0.0" y="246" width="160" height="29"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="189" id="3vO-gK-cuR"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                                <textInputTraits key="textInputTraits"/>
+                                                                <variation key="default">
+                                                                    <mask key="constraints">
+                                                                        <exclude reference="3vO-gK-cuR"/>
+                                                                    </mask>
+                                                                </variation>
+                                                                <connections>
+                                                                    <outlet property="delegate" destination="gzg-CI-fYU" id="4aQ-nq-1W5"/>
+                                                                </connections>
+                                                            </textField>
+                                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qqo-BJ-fVf">
+                                                                <rect key="frame" x="0.0" y="60" width="144" height="29"/>
                                                                 <animations/>
                                                                 <segments>
                                                                     <segment title="Male"/>
@@ -963,8 +1009,8 @@
                                                 </subviews>
                                                 <animations/>
                                             </stackView>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aDj-we-KKT">
-                                                <rect key="frame" x="0.0" y="298" width="320" height="29"/>
+                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aDj-we-KKT">
+                                                <rect key="frame" x="0.0" y="112" width="288" height="29"/>
                                                 <animations/>
                                                 <segments>
                                                     <segment title="Dating"/>
@@ -972,13 +1018,23 @@
                                                     <segment title="Married"/>
                                                 </segments>
                                             </segmentedControl>
-                                            <datePicker contentMode="scaleToFill" verticalCompressionResistancePriority="749" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" minuteInterval="1" translatesAutoresizingMaskIntoConstraints="NO" id="ZWG-Bx-CeM">
-                                                <rect key="frame" x="0.0" y="326" width="320" height="40"/>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Dating/Engaged/Married since..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3Hd-ib-SGg">
+                                                <rect key="frame" x="0.0" y="140" width="288" height="30"/>
                                                 <animations/>
-                                                <date key="date" timeIntervalSinceReferenceDate="471207181.66445303">
-                                                    <!--2015-12-07 18:53:01 +0000-->
-                                                </date>
-                                            </datePicker>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="189" id="ctV-3p-BmV"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="ctV-3p-BmV"/>
+                                                    </mask>
+                                                </variation>
+                                                <connections>
+                                                    <outlet property="delegate" destination="gzg-CI-fYU" id="8mW-XQ-HFA"/>
+                                                </connections>
+                                            </textField>
                                         </subviews>
                                         <animations/>
                                         <constraints>
@@ -987,7 +1043,7 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5B1-RN-tgV">
-                                        <rect key="frame" x="144" y="386" width="32" height="30"/>
+                                        <rect key="frame" x="144" y="430" width="32" height="30"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="35w-5M-zl4">
                                                 <rect key="frame" x="0.0" y="0.0" width="32" height="30"/>
@@ -1016,14 +1072,14 @@
                     <navigationItem key="navigationItem" id="x08-n9-UMR"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="dob1TextField" destination="sVU-ds-rMP" id="sLt-Ta-Fte"/>
+                        <outlet property="dob2TextField" destination="b12-Bc-HHx" id="Av7-vM-18d"/>
                         <outlet property="gender1SegmentedControl" destination="9Gn-at-DvA" id="Jj6-6r-64v"/>
                         <outlet property="gender2SegmentedControl" destination="qqo-BJ-fVf" id="Dam-zX-HdX"/>
                         <outlet property="name1TextField" destination="m29-nt-zvR" id="jPW-q5-Tab"/>
                         <outlet property="name2TextField" destination="l1e-rF-0Wl" id="awQ-wG-0mb"/>
-                        <outlet property="person1DatePicker" destination="U01-3a-Kcc" id="ryE-sU-sjm"/>
-                        <outlet property="person2DatePicker" destination="0H4-T8-nOD" id="60G-Cq-2zj"/>
-                        <outlet property="relationshipDatePicker" destination="ZWG-Bx-CeM" id="q6E-YH-g4R"/>
                         <outlet property="relationshipSegmentedControl" destination="aDj-we-KKT" id="EFP-YP-5Ga"/>
+                        <outlet property="relationshipStartTextField" destination="3Hd-ib-SGg" id="yjr-JF-VBO"/>
                         <segue destination="bNo-KW-c8x" kind="show" identifier="fromBasicInfoToEditProfile" id="1t0-Ma-Qd7"/>
                     </connections>
                 </viewController>
@@ -1042,7 +1098,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileTitleCell" id="5kH-ge-6tj" customClass="ProfileTitleCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" tableViewCell="5kH-ge-6tj" id="dgj-41-eii">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1070,7 +1126,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileImageCell" rowHeight="281" id="AlF-DJ-YTZ" customClass="ProfileImageCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="136" width="320" height="281"/>
+                                <rect key="frame" x="0.0" y="72" width="320" height="281"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AlF-DJ-YTZ" id="BCD-BS-nlM">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="281"/>
@@ -1108,7 +1164,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileAboutCoupleCell" id="2JI-yC-xWH" customClass="ProfileAboutCoupleCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="417" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="353" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2JI-yC-xWH" id="GDV-dX-NZD">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1136,7 +1192,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileAboutIndividualsCell" id="uLS-WI-Znb" customClass="ProfileAboutIndividualsCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="461" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="397" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uLS-WI-Znb" id="fi8-5Z-WiW">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1241,6 +1297,8 @@
         <image name="ProfileImagePlaceholder" width="310" height="310"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="ByD-vv-d2u"/>
+        <segue reference="OnT-8y-CKa"/>
         <segue reference="Mdh-yY-4zp"/>
     </inferredMetricsTieBreakers>
 </document>

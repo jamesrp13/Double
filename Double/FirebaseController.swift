@@ -39,38 +39,39 @@ class FirebaseController {
     }
     
     static func loadNecessaryDataFromNetwork() {
-        let profileIdentifiers = NSUserDefaults.standardUserDefaults().objectForKey("profileIdentifiers")
-        var profiles: [Profile] = []
-        
-        let tunnel = dispatch_group_create()
-        
-        if let profileIdentifiers = profileIdentifiers as? [String] {
-            for profileIdentifier in profileIdentifiers {
-                dispatch_group_enter(tunnel)
-                ProfileController.fetchProfileForIdentifier(profileIdentifier, completion: { (profile) -> Void in
-                    if let profile = profile {
-                        profiles.append(profile)
-                    }
-                    dispatch_group_leave(tunnel)
-                })
+        if let profile = ProfileController.SharedInstance.currentUserProfile {
+            let profileIdentifiers = NSUserDefaults.standardUserDefaults().objectForKey("\(profile.identifier!)profileIdentifiers")
+            var profiles: [Profile] = []
+            
+            let tunnel = dispatch_group_create()
+            
+            if let profileIdentifiers = profileIdentifiers as? [String] {
+                for profileIdentifier in profileIdentifiers {
+                    dispatch_group_enter(tunnel)
+                    ProfileController.fetchProfileForIdentifier(profileIdentifier, completion: { (profile) -> Void in
+                        if let profile = profile {
+                            profiles.append(profile)
+                        }
+                        dispatch_group_leave(tunnel)
+                    })
+                }
             }
-        }
-        
-        dispatch_group_notify(tunnel, dispatch_get_main_queue()) { () -> Void in
-            if profiles.count > 0 {
-                ProfileController.SharedInstance.profilesBeingViewed = profiles
-                ProfileController.observeResponsesFromProfiles(profiles)
-                print("\(profiles.count) profile identifiers in persistent storage")
-            } else {
-                ProfileController.fetchProfileForDisplay()
-                print("No profile identifiers in persistent storage -- fetching profiles for display")
+            
+            dispatch_group_notify(tunnel, dispatch_get_main_queue()) { () -> Void in
+                if profiles.count > 0 {
+                    ProfileController.SharedInstance.profilesBeingViewed = profiles
+                    ProfileController.observeResponsesFromProfiles(profiles)
+                    print("\(profiles.count) profile identifiers in persistent storage")
+                } else {
+                    ProfileController.fetchProfileForDisplay()
+                    print("No profile identifiers in persistent storage -- fetching profiles for display")
+                }
+                
             }
-
+            
+            FriendshipController.observeFriendshipsForCurrentUser()
         }
-        
-        FriendshipController.observeFriendshipsForCurrentUser()
     }
-    
 }
 
 protocol FirebaseType {

@@ -26,6 +26,7 @@
 		1AA7255A1C15548100F90F92 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA725591C15548100F90F92 /* LoginViewController.swift */; };
 		1AA7255C1C15551F00F90F92 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA7255B1C15551F00F90F92 /* CreateAccountViewController.swift */; };
 		1AA7255E1C15553600F90F92 /* BasicInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA7255D1C15553600F90F92 /* BasicInfoViewController.swift */; };
+		1AA725D11C1797D200F90F92 /* DatePickerActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA725D01C1797D200F90F92 /* DatePickerActionSheet.swift */; };
 		1ABD3B431BFD3F6300544104 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B421BFD3F6300544104 /* AppDelegate.swift */; };
 		1ABD3B481BFD3F6300544104 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B461BFD3F6300544104 /* Main.storyboard */; };
 		1ABD3B4A1BFD3F6300544104 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B491BFD3F6300544104 /* Assets.xcassets */; };
@@ -105,6 +106,7 @@
 		1AA725591C15548100F90F92 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		1AA7255B1C15551F00F90F92 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
 		1AA7255D1C15553600F90F92 /* BasicInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicInfoViewController.swift; sourceTree = "<group>"; };
+		1AA725D01C1797D200F90F92 /* DatePickerActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerActionSheet.swift; sourceTree = "<group>"; };
 		1ABD3B3F1BFD3F6300544104 /* Double.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Double.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABD3B421BFD3F6300544104 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1ABD3B471BFD3F6300544104 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -215,6 +217,7 @@
 		1ABD3B361BFD3F6300544104 = {
 			isa = PBXGroup;
 			children = (
+				1AA725D01C1797D200F90F92 /* DatePickerActionSheet.swift */,
 				1ABD3B951BFD77B600544104 /* Frameworks */,
 				1ABD3B411BFD3F6300544104 /* Double */,
 				1ABD3B561BFD3F6300544104 /* DoubleTests */,
@@ -489,6 +492,7 @@
 				1A82D9D41C01149300524AD2 /* FriendshipCell.swift in Sources */,
 				1ABD3B841BFD740400544104 /* Message.swift in Sources */,
 				1A7533001C0D10C300F42FFA /* NewChatTableViewCell.swift in Sources */,
+				1AA725D11C1797D200F90F92 /* DatePickerActionSheet.swift in Sources */,
 				1A82D9CB1BFFBF2D00524AD2 /* ProfileAboutIndividualsCell.swift in Sources */,
 				1AA725551C13720900F90F92 /* AccountController.swift in Sources */,
 				1A82D9D11BFFDD1400524AD2 /* ConversationCell.swift in Sources */,
