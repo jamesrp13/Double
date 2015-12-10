@@ -28,6 +28,7 @@
 		1AA7255E1C15553600F90F92 /* BasicInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA7255D1C15553600F90F92 /* BasicInfoViewController.swift */; };
 		1AA725D11C1797D200F90F92 /* DatePickerActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA725D01C1797D200F90F92 /* DatePickerActionSheet.swift */; };
 		1AA725F31C18E74000F90F92 /* LocationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA725F21C18E74000F90F92 /* LocationController.swift */; };
+		1AA726301C1A13C900F90F92 /* GeoFire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1AA7262F1C1A13C900F90F92 /* GeoFire.framework */; };
 		1ABD3B431BFD3F6300544104 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B421BFD3F6300544104 /* AppDelegate.swift */; };
 		1ABD3B481BFD3F6300544104 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B461BFD3F6300544104 /* Main.storyboard */; };
 		1ABD3B4A1BFD3F6300544104 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ABD3B491BFD3F6300544104 /* Assets.xcassets */; };
@@ -109,6 +110,8 @@
 		1AA7255D1C15553600F90F92 /* BasicInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicInfoViewController.swift; sourceTree = "<group>"; };
 		1AA725D01C1797D200F90F92 /* DatePickerActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DatePickerActionSheet.swift; sourceTree = "<group>"; };
 		1AA725F21C18E74000F90F92 /* LocationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationController.swift; sourceTree = "<group>"; };
+		1AA7262B1C1A132700F90F92 /* Double-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Double-Bridging-Header.h"; sourceTree = SOURCE_ROOT; };
+		1AA7262F1C1A13C900F90F92 /* GeoFire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = GeoFire.framework; sourceTree = "<group>"; };
 		1ABD3B3F1BFD3F6300544104 /* Double.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Double.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1ABD3B421BFD3F6300544104 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1ABD3B471BFD3F6300544104 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -151,6 +154,7 @@
 			files = (
 				1ABD3B941BFD77A900544104 /* libc++.tbd in Frameworks */,
 				1ABD3B921BFD779600544104 /* libicucore.tbd in Frameworks */,
+				1AA726301C1A13C900F90F92 /* GeoFire.framework in Frameworks */,
 				1ABD3B901BFD778900544104 /* SystemConfiguration.framework in Frameworks */,
 				1ABD3B8E1BFD777E00544104 /* Security.framework in Frameworks */,
 				1ABD3B8C1BFD777500544104 /* CFNetwork.framework in Frameworks */,
@@ -219,6 +223,7 @@
 		1ABD3B361BFD3F6300544104 = {
 			isa = PBXGroup;
 			children = (
+				1AA7262B1C1A132700F90F92 /* Double-Bridging-Header.h */,
 				1AA725D01C1797D200F90F92 /* DatePickerActionSheet.swift */,
 				1ABD3B951BFD77B600544104 /* Frameworks */,
 				1ABD3B411BFD3F6300544104 /* Double */,
@@ -323,6 +328,7 @@
 			children = (
 				1ABD3B931BFD77A900544104 /* libc++.tbd */,
 				1ABD3B911BFD779600544104 /* libicucore.tbd */,
+				1AA7262F1C1A13C900F90F92 /* GeoFire.framework */,
 				1ABD3B8F1BFD778900544104 /* SystemConfiguration.framework */,
 				1ABD3B8D1BFD777E00544104 /* Security.framework */,
 				1ABD3B8B1BFD777500544104 /* CFNetwork.framework */,
@@ -652,6 +658,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.Double;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Double-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -670,6 +678,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.Double;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "Double-Bridging-Header.h";
 			};
 			name = Release;
 		};

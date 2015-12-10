@@ -20,7 +20,7 @@ class LocationController: NSObject, CLLocationManagerDelegate {
         self.locationManager.delegate = self
     }
     
-    static func resolvePermissions() -> CLAuthorizationStatus {
+    static func resolvePermissions() -> Bool {
         switch CLLocationManager.authorizationStatus() {
         case .AuthorizedAlways, .AuthorizedWhenInUse:
             break
@@ -29,7 +29,7 @@ class LocationController: NSObject, CLLocationManagerDelegate {
         case .Denied, .Restricted:
             SharedInstance.locationManager.requestWhenInUseAuthorization()
         }
-        return CLLocationManager.authorizationStatus()
+        return CLLocationManager.authorizationStatus() == .AuthorizedAlways || CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse
     }
     
     static func requestLocation() {

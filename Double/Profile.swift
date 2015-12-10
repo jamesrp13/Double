@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 struct Profile: FirebaseType, Equatable {
     
     // Constants for fetching data from Firebase dictionaries

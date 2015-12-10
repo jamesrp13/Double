@@ -12,6 +12,7 @@ import Firebase
 class FirebaseController {
     
     static let base = Firebase(url: "https://doubledate.firebaseio.com/")
+    static let geoFire = GeoFire(firebaseRef: base)
     
     static func dataAtEndpoint(endpoint: String, completion: (data:AnyObject?) -> Void)  {
         let baseForEndpoint = FirebaseController.base.childByAppendingPath(endpoint)

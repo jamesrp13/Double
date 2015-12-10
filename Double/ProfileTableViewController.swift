@@ -34,6 +34,12 @@ class ProfileTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if LocationController.resolvePermissions() {
+            LocationController.requestLocation()
+        }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "locationUpdated:", name: "locationUpdated", object: nil)
+        
         if let profile = profileForViewing {
             if profile.identifier! == ProfileController.SharedInstance.currentUserIdentifier! {
                 ourProfileButton.title = "Edit Profile"
@@ -49,6 +55,22 @@ class ProfileTableViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.setNeedsLayout()
         self.tableView.layoutIfNeeded()
+    }
+    
+    func locationUpdated(notification: NSNotification) {
+        if let location = notification.userInfo!["location"] as? CLLocation {
+//            FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild("testIdentifier").queryLimitedToFirst(10).queryEndingAtValue(nil).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+//                if let responseDictionaries = data.value as? [String: AnyObject] {
+//                    let profileIdentifiers = responseDictionaries.flatMap({$0.0})
+//                    for profileIdentifier in profileIdentifiers {
+                        let geoFire = GeoFire(firebaseRef: FirebaseController.base.childByAppendingPath("responses"))
+                        geoFire.queryAtLocation(location, withRadius: 40).observeEventType(GFEventTypeKeyEntered, withBlock: { (string, location) -> Void in
+                            print(string)
+                        })
+//                    }
+//                }
+//            })
+        }
     }
 
     override func didReceiveMemoryWarning() {
