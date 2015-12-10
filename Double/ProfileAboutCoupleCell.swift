@@ -48,7 +48,8 @@ class ProfileAboutCoupleCell: UITableViewCell {
     func updateWithProfile(profile: Profile) {
         let person1 = profile.people.0
         let person2 = profile.people.1
-        let relationshipStatus = profile.relationshipStatus
+        self.relationshipStart = profile.relationshipStart
+        self.relationshipStatus = profile.relationshipStatus.rawValue
         if let relationshipLength = profile.relationshipLength {
             aboutLabel.text = "\(person1.name) and \(person2.name) have been \(relationshipStatus) for \(relationshipLength)."
         }

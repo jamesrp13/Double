@@ -18,8 +18,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        navigationController?.navigationBarHidden = true
     }
 
     override func didReceiveMemoryWarning() {
@@ -60,7 +59,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "createAccount" {
             if let basicInfoView = segue.destinationViewController as? BasicInfoViewController {
-                basicInfoView.account = account
+                basicInfoView.accountIdentifier = account?.identifier!
             }
         }
     }

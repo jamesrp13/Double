@@ -14,6 +14,7 @@ class ConversationCell: UITableViewCell {
     @IBOutlet weak var conversationTitleLabel: UILabel!
     @IBOutlet weak var messagePreviewLabel: UILabel!
     
+    var profile: Profile? = nil
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -30,6 +31,8 @@ class ConversationCell: UITableViewCell {
         let profileIdentifer = friendship.profileIdentifiers.0 == ProfileController.SharedInstance.currentUserProfile!.identifier! ? friendship.profileIdentifiers.1:friendship.profileIdentifiers.0
         ProfileController.fetchProfileForIdentifier(profileIdentifer) { (profile) -> Void in
             if let profile = profile {
+                self.profile = profile
+                
                 ImageController.imageForIdentifier(profile.imageEndPoint, completion: { (image) -> Void in
                     self.profileImageView.image = image
                 })

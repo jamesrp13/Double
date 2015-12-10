@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import CoreLocation
+
 
 class ProfileTableViewController: UITableViewController {
 
@@ -14,66 +16,39 @@ class ProfileTableViewController: UITableViewController {
         return ProfileController.SharedInstance.profilesBeingViewed
     }
     
-    var isViewingOwnProfile = false
+    @IBOutlet weak var ourProfileButton: UIBarButtonItem!
     
-//    var seenDictionary: [String: Int] {
-//        
-//        if let seenDictionary = NSUserDefaults.standardUserDefaults().objectForKey("seenDictionary") as? [String: Int] {
-//            return seenDictionary
-//        } else {
-//            return [:]
-//        }
-//    }
+    var profileForViewing: Profile? = nil
     
     @IBOutlet weak var evaluationStackView: UIStackView!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         if ProfileController.SharedInstance.currentUserProfile == nil && ProfileController.SharedInstance.currentUserIdentifier == nil {
-            performSegueWithIdentifier("toLoginSignup", sender: self)
+            tabBarController?.performSegueWithIdentifier("toLoginSignup", sender: self)
         } else if ProfileController.SharedInstance.currentUserProfile == nil && ProfileController.SharedInstance.currentUserIdentifier != nil {
-            performSegueWithIdentifier("toBasicInfo", sender: self)
+            tabBarController?.performSegueWithIdentifier("toBasicInfo", sender: self)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let profile = profileForViewing {
+            if profile.identifier! == ProfileController.SharedInstance.currentUserIdentifier! {
+                ourProfileButton.title = "Edit Profile"
+            } else {
+                ourProfileButton.enabled = false
+            }
+        }
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateProfileForViewing", name: "profileEdited", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: "ProfilesChanged", object: nil)
         
         tableView.estimatedRowHeight = 30
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.setNeedsLayout()
         self.tableView.layoutIfNeeded()
-        
-//        for (key, value) in seenDictionary {
-//            print("\(key): \(value)")
-//        }
-        
-//        var seenDictionary: [String: Int] = [:]
-//        
-//        for var i=0; i<100; i++ {
-//            
-//            ProfileController.createProfile((PersonController.mockPeople()[0], PersonController.mockPeople()[1]), married: (i%2==0 ? true:false), relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "\(i)", location: "84109", children: nil, image: UIImage(named: "testImage")!) { (profile) -> Void in
-//                if let profile = profile {
-//                    seenDictionary.updateValue(0, forKey: profile.identifier!)
-//                    if i%3==0 {
-//                        var response = Responses(profileViewedByIdentifier: profile.identifier!, like: (i%2==0 ? false:true), profileIdentifier: ProfileController.SharedInstance.currentUserProfile.identifier!)
-//                        response.save()
-//                    }
-//
-//                }
-//            }
-//        }
-//
-//        NSUserDefaults.standardUserDefaults().setObject(seenDictionary, forKey: "seenDictionary")
-//        NSUserDefaults.standardUserDefaults().synchronize()
-        
-//        AccountController.createAccount("jamesrp13@gmail.com", password: "password1", passwordRetyped: "password1") { (account) -> Void in
-//            if let account = account {
-//                print(account)
-//            }
-//        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -81,9 +56,20 @@ class ProfileTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func doneButtonTapped(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
     func updateTableView() {
         tableView.reloadData()
         //likeButtonTapped(self)
+    }
+    
+    func updateProfileForViewing() {
+        if let _ = profileForViewing {
+            self.profileForViewing = ProfileController.SharedInstance.currentUserProfile
+            updateTableView()
+        }
     }
 
     // MARK: - Reject and Like button actions
@@ -121,10 +107,18 @@ class ProfileTableViewController: UITableViewController {
         tableView.reloadData()
     }
     
+    @IBAction func logoutButtonTapped(sender: AnyObject) {
+        AccountController.logoutCurrentUser { () -> Void in
+            self.dismissViewControllerAnimated(false, completion: nil)
+            self.tabBarController?.selectedViewController = self.tabBarController?.viewControllers?.first
+        }
+    }
+    
+    
     // MARK: - Table view data source
 
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if profilesBeingViewed.count > 0 {
+        if profilesBeingViewed.count > 0 || profileForViewing != nil {
             return 4
         } else {
             return 0
@@ -136,7 +130,7 @@ class ProfileTableViewController: UITableViewController {
         
         let cell: UITableViewCell
         
-        if let profile = isViewingOwnProfile ? ProfileController.SharedInstance.currentUserProfile:profilesBeingViewed[0] {
+        if let profile = profileForViewing != nil ? profileForViewing:profilesBeingViewed[0] {
             
             switch indexPath.row {
             case 0:
@@ -182,14 +176,23 @@ class ProfileTableViewController: UITableViewController {
 
     }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "toOurProfile" {
+            if let navigationController = segue.destinationViewController as? UINavigationController {
+                if let profileViewController = navigationController.viewControllers.first as? ProfileTableViewController {
+                    profileViewController.profileForViewing = ProfileController.SharedInstance.currentUserProfile
+                }
+            }
+        } else if segue.identifier == "toEditProfile" {
+            if let editProfileViewController = segue.destinationViewController as? EditProfileTableViewController {
+                editProfileViewController.profile = self.profileForViewing
+            }
+        }
     }
-    */
+    
 
 }

@@ -36,5 +36,9 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSLocationAlwaysUsageDescription</key>
+	<string>We need your location to show you couples in your area. Don&apos;t worry, we&apos;ll only see your general area, and only share your city in your profile.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to show you couples in your area. Don&apos;t worry, we&apos;ll only see your general area, and only share your city in your profile.</string>
 </dict>
 </plist>

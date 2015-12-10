@@ -8,7 +8,7 @@
 
 import UIKit
 
-struct Profile: FirebaseType {
+struct Profile: FirebaseType, Equatable {
     
     // Constants for fetching data from Firebase dictionaries
     private let kRelationshipStatus = "relationshipStatus"
@@ -149,4 +149,8 @@ struct Profile: FirebaseType {
     }
     
     
+}
+
+func == (lhs: Profile, rhs: Profile) -> Bool {
+    return lhs.identifier! == rhs.identifier!
 }

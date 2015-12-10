@@ -72,6 +72,7 @@ struct Person: FirebaseType {
         self.gender = gender
         self.about = about
         self.profileIdentifier = profileIdentifier
+        self.identifier = identifier
     }
     
 }

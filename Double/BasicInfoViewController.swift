@@ -10,7 +10,13 @@ import UIKit
 
 class BasicInfoViewController: UIViewController, UITextFieldDelegate {
 
-    var account: Account? = nil
+    var accountIdentifier: String? {
+        get {
+            return ProfileController.SharedInstance.currentUserIdentifier
+        }
+        
+        set{}
+    }
     
     @IBOutlet weak var name1TextField: UITextField!
     @IBOutlet weak var dob1TextField: UITextField!
@@ -30,6 +36,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationController?.navigationBarHidden = true
         
         let datePickerActionSheet = DatePickerActionSheet(parent: self, doneActionSelector: "datePickerInputFinished")
         genericDatePicker = datePickerActionSheet.datePicker
@@ -163,7 +170,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 editProfileView.people = (person1, person2)
                 editProfileView.relationshipStart = relationshipStart!
                 editProfileView.relationshipStatus = relationshipStatus
-                editProfileView.account = account
+                editProfileView.accountIdentifier = accountIdentifier
             }
         }
     }

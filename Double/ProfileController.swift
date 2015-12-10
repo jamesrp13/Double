@@ -76,28 +76,16 @@ class ProfileController {
                 var response = Responses(profileViewedByIdentifier: profile.identifier!, like: false, profileIdentifier: profile.identifier!)
                 response.save()
                 
-                completion(profile: profile)
+                //Fetch profile from Firebase to be sure that it was uploaded
+                ProfileController.fetchProfileForIdentifier(profileIdentifier, completion: { (profile) -> Void in
+                    completion(profile: profile)
+                })
             } else {
                 completion(profile: nil)
             }
         }
         
     }
-    
-//    static func updateProfile(oldProfile: Profile, image: UIImage, married: Bool, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, imageEndPoint: String, completion: (success: Bool, profile: Profile?) -> Void) {
-//        
-//        ImageController.replaceImage(image, identifier: oldProfile.imageEndPoint) { (identifier) -> Void in
-//            if let identifier = identifier {
-//                let profile = Profile(people: oldProfile.people, married: married, relationshipStart: relationshipStart, about: about, location: location, children: children, imageEndPoint: identifier, identifier: oldProfile.identifier!)
-//                
-//                ProfileController.saveProfile(profile)
-//                
-//                completion(success: true, profile: profile)
-//            } else {
-//                completion(success: false, profile: nil)
-//            }
-//        }
-//    }
     
     static func saveProfile(var profile: Profile) {
         PersonController.savePeople(profile.people)

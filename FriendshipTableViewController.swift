@@ -24,6 +24,10 @@ class FriendshipTableViewController: UITableViewController {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: FriendshipController.kFriendshipsChanged, object: nil)
      
+        tableView.estimatedRowHeight = 30
+        tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.setNeedsLayout()
+        self.tableView.layoutIfNeeded()
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -93,20 +97,31 @@ class FriendshipTableViewController: UITableViewController {
     // MARK: - Navigation
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        if let chatViewController = segue.destinationViewController as? ChatTableViewController {
-            switch (segue.identifier ?? "") {
-            case "ConversationListToChat":
+        switch (segue.identifier ?? "") {
+        case "ConversationListToChat":
+            if let chatViewController = segue.destinationViewController as? ChatTableViewController {
                 if let indexPath = tableView.indexPathForSelectedRow {
-                    chatViewController.friendship = conversations[indexPath.row]
+                    if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ConversationCell {
+                        chatViewController.profile = cell.profile
+                        chatViewController.friendship = conversations[indexPath.row]
+                    }
                 }
-            case "CollectionViewToChat":
+            }
+        case "CollectionViewToChat":
+            if let chatViewController = segue.destinationViewController as? ChatTableViewController {
                 if let collectionCell = sender as? FriendshipCell {
                     chatViewController.friendship = collectionCell.friendship
+                    chatViewController.profile = collectionCell.profile
                 }
-                
-            default:
-                break
             }
+        case "toOwnProfile":
+            if let navigationViewController = segue.destinationViewController as? UINavigationController {
+                if let profileViewController = navigationViewController.viewControllers.first as? ProfileTableViewController {
+                    profileViewController.profileForViewing = ProfileController.SharedInstance.currentUserProfile
+                }
+            }
+        default:
+            break
         }
     }
 

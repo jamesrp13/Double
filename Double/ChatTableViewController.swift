@@ -39,6 +39,8 @@ class ChatTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
     
+    var profile: Profile? = nil
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -95,14 +97,20 @@ class ChatTableViewController: UITableViewController, UITextFieldDelegate {
         }
     }
 
-    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if segue.identifier == "toFriendsProfile" {
+            if let navigationController = segue.destinationViewController as? UINavigationController {
+                if let profileViewController = navigationController.viewControllers.first as? ProfileTableViewController {
+                    if let profile = self.profile {
+                        profileViewController.profileForViewing = profile
+                        
+                    }
+                }
+            }
+        }
     }
-    */
 
 }

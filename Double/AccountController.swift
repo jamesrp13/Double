@@ -66,6 +66,14 @@ class AccountController {
         }
     }
     
+    static func logoutCurrentUser(completion: () -> Void) {
+        ProfileController.SharedInstance.currentUserProfile = nil
+        ProfileController.SharedInstance.currentUserIdentifier = nil
+        FriendshipController.SharedInstance.friendships = []
+        ProfileController.SharedInstance.responsesFromProfilesBeingViewed = [:]
+        completion()
+    }
+    
     static func isValidEmail(testStr:String) -> Bool {
         // println("validate calendar: \(testStr)")
         let emailRegEx = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
