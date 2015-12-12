@@ -5,6 +5,6 @@
 #ifndef Double_Bridging_Header_h
 #define Double_Bridging_Header_h
 
-#import <GeoFire/GeoFire.h>
+#import "GeoFire.h"
 
 #endif /* Double_Bridging_Header_h */

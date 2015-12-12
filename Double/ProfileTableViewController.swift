@@ -59,17 +59,35 @@ class ProfileTableViewController: UITableViewController {
     
     func locationUpdated(notification: NSNotification) {
         if let location = notification.userInfo!["location"] as? CLLocation {
-//            FirebaseController.base.childByAppendingPath("responses").queryOrderedByChild("testIdentifier").queryLimitedToFirst(10).queryEndingAtValue(nil).observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
-//                if let responseDictionaries = data.value as? [String: AnyObject] {
-//                    let profileIdentifiers = responseDictionaries.flatMap({$0.0})
-//                    for profileIdentifier in profileIdentifiers {
-                        let geoFire = GeoFire(firebaseRef: FirebaseController.base.childByAppendingPath("responses"))
-                        geoFire.queryAtLocation(location, withRadius: 40).observeEventType(GFEventTypeKeyEntered, withBlock: { (string, location) -> Void in
-                            print(string)
-                        })
-//                    }
-//                }
+            
+            let geoFire = GeoFire(firebaseRef: FirebaseController.base.childByAppendingPath("responses"))
+            let query = geoFire.queryAtLocation(CLLocation(latitude: 40.7909394098518, longitude: -74.48867797851562), withRadius: 100)
+//            query.observeEventType(GFEventTypeKeyEntered, withBlock: { (key, location) -> Void in
+//                print(key)
 //            })
+            
+            let geoHashQueries = Array(query.queriesForCurrentCriteria()) as! [GFGeoHashQuery]
+            
+            var dictionary: [String: AnyObject] = [:]
+            let tunnel = dispatch_group_create()
+            for geoHashQuery in geoHashQueries {
+                dispatch_group_enter(tunnel)
+                let firebaseQuery = query.firebaseForGeoHashQuery(geoHashQuery)
+                firebaseQuery.observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
+                    if let dataDictionary = data.value as? [String: [String: AnyObject]] {
+                        for (key, value) in dataDictionary {
+                            if query.locationIsInQuery(GeoFire.locationFromValue(NSDictionary(dictionary: value))) {
+                                dictionary.updateValue(value, forKey: key)
+                            }
+                        }
+                    }
+                    dispatch_group_leave(tunnel)
+                })
+            }
+            dispatch_group_notify(tunnel, dispatch_get_main_queue(), { () -> Void in
+                let array = Array(dictionary.keys)
+                print(array)
+            })
         }
     }
 

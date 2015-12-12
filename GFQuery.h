@@ -28,6 +28,8 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
+#import <Firebase/Firebase.h>
+#import "GFGeoHashQuery.h"
 
 typedef NSUInteger FirebaseHandle;
 
@@ -40,6 +42,7 @@ typedef enum {
 } GFEventType;
 
 typedef void (^GFQueryResultBlock) (NSString *key, CLLocation *location);
+typedef void (^GFQueryKeysBlock)  (NSArray *keys);
 typedef void (^GFReadyBlock) ();
 
 /**
@@ -51,6 +54,8 @@ typedef void (^GFReadyBlock) ();
  * The GeoFire this GFQuery object uses.
  */
 @property (nonatomic, strong, readonly) GeoFire *geoFire;
+
+@property (nonatomic, strong) NSMutableDictionary *keyEnteredObservers;
 
 /*!
  Adds an observer for an event type.
@@ -97,5 +102,12 @@ typedef void (^GFReadyBlock) ();
  * its callbacks.
  */
 - (void)removeAllObservers;
+
+- (FirebaseHandle)observeKeysForEventType:(GFEventType)eventType withBlock:(GFQueryKeysBlock)block;
+
+- (FQuery *)firebaseForGeoHashQuery:(GFGeoHashQuery *)query;
+
+- (NSSet *)queriesForCurrentCriteria;
+
 
 @end

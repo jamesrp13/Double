@@ -20,4 +20,6 @@
  */
 @property (atomic, readwrite) double radius;
 
+- (BOOL)locationIsInQuery:(CLLocation *)location;
+
 @end

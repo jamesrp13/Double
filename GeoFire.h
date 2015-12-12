@@ -128,4 +128,6 @@ withCompletionBlock:(GFCompletionBlock)block;
  */
 - (GFRegionQuery *)queryWithRegion:(MKCoordinateRegion)region;
 
++ (CLLocation *)locationFromValue:(id)dict;
+
 @end
