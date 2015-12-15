@@ -69,6 +69,10 @@ class FriendshipController {
             if let friendshipDictionaries = data.value as? [String: AnyObject] {
                 let friendships = friendshipDictionaries.flatMap({Friendship(json: $0.1 as! [String: AnyObject], identifier: $0.0)
                 })
+                FirebaseController.base.childByAppendingPath("friendships").queryOrderedByChild(profileIdentifier).queryEqualToValue(true).observeEventType(FEventType.ChildRemoved, withBlock: { (data) -> Void in
+                    guard let key = data.key else {return}
+                    completion(friendships: friendships.filter({$0.identifier! != key}).sort({$0.identifier! < $1.identifier!}))
+                })
                 completion(friendships: friendships.sort({$0.identifier! < $1.identifier!}))
             } else {
                 completion(friendships: nil)

@@ -36,7 +36,11 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
         }
     }
     
-    var location: String? = nil
+    var location: CLLocation? = nil {
+        didSet {
+            tableView.reloadData()
+        }
+    }
     
     var profile: Profile? = nil {
         didSet {
@@ -114,14 +118,15 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
         guard let people = people,
             accountIdentifier = accountIdentifier,
             relationshipStatus = Profile.RelationshipStatus(rawValue: profileAboutCoupleCell.relationshipStatus!),
-            relationshipStart = profileAboutCoupleCell.relationshipStart else {return}
+            relationshipStart = profileAboutCoupleCell.relationshipStart,
+            location = location else {return}
         
         let oldPerson1 = people.0
         let oldPerson2 = people.1
         let newPerson1 = Person(name: oldPerson1.name, dob: oldPerson1.dob, gender: oldPerson1.gender, about: profileAboutIndividualsCell.firstPersonAboutTextView.text, profileIdentifier: accountIdentifier, identifier: oldPerson1.identifier!)
         let newPerson2 = Person(name: oldPerson2.name, dob: oldPerson2.dob, gender: oldPerson2.gender, about: profileAboutIndividualsCell.secondPersonAboutTextView.text, profileIdentifier: accountIdentifier, identifier: oldPerson2.identifier)
         
-        ProfileController.createProfile((newPerson1, newPerson2), relationshipStatus: relationshipStatus, relationshipStart: relationshipStart, about: nil, location: "84109", children: nil, image: image, profileIdentifier: accountIdentifier, completion: { (profile) -> Void in
+        ProfileController.createProfile((newPerson1, newPerson2), relationshipStatus: relationshipStatus, relationshipStart: relationshipStart, about: nil, location: location, children: nil, image: image, profileIdentifier: accountIdentifier, completion: { (profile) -> Void in
             if let profile = profile {
                 ProfileController.SharedInstance.currentUserProfile = profile
                 FirebaseController.loadNecessaryDataFromNetwork()
@@ -185,7 +190,8 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
                     unwrappedCell.updateWithProfile(profile)
                 } else {
                     if let people = people {
-                        if let relationshipStart = relationshipStart {
+                        if let relationshipStart = relationshipStart,
+                            relationshipStatus = relationshipStatus {
                             unwrappedCell.updateWithPeople(people, relationshipStatus: "\(relationshipStatus)", relationshipStart: relationshipStart)
                         }
                         

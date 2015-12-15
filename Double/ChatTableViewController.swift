@@ -104,9 +104,10 @@ class ChatTableViewController: UITableViewController, UITextFieldDelegate {
         if segue.identifier == "toFriendsProfile" {
             if let navigationController = segue.destinationViewController as? UINavigationController {
                 if let profileViewController = navigationController.viewControllers.first as? ProfileTableViewController {
-                    if let profile = self.profile {
+                    if let profile = self.profile,
+                        friendship = self.friendship {
                         profileViewController.profileForViewing = profile
-                        
+                        profileViewController.fromFriendship = friendship
                     }
                 }
             }

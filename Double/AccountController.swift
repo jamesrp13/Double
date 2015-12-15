@@ -67,6 +67,7 @@ class AccountController {
     }
     
     static func logoutCurrentUser(completion: () -> Void) {
+        FirebaseController.base.unauth()
         ProfileController.SharedInstance.currentUserProfile = nil
         ProfileController.SharedInstance.currentUserIdentifier = nil
         FriendshipController.SharedInstance.friendships = []

@@ -11,14 +11,17 @@ import CoreLocation
 
 
 class ProfileTableViewController: UITableViewController {
-
+    
     var profilesBeingViewed: [Profile] {
         return ProfileController.SharedInstance.profilesBeingViewed
     }
     
     @IBOutlet weak var ourProfileButton: UIBarButtonItem!
     
+    @IBOutlet weak var logoutButton: UIBarButtonItem!
+    
     var profileForViewing: Profile? = nil
+    var fromFriendship: Friendship? = nil
     
     @IBOutlet weak var evaluationStackView: UIStackView!
     
@@ -34,17 +37,14 @@ class ProfileTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if LocationController.resolvePermissions() {
-            LocationController.requestLocation()
-        }
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "locationUpdated:", name: "locationUpdated", object: nil)
-        
         if let profile = profileForViewing {
             if profile.identifier! == ProfileController.SharedInstance.currentUserIdentifier! {
                 ourProfileButton.title = "Edit Profile"
+                logoutButton.title = "Log out"
             } else {
                 ourProfileButton.enabled = false
+                ourProfileButton.title = ""
+                logoutButton.title = "Unfriend"
             }
         }
         
@@ -57,40 +57,6 @@ class ProfileTableViewController: UITableViewController {
         self.tableView.layoutIfNeeded()
     }
     
-    func locationUpdated(notification: NSNotification) {
-        if let location = notification.userInfo!["location"] as? CLLocation {
-            
-            let geoFire = GeoFire(firebaseRef: FirebaseController.base.childByAppendingPath("responses"))
-            let query = geoFire.queryAtLocation(CLLocation(latitude: 40.7909394098518, longitude: -74.48867797851562), withRadius: 100)
-//            query.observeEventType(GFEventTypeKeyEntered, withBlock: { (key, location) -> Void in
-//                print(key)
-//            })
-            
-            let geoHashQueries = Array(query.queriesForCurrentCriteria()) as! [GFGeoHashQuery]
-            
-            var dictionary: [String: AnyObject] = [:]
-            let tunnel = dispatch_group_create()
-            for geoHashQuery in geoHashQueries {
-                dispatch_group_enter(tunnel)
-                let firebaseQuery = query.firebaseForGeoHashQuery(geoHashQuery)
-                firebaseQuery.observeSingleEventOfType(.Value, withBlock: { (data) -> Void in
-                    if let dataDictionary = data.value as? [String: [String: AnyObject]] {
-                        for (key, value) in dataDictionary {
-                            if query.locationIsInQuery(GeoFire.locationFromValue(NSDictionary(dictionary: value))) {
-                                dictionary.updateValue(value, forKey: key)
-                            }
-                        }
-                    }
-                    dispatch_group_leave(tunnel)
-                })
-            }
-            dispatch_group_notify(tunnel, dispatch_get_main_queue(), { () -> Void in
-                let array = Array(dictionary.keys)
-                print(array)
-            })
-        }
-    }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -102,7 +68,6 @@ class ProfileTableViewController: UITableViewController {
     
     func updateTableView() {
         tableView.reloadData()
-        //likeButtonTapped(self)
     }
     
     func updateProfileForViewing() {
@@ -111,36 +76,22 @@ class ProfileTableViewController: UITableViewController {
             updateTableView()
         }
     }
-
+    
     // MARK: - Reject and Like button actions
     
     @IBAction func rejectButtonTapped(sender: AnyObject) {
         ResponseController.createResponse(profilesBeingViewed[0].identifier!, liked: false) { (responses) -> Void in
-//            self.addViewToList()
-            self.removeProfileFromViewingList()
-        }
-    }
-
-    @IBAction func likeButtonTapped(sender: AnyObject) {
-        ResponseController.createResponse(profilesBeingViewed[0].identifier!, liked: true) { (responses) -> Void in
-            ProfileController.checkForMatch(self.profilesBeingViewed[0].identifier!)
-//            self.addViewToList()
             self.removeProfileFromViewingList()
         }
     }
     
-//    func addViewToList() {
-//        var newSeenDictionary = seenDictionary
-//        if let value = seenDictionary[profilesBeingViewed[0].identifier!] {
-//            if value == 1 {
-//                print("\rLooks like \(profilesBeingViewed[0].identifier!) was seen twice \r")
-//            }
-//            newSeenDictionary.updateValue(value + 1, forKey: profilesBeingViewed[0].identifier!)
-//        }
-//        
-//        NSUserDefaults.standardUserDefaults().setObject(newSeenDictionary, forKey: "seenDictionary")
-//        NSUserDefaults.standardUserDefaults().synchronize()
-//    }
+    @IBAction func likeButtonTapped(sender: AnyObject) {
+        ResponseController.createResponse(profilesBeingViewed[0].identifier!, liked: true) { (responses) -> Void in
+            ProfileController.checkForMatch(self.profilesBeingViewed[0].identifier!)
+            self.removeProfileFromViewingList()
+        }
+    }
+    
     
     func removeProfileFromViewingList() {
         ProfileController.SharedInstance.profilesBeingViewed.removeFirst()
@@ -148,9 +99,31 @@ class ProfileTableViewController: UITableViewController {
     }
     
     @IBAction func logoutButtonTapped(sender: AnyObject) {
-        AccountController.logoutCurrentUser { () -> Void in
-            self.dismissViewControllerAnimated(false, completion: nil)
-            self.tabBarController?.selectedViewController = self.tabBarController?.viewControllers?.first
+        if let profile = profileForViewing {
+            if profile == ProfileController.SharedInstance.currentUserProfile! {
+                AccountController.logoutCurrentUser { () -> Void in
+                    self.dismissViewControllerAnimated(false, completion: nil)
+                    if let tabBarController = UIApplication.sharedApplication().delegate?.window??.rootViewController as? UITabBarController {
+                        tabBarController.selectedIndex = 0
+                    }
+                }
+            } else {
+                if let friendship = fromFriendship {
+                    let otherProfileIdentifier = friendship.profileIdentifiers.0 == ProfileController.SharedInstance.currentUserIdentifier! ? friendship.profileIdentifiers.1:friendship.profileIdentifiers.0
+                    FirebaseController.base.childByAppendingPath("responses/\(otherProfileIdentifier)/\(ProfileController.SharedInstance.currentUserIdentifier!)").setValue(false)
+                    friendship.delete()
+                    self.dismissViewControllerAnimated(false, completion: nil)
+                    if let tabBarController = UIApplication.sharedApplication().delegate?.window??.rootViewController as? UITabBarController {
+                            tabBarController.selectedIndex = 1
+                        if let navigationController = tabBarController.selectedViewController as? UINavigationController {
+                            if let friendshipViewController = navigationController.viewControllers[0] as? FriendshipTableViewController {
+                                friendshipViewController.tableView.reloadData()
+                                navigationController.popToRootViewControllerAnimated(false)
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     

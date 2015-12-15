@@ -42,7 +42,7 @@ typedef enum {
 } GFEventType;
 
 typedef void (^GFQueryResultBlock) (NSString *key, CLLocation *location);
-typedef void (^GFQueryKeysBlock)  (NSArray *keys);
+typedef void (^GFQueryResultsBlock)  (NSDictionary *values);
 typedef void (^GFReadyBlock) ();
 
 /**
@@ -103,7 +103,7 @@ typedef void (^GFReadyBlock) ();
  */
 - (void)removeAllObservers;
 
-- (FirebaseHandle)observeKeysForEventType:(GFEventType)eventType withBlock:(GFQueryKeysBlock)block;
+- (void)observeSingleEventOfTypeValue: (GFQueryResultsBlock)block;
 
 - (FQuery *)firebaseForGeoHashQuery:(GFGeoHashQuery *)query;
 

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class ProfileController {
     
@@ -56,7 +57,7 @@ class ProfileController {
     
     // MARK: - CRUD
     
-    static func createProfile(var people: (Person, Person), relationshipStatus: Profile.RelationshipStatus, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, image: UIImage, profileIdentifier: String, completion: (profile: Profile?) -> Void) {
+    static func createProfile(var people: (Person, Person), relationshipStatus: Profile.RelationshipStatus, relationshipStart: NSDate, about: String?, location: CLLocation, children: [Child]?, image: UIImage, profileIdentifier: String, completion: (profile: Profile?) -> Void) {
         
         ImageController.uploadImage(image) { (imageIdentifier) -> Void in
             if let imageIdentifier = imageIdentifier {
@@ -214,17 +215,17 @@ class ProfileController {
         }
     }
 
-    
-    static func mockProfiles() -> [Profile] {
-        let couples = [(PersonController.mockPeople()[0], PersonController.mockPeople()[1]), (PersonController.mockPeople()[2], PersonController.mockPeople()[3])]
-        
-        let children = [ChildController.mockChildren()[0]]
-        
-        let profile1 = Profile(people: couples[0], relationshipStatus: Profile.RelationshipStatus(rawValue: "Married")!, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: [children[0]], imageEndPoint: "", identifier: "K3pg5XfBBcEwOQk50Li")
-        
-        let profile2 = Profile(people: couples[1], relationshipStatus: Profile.RelationshipStatus(rawValue: "Married")!, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: nil, imageEndPoint: "", identifier: "K3pg5XfBBcEwO2ndof0")
-        
-        return [profile1, profile2]
-    }
+//    
+//    static func mockProfiles() -> [Profile] {
+//        let couples = [(PersonController.mockPeople()[0], PersonController.mockPeople()[1]), (PersonController.mockPeople()[2], PersonController.mockPeople()[3])]
+//        
+//        let children = [ChildController.mockChildren()[0]]
+//        
+//        let profile1 = Profile(people: couples[0], relationshipStatus: Profile.RelationshipStatus(rawValue: "Married")!, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: [children[0]], imageEndPoint: "", identifier: "K3pg5XfBBcEwOQk50Li")
+//        
+//        let profile2 = Profile(people: couples[1], relationshipStatus: Profile.RelationshipStatus(rawValue: "Married")!, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: nil, imageEndPoint: "", identifier: "K3pg5XfBBcEwO2ndof0")
+//        
+//        return [profile1, profile2]
+//    }
     
 }

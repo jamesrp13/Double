@@ -233,7 +233,6 @@
                     <connections>
                         <outlet property="evaluationStackView" destination="RyN-Pz-cj6" id="66A-lz-yfx"/>
                         <outlet property="ourProfileButton" destination="8Jj-62-ymK" id="W8A-td-O2d"/>
-                        <segue destination="x9h-hq-Aep" kind="presentation" identifier="toBasicInfo" id="ByD-vv-d2u"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RUt-lV-qDX" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -260,7 +259,7 @@
                                         <animations/>
                                         <state key="normal" title="Create an account"/>
                                         <connections>
-                                            <segue destination="GgI-r1-VEq" kind="show" identifier="fromPickerToCreate" id="vNJ-vm-iKU"/>
+                                            <segue destination="26s-Ep-Pqt" kind="show" identifier="fromPickerToCreate" id="5CM-qT-7Az"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5Kw-1Y-2Ib">
@@ -302,7 +301,7 @@
         <!--Tab Bar Controller-->
         <scene sceneID="ARt-Up-ySZ">
             <objects>
-                <tabBarController id="IML-5T-mNE" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="rootTabBarController" id="IML-5T-mNE" sceneMemberID="viewController">
                     <nil key="simulatedTopBarMetrics"/>
                     <nil key="simulatedBottomBarMetrics"/>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
@@ -317,6 +316,7 @@
                         <segue destination="olx-2V-ZMI" kind="relationship" relationship="viewControllers" id="Xul-W3-RW0"/>
                         <segue destination="55B-KI-keB" kind="relationship" relationship="viewControllers" id="aOD-ai-VOP"/>
                         <segue destination="fb6-FJ-d94" kind="presentation" identifier="toLoginSignup" id="mPs-7K-o16"/>
+                        <segue destination="x9h-hq-Aep" kind="presentation" identifier="toBasicInfo" id="D4F-Lw-d6e"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="PIM-RB-4Sf" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -696,7 +696,7 @@
                                         <animations/>
                                         <state key="normal" title="Need to create an account?"/>
                                         <connections>
-                                            <segue destination="GgI-r1-VEq" kind="show" identifier="fromLoginToCreate" id="OnT-8y-CKa"/>
+                                            <segue destination="26s-Ep-Pqt" kind="show" identifier="fromLoginToCreate" id="VOf-vH-hh6"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -872,7 +872,7 @@
                         <outlet property="emailTextField" destination="N9G-WN-eqo" id="mjP-65-sAs"/>
                         <outlet property="passwordRetypedTextField" destination="CYl-bW-GvX" id="MSt-FF-hF6"/>
                         <outlet property="passwordTextField" destination="EtK-RW-AU1" id="Vr1-2S-Ol3"/>
-                        <segue destination="x9h-hq-Aep" kind="show" identifier="createAccount" id="AJV-dy-cTe"/>
+                        <segue destination="gzg-CI-fYU" kind="show" identifier="createAccount" id="sF1-qx-hgN"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gSb-5y-daK" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -891,8 +891,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cah-YG-FOA">
-                                <rect key="frame" x="0.0" y="20" width="320" height="460"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cah-YG-FOA">
+                                <rect key="frame" x="0.0" y="20" width="320" height="416"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="double" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rif-Zk-6RP">
                                         <rect key="frame" x="134" y="0.0" width="53" height="21"/>
@@ -903,7 +903,7 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="giF-g5-tkp">
-                                        <rect key="frame" x="16" y="143" width="288" height="170"/>
+                                        <rect key="frame" x="16" y="106" width="288" height="200"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now let's get some basic info about the two of you for your profile:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xrB-jK-mcu">
                                                 <rect key="frame" x="0.0" y="0.0" width="288" height="24"/>
@@ -1040,6 +1040,23 @@
                                                     <outlet property="delegate" destination="gzg-CI-fYU" id="8mW-XQ-HFA"/>
                                                 </connections>
                                             </textField>
+                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Where do you live?" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Umj-XE-zPZ">
+                                                <rect key="frame" x="0.0" y="170" width="288" height="30"/>
+                                                <animations/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="189" id="hfA-1p-kYo"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                <textInputTraits key="textInputTraits"/>
+                                                <variation key="default">
+                                                    <mask key="constraints">
+                                                        <exclude reference="hfA-1p-kYo"/>
+                                                    </mask>
+                                                </variation>
+                                                <connections>
+                                                    <outlet property="delegate" destination="gzg-CI-fYU" id="Lfm-QO-gWZ"/>
+                                                </connections>
+                                            </textField>
                                         </subviews>
                                         <animations/>
                                         <constraints>
@@ -1048,7 +1065,7 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="5B1-RN-tgV">
-                                        <rect key="frame" x="144" y="430" width="32" height="30"/>
+                                        <rect key="frame" x="144" y="386" width="32" height="30"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="35w-5M-zl4">
                                                 <rect key="frame" x="0.0" y="0.0" width="32" height="30"/>
@@ -1081,6 +1098,7 @@
                         <outlet property="dob2TextField" destination="b12-Bc-HHx" id="Av7-vM-18d"/>
                         <outlet property="gender1SegmentedControl" destination="9Gn-at-DvA" id="Jj6-6r-64v"/>
                         <outlet property="gender2SegmentedControl" destination="qqo-BJ-fVf" id="Dam-zX-HdX"/>
+                        <outlet property="locationTextField" destination="Umj-XE-zPZ" id="fIF-cE-euF"/>
                         <outlet property="name1TextField" destination="m29-nt-zvR" id="jPW-q5-Tab"/>
                         <outlet property="name2TextField" destination="l1e-rF-0Wl" id="awQ-wG-0mb"/>
                         <outlet property="relationshipSegmentedControl" destination="aDj-we-KKT" id="EFP-YP-5Ga"/>
@@ -1329,25 +1347,6 @@
             <point key="canvasLocation" x="53" y="-199"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="ume-gR-kzo">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GgI-r1-VEq" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="zGK-XE-Z76">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <animations/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="26s-Ep-Pqt" kind="relationship" relationship="rootViewController" id="MMa-LS-PDv"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="oAo-mR-VCe" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="53" y="-739"/>
-        </scene>
-        <!--Navigation Controller-->
         <scene sceneID="H7V-g1-7rT">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="x9h-hq-Aep" sceneMemberID="viewController">
@@ -1364,7 +1363,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TJs-4p-dQQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="824" y="-739"/>
+            <point key="canvasLocation" x="824" y="-777"/>
         </scene>
         <!--Profile Table View Controller-->
         <scene sceneID="BdP-qJ-26J">
@@ -1433,9 +1432,9 @@
                                     <variation key="default">
                                         <mask key="constraints">
                                             <exclude reference="FjU-Qg-5ak"/>
-                                            <exclude reference="pxj-Vd-Xf1"/>
-                                            <exclude reference="OVg-X8-PFC"/>
                                             <exclude reference="KCI-ci-xbf"/>
+                                            <exclude reference="OVg-X8-PFC"/>
+                                            <exclude reference="pxj-Vd-Xf1"/>
                                         </mask>
                                     </variation>
                                 </tableViewCellContentView>
@@ -1573,6 +1572,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="logoutButton" destination="7m4-ek-YMI" id="fIw-WO-rtJ"/>
                         <outlet property="ourProfileButton" destination="obe-5u-Qad" id="QPU-mF-Dl4"/>
                     </connections>
                 </tableViewController>
@@ -1583,7 +1583,6 @@
         <!--Navigation Controller-->
         <scene sceneID="uDz-rp-pgU">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="fvN-81-33E" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ia8-JM-HHo" sceneMemberID="viewController">
                     <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
@@ -1597,6 +1596,7 @@
                         <segue destination="Fg5-G8-S9l" kind="relationship" relationship="rootViewController" id="h5l-vh-uzx"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fvN-81-33E" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1200" y="338"/>
         </scene>
@@ -1605,11 +1605,11 @@
         <image name="ProfileImagePlaceholder" width="310" height="310"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ByD-vv-d2u"/>
         <segue reference="Mdh-yY-4zp"/>
-        <segue reference="VVu-Hb-PSF"/>
+        <segue reference="AzT-8c-A1p"/>
+        <segue reference="HVQ-hD-DFf"/>
+        <segue reference="VOf-vH-hh6"/>
+        <segue reference="tgw-JN-0xC"/>
         <segue reference="FqE-UQ-7WQ"/>
-        <segue reference="OnT-8y-CKa"/>
-        <segue reference="WW6-zc-wDP"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -505,62 +505,34 @@
     }
 }
 
-- (FirebaseHandle)observeKeysForEventType:(GFEventType)eventType withBlock:(GFQueryKeysBlock)block
+- (void)observeSingleEventOfTypeValue: (GFQueryResultsBlock)block
 {
-    @synchronized(self) {
-        if (block == nil) {
-            [NSException raise:NSInvalidArgumentException format:@"Block is not allowed to be nil!"];
-        }
-        FirebaseHandle firebaseHandle = self.currentHandle++;
-        NSNumber *numberHandle = [NSNumber numberWithUnsignedInteger:firebaseHandle];
-        switch (eventType) {
-            case GFEventTypeKeyEntered: {
-                [self.keyEnteredObservers setObject:[block copy]
-                                             forKey:numberHandle];
-                self.currentHandle++;
-                dispatch_group_t tunnel = dispatch_group_create();
-                NSMutableArray *keys = [[NSMutableArray alloc] init];
-                dispatch_async(self.geoFire.callbackQueue, ^{
-                    @synchronized(self) {
-                        [self.locationInfos enumerateKeysAndObjectsUsingBlock:^(NSString *key,
-                                                                                GFQueryLocationInfo *info,
-                                                                                BOOL *stop) {
-                            dispatch_group_enter(tunnel);
-                            if (info.isInQuery) {
-                                [keys addObject:key];
-                                dispatch_group_leave(tunnel);
-                            }
-                        }];
-                    };
-                });
-                dispatch_group_notify(tunnel, dispatch_get_main_queue(), ^{
-                    block(keys);
-                });
-                break;
+    NSArray *geoHashQueries = (NSArray *)[self queriesForCurrentCriteria];
+    NSMutableDictionary *results = [[NSMutableDictionary alloc] init];
+    dispatch_group_t tunnel = dispatch_group_create();
+    [geoHashQueries enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        dispatch_group_enter(tunnel);
+        FQuery *firebaseQuery = [self firebaseForGeoHashQuery:obj];
+        [firebaseQuery observeSingleEventOfType:FEventTypeValue withBlock:^(FDataSnapshot *snapshot) {
+            if (snapshot != NULL) {
+                NSDictionary *snapshotDictionary = snapshot.value;
+                [snapshotDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                    CLLocation *location = [GeoFire locationFromValue:obj];
+                    if ([self locationIsInQuery:location]) {
+                        [results setValue:location forKey:key];
+                    }
+                }];
+            } else {
+                // TODO: Error handling
             }
-            case GFEventTypeKeyExited: {
-                [self.keyExitedObservers setObject:[block copy]
-                                            forKey:numberHandle];
-                self.currentHandle++;
-                break;
-            }
-            case GFEventTypeKeyMoved: {
-                [self.keyMovedObservers setObject:[block copy]
-                                           forKey:numberHandle];
-                self.currentHandle++;
-                break;
-            }
-            default: {
-                [NSException raise:NSInvalidArgumentException format:@"Event type was not a GFEventType!"];
-                break;
-            }
-        }
-        if (self.queries == nil) {
-            [self updateQueries];
-        }
-        return firebaseHandle;
-    }
+            dispatch_group_leave(tunnel);
+        }];
+    }];
+    dispatch_group_notify(tunnel, dispatch_get_main_queue(), ^{
+        block(results);
+    });
 }
+
 
 
 - (FirebaseHandle)observeReadyWithBlock:(GFReadyBlock)block

@@ -55,9 +55,9 @@ class LocationController: NSObject, CLLocationManagerDelegate {
         }
     }
     
-    static func zipAsCoordinates(cityState: String, completion: (coordinate: CLLocation?) -> Void) {
+    static func zipAsCoordinates(zip: String, completion: (coordinate: CLLocation?) -> Void) {
         let geoCoder = CLGeocoder()
-        geoCoder.geocodeAddressString("\(cityState)") { (placemarks, error) -> Void in
+        geoCoder.geocodeAddressString("\(zip)") { (placemarks, error) -> Void in
             if error != nil {
                 print("Geocoding error: \(error)")
             }

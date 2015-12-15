@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class BasicInfoViewController: UIViewController, UITextFieldDelegate {
 
@@ -26,13 +27,16 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var gender2SegmentedControl: UISegmentedControl!
     @IBOutlet weak var relationshipStartTextField: UITextField!
     @IBOutlet weak var relationshipSegmentedControl: UISegmentedControl!
+    @IBOutlet weak var locationTextField: UITextField!
     
     var dob1: NSDate? = nil
     var dob2: NSDate? = nil
     var relationshipStart: NSDate? = nil
+    var location: CLLocation? = nil
     
     var activeTextField: UITextField? = nil
     var genericDatePicker: UIDatePicker? = nil
+    var locationPicker: LocationPickerActionSheet? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +47,73 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         dob1TextField.inputAccessoryView = datePickerActionSheet
         dob2TextField.inputAccessoryView = datePickerActionSheet
         relationshipStartTextField.inputAccessoryView = datePickerActionSheet
+        
+        let locationPickerActionSheet = LocationPickerActionSheet(parent: self, doneActionSelector: "locationInputViaZip", locationActionSelector: "locationViaDeviceLocation")
+        locationPicker = locationPickerActionSheet
+        locationTextField.inputAccessoryView = locationPicker
+        
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setLocationTextFieldText:", name: "locationUpdated", object: nil)
+    }
+    
+    func locationInputViaZip() {
+        if let locationPicker = locationPicker {
+            if let textField = activeTextField {
+                textField.becomeFirstResponder()
+                guard let zip = locationPicker.zipTextField.text else {textField.resignFirstResponder(); activeTextField = nil; return}
+                    LocationController.zipAsCoordinates(zip, completion: { (location) -> Void in
+                        if let location = location {
+                            self.location = location
+                            LocationController.locationAsCityCountry(location, completion: { (cityState) -> Void in
+                                if let cityState = cityState {
+                                    textField.text = cityState
+                                    textField.resignFirstResponder()
+                                    self.activeTextField = nil
+                                } else {
+                                    textField.resignFirstResponder()
+                                    self.activeTextField = nil
+                                    
+                                    //TODO: Error handling
+                                }
+                            })
+                        }
+                        textField.resignFirstResponder()
+                        self.activeTextField = nil
+                    })
+            }
+        }
+    }
+    
+    func locationViaDeviceLocation() {
+        if let textField = activeTextField {
+            textField.becomeFirstResponder()
+            if LocationController.resolvePermissions() {
+                LocationController.requestLocation()
+            } else {
+                textField.resignFirstResponder()
+                activeTextField = nil
+            }
+        }
+    }
+    
+    func setLocationTextFieldText(notification: NSNotification) {
+        guard let notificationInfo = notification.userInfo else {return}
+        if let textField = activeTextField {
+            if let location = notificationInfo["location"] as? CLLocation {
+                self.location = location
+                LocationController.locationAsCityCountry(location, completion: { (cityState) -> Void in
+                    if let cityState = cityState {
+                        textField.text = cityState
+                        textField.resignFirstResponder()
+                        self.activeTextField = nil
+                    } else {
+                        textField.resignFirstResponder()
+                        self.activeTextField = nil
+                        
+                        //TODO: Error handling
+                    }
+                })
+            }
+        }
     }
     
     func datePickerInputFinished() {
@@ -66,6 +137,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 }
                 
                 textField.resignFirstResponder()
+                activeTextField = nil
             }
         }
     }
@@ -104,10 +176,9 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         if textFieldInUse != name2TextField {
             name2TextField.resignFirstResponder()
         }
-    }
-    
-    func textFieldDidEndEditing(textField: UITextField) {
-        activeTextField = nil
+        if textFieldInUse != locationTextField {
+            locationTextField.resignFirstResponder()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -161,8 +232,10 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             if let editProfileView = segue.destinationViewController as? EditProfileTableViewController {
                 let gender1 = gender1SegmentedControl.selectedSegmentIndex == 0 ? "M":"F"
                 let gender2 = gender2SegmentedControl.selectedSegmentIndex == 0 ? "M":"F"
-                let person1 = Person(name: name1TextField.text!, dob: dob1!, gender: Person.Gender(rawValue: gender1)!)
-                let person2 = Person(name: name2TextField.text!, dob: dob2!, gender: Person.Gender(rawValue: gender2)!)
+                var person1 = Person(name: name1TextField.text!, dob: dob1!, gender: Person.Gender(rawValue: gender1)!)
+                person1.save()
+                var person2 = Person(name: name2TextField.text!, dob: dob2!, gender: Person.Gender(rawValue: gender2)!)
+                person2.save()
                 let relationshipStatusInt = relationshipSegmentedControl.selectedSegmentIndex
                 let relationshipStatus = relationshipStatusInt == 0 ? "Dating":(relationshipStatusInt == 1 ? "Engaged":"Married")
                 
@@ -171,6 +244,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 editProfileView.relationshipStart = relationshipStart!
                 editProfileView.relationshipStatus = relationshipStatus
                 editProfileView.accountIdentifier = accountIdentifier
+                editProfileView.location = location
             }
         }
     }

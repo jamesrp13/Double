@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 
 struct Profile: FirebaseType, Equatable {
@@ -22,9 +23,9 @@ struct Profile: FirebaseType, Equatable {
     private let kChildren = "children"
     
     enum RelationshipStatus: String {
-        case Dating = "Dating"
-        case Engaged = "Engaged"
-        case Married = "Married"
+        case Dating = "dating"
+        case Engaged = "engaged"
+        case Married = "married"
     }
     
     // Profile attributes
@@ -32,7 +33,7 @@ struct Profile: FirebaseType, Equatable {
     var relationshipStatus: RelationshipStatus
     var relationshipStart: NSDate
     var about: String?
-    var location: String
+    var location: CLLocation
     var children: [Child]?
     var imageEndPoint: String
     
@@ -73,7 +74,8 @@ struct Profile: FirebaseType, Equatable {
     }
     
     var jsonValue: [String: AnyObject] {
-        var json: [String: AnyObject] = [kRelationshipStatus: relationshipStatus.rawValue, kRelationshipStart: relationshipStart.timeIntervalSince1970, kLocation: location, kImageEndpoint: imageEndPoint]
+        let locationDictionary = ["latitude": location.coordinate.latitude, "longitude": location.coordinate.longitude]
+        var json: [String: AnyObject] = [kRelationshipStatus: relationshipStatus.rawValue, kRelationshipStart: relationshipStart.timeIntervalSince1970, kLocation: locationDictionary, kImageEndpoint: imageEndPoint]
         
         if let about = about {
             json.updateValue(about, forKey: kAbout)
@@ -102,42 +104,26 @@ struct Profile: FirebaseType, Equatable {
         
         guard let relationshipStatusString = profileDictionary[kRelationshipStatus] as? String,
             relationshipStatus = Profile.RelationshipStatus(rawValue: relationshipStatusString) else {return nil}
-        guard let location = profileDictionary[kLocation] as? String else {return nil}
-        guard let imageEndPoint = profileDictionary[kImageEndpoint] as? String else {return nil}
-        guard let people = peopleTuple else {return nil}
-        guard let relationshipTimeInterval = profileDictionary[kRelationshipStart] as? NSTimeInterval else {return nil}
+        guard let imageEndPoint = profileDictionary[kImageEndpoint] as? String,
+            let people = peopleTuple,
+            let relationshipTimeInterval = profileDictionary[kRelationshipStart] as? NSTimeInterval,
+            let locationDictionary = profileDictionary[kLocation] as? [String: Double],
+            latitude = locationDictionary["latitude"],
+            longitude = locationDictionary["longitude"] else {return nil}
         
         self.identifier = identifier
         self.relationshipStatus = relationshipStatus
         self.relationshipStart = NSDate(timeIntervalSince1970: relationshipTimeInterval)
-        self.location = location
+        self.location = CLLocation(latitude: latitude, longitude: longitude)
         self.imageEndPoint = imageEndPoint
         self.about = profileDictionary[kAbout] as? String
         self.people = people
         self.children = children
     }
-    
-//    init?(json: [String : AnyObject], people: (Person, Person), children: [Child]?, identifier: String) {
-//        
-//        guard let married = json[kMarried] as? Bool,
-//            let location = json[kLocation] as? String,
-//            let imageEndPoint = json[kImageEndpoint] as? String,
-//            let relationshipTimeInterval = json[kRelationshipStart] as? NSTimeInterval else {return nil}
-//        
-//        self.identifier = identifier
-//        self.married = married
-//        self.relationshipStart = NSDate(timeIntervalSince1970: relationshipTimeInterval)
-//        self.location = location
-//        self.imageEndPoint = imageEndPoint
-//        self.about = json[kAbout] as? String
-//        self.people = people
-//        self.children = children
-//        
-//    }
 
     
     // Standard initializer
-    init(people: (Person, Person), relationshipStatus: RelationshipStatus, relationshipStart: NSDate, about: String?, location: String, children: [Child]?, imageEndPoint: String, identifier: String?) {
+    init(people: (Person, Person), relationshipStatus: RelationshipStatus, relationshipStart: NSDate, about: String?, location: CLLocation, children: [Child]?, imageEndPoint: String, identifier: String?) {
         
         self.people = people
         self.relationshipStatus = relationshipStatus
