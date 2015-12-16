@@ -882,7 +882,7 @@
         <!--Basic Info View Controller-->
         <scene sceneID="wGK-tI-vl1">
             <objects>
-                <viewController id="gzg-CI-fYU" customClass="BasicInfoViewController" customModule="Double" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="basicInfoController" id="gzg-CI-fYU" customClass="BasicInfoViewController" customModule="Double" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="YOq-bO-SdL"/>
                         <viewControllerLayoutGuide type="bottom" id="aqe-7y-bm4"/>
@@ -891,7 +891,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cah-YG-FOA">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalCentering" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="cah-YG-FOA">
                                 <rect key="frame" x="0.0" y="20" width="320" height="416"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="double" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rif-Zk-6RP">
@@ -903,23 +903,23 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="giF-g5-tkp">
-                                        <rect key="frame" x="16" y="106" width="288" height="200"/>
+                                        <rect key="frame" x="3" y="30" width="315" height="352"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now let's get some basic info about the two of you for your profile:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xrB-jK-mcu">
-                                                <rect key="frame" x="0.0" y="0.0" width="288" height="24"/>
-                                                <animations/>
-                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
-                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="dQD-gw-n9m">
-                                                <rect key="frame" x="0.0" y="24" width="288" height="88"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="315" height="112"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Ipo-aP-zKG">
-                                                        <rect key="frame" x="0.0" y="0.0" width="144" height="88"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="158" height="112"/>
                                                         <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now let's get some basic info about you for your profile:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xrB-jK-mcu">
+                                                                <rect key="frame" x="0.0" y="0.0" width="158" height="24"/>
+                                                                <animations/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First name..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="m29-nt-zvR">
-                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="30"/>
+                                                                <rect key="frame" x="0.0" y="24" width="158" height="30"/>
                                                                 <animations/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="189" id="Oxy-D3-oo7"/>
@@ -936,7 +936,7 @@
                                                                 </connections>
                                                             </textField>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="DOB..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sVU-ds-rMP">
-                                                                <rect key="frame" x="0.0" y="30" width="144" height="30"/>
+                                                                <rect key="frame" x="0.0" y="54" width="158" height="30"/>
                                                                 <animations/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="189" id="wra-jB-9EC"/>
@@ -953,7 +953,7 @@
                                                                 </connections>
                                                             </textField>
                                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="9Gn-at-DvA">
-                                                                <rect key="frame" x="0.0" y="60" width="144" height="29"/>
+                                                                <rect key="frame" x="0.0" y="84" width="158" height="29"/>
                                                                 <animations/>
                                                                 <segments>
                                                                     <segment title="Male"/>
@@ -964,10 +964,17 @@
                                                         <animations/>
                                                     </stackView>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Cu9-W3-HWe">
-                                                        <rect key="frame" x="144" y="0.0" width="144" height="88"/>
+                                                        <rect key="frame" x="158" y="0.0" width="158" height="112"/>
                                                         <subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Now let's get the same info about your significant other:" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZDP-6s-wXv">
+                                                                <rect key="frame" x="0.0" y="0.0" width="158" height="24"/>
+                                                                <animations/>
+                                                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First name..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l1e-rF-0Wl">
-                                                                <rect key="frame" x="0.0" y="0.0" width="144" height="30"/>
+                                                                <rect key="frame" x="0.0" y="24" width="158" height="30"/>
                                                                 <animations/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="189" id="e6I-bi-ggi"/>
@@ -984,7 +991,7 @@
                                                                 </connections>
                                                             </textField>
                                                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="DOB..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="b12-Bc-HHx">
-                                                                <rect key="frame" x="0.0" y="30" width="144" height="30"/>
+                                                                <rect key="frame" x="0.0" y="54" width="158" height="30"/>
                                                                 <animations/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="width" constant="189" id="3vO-gK-cuR"/>
@@ -1001,7 +1008,7 @@
                                                                 </connections>
                                                             </textField>
                                                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="qqo-BJ-fVf">
-                                                                <rect key="frame" x="0.0" y="60" width="144" height="29"/>
+                                                                <rect key="frame" x="0.0" y="84" width="158" height="29"/>
                                                                 <animations/>
                                                                 <segments>
                                                                     <segment title="Male"/>
@@ -1014,49 +1021,118 @@
                                                 </subviews>
                                                 <animations/>
                                             </stackView>
-                                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aDj-we-KKT">
-                                                <rect key="frame" x="0.0" y="112" width="288" height="29"/>
-                                                <animations/>
-                                                <segments>
-                                                    <segment title="Dating"/>
-                                                    <segment title="Engaged"/>
-                                                    <segment title="Married"/>
-                                                </segments>
-                                            </segmentedControl>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Dating/Engaged/Married since..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3Hd-ib-SGg">
-                                                <rect key="frame" x="0.0" y="140" width="288" height="30"/>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="bip-Yq-GBJ">
+                                                <rect key="frame" x="0.0" y="112" width="315" height="240"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Great! Almost done. We just want to get some info about the two of you as a couple to round out your profile" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R0U-ck-XGh">
+                                                        <rect key="frame" x="0.0" y="0.0" width="315" height="24"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="What's the current status of your relationship?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q5R-jI-djz">
+                                                        <rect key="frame" x="0.0" y="24" width="315" height="17"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="aDj-we-KKT">
+                                                        <rect key="frame" x="0.0" y="41" width="315" height="29"/>
+                                                        <animations/>
+                                                        <segments>
+                                                            <segment title="Dating"/>
+                                                            <segment title="Engaged"/>
+                                                            <segment title="Married"/>
+                                                        </segments>
+                                                    </segmentedControl>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="For how long?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7vF-mq-XVo">
+                                                        <rect key="frame" x="0.0" y="69" width="315" height="17"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Dating/Engaged/Married since..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3Hd-ib-SGg">
+                                                        <rect key="frame" x="0.0" y="86" width="315" height="30"/>
+                                                        <animations/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="189" id="ctV-3p-BmV"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <variation key="default">
+                                                            <mask key="constraints">
+                                                                <exclude reference="ctV-3p-BmV"/>
+                                                            </mask>
+                                                        </variation>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="gzg-CI-fYU" id="8mW-XQ-HFA"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Any kids?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="caT-Zg-oFn">
+                                                        <rect key="frame" x="0.0" y="116" width="315" height="17"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Number of kids" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="LpB-c7-iwm">
+                                                        <rect key="frame" x="0.0" y="133" width="315" height="30"/>
+                                                        <animations/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="189" id="m2v-2H-0Gs"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <variation key="default">
+                                                            <mask key="constraints">
+                                                                <exclude reference="m2v-2H-0Gs"/>
+                                                            </mask>
+                                                        </variation>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="gzg-CI-fYU" id="HbW-Kk-uiR"/>
+                                                        </connections>
+                                                    </textField>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Where do you live?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mhq-86-Iin">
+                                                        <rect key="frame" x="0.0" y="193" width="315" height="17"/>
+                                                        <animations/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Where do you live?" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Umj-XE-zPZ">
+                                                        <rect key="frame" x="0.0" y="210" width="315" height="30"/>
+                                                        <animations/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="189" id="hfA-1p-kYo"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                        <textInputTraits key="textInputTraits"/>
+                                                        <variation key="default">
+                                                            <mask key="constraints">
+                                                                <exclude reference="hfA-1p-kYo"/>
+                                                            </mask>
+                                                        </variation>
+                                                        <connections>
+                                                            <outlet property="delegate" destination="gzg-CI-fYU" id="Lfm-QO-gWZ"/>
+                                                        </connections>
+                                                    </textField>
+                                                </subviews>
                                                 <animations/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="189" id="ctV-3p-BmV"/>
+                                                    <constraint firstItem="Q5R-jI-djz" firstAttribute="width" secondItem="bip-Yq-GBJ" secondAttribute="width" id="3dC-zq-08f"/>
+                                                    <constraint firstItem="Umj-XE-zPZ" firstAttribute="width" secondItem="bip-Yq-GBJ" secondAttribute="width" id="4kY-MR-HG7"/>
+                                                    <constraint firstItem="LpB-c7-iwm" firstAttribute="width" secondItem="bip-Yq-GBJ" secondAttribute="width" id="IfC-R2-PtF"/>
+                                                    <constraint firstItem="caT-Zg-oFn" firstAttribute="width" secondItem="bip-Yq-GBJ" secondAttribute="width" id="SRS-Rc-trb"/>
+                                                    <constraint firstItem="aDj-we-KKT" firstAttribute="width" secondItem="bip-Yq-GBJ" secondAttribute="width" id="WaR-st-nG3"/>
+                                                    <constraint firstItem="mhq-86-Iin" firstAttribute="width" secondItem="bip-Yq-GBJ" secondAttribute="width" id="Zoy-Hz-TgQ"/>
+                                                    <constraint firstItem="3Hd-ib-SGg" firstAttribute="width" secondItem="bip-Yq-GBJ" secondAttribute="width" id="fte-HR-mdz"/>
+                                                    <constraint firstItem="7vF-mq-XVo" firstAttribute="width" secondItem="bip-Yq-GBJ" secondAttribute="width" id="hRK-T4-YvX"/>
+                                                    <constraint firstItem="R0U-ck-XGh" firstAttribute="width" secondItem="bip-Yq-GBJ" secondAttribute="width" id="paA-dk-0XT"/>
                                                 </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                                <variation key="default">
-                                                    <mask key="constraints">
-                                                        <exclude reference="ctV-3p-BmV"/>
-                                                    </mask>
-                                                </variation>
-                                                <connections>
-                                                    <outlet property="delegate" destination="gzg-CI-fYU" id="8mW-XQ-HFA"/>
-                                                </connections>
-                                            </textField>
-                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Where do you live?" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Umj-XE-zPZ">
-                                                <rect key="frame" x="0.0" y="170" width="288" height="30"/>
-                                                <animations/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="189" id="hfA-1p-kYo"/>
-                                                </constraints>
-                                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                                <textInputTraits key="textInputTraits"/>
-                                                <variation key="default">
-                                                    <mask key="constraints">
-                                                        <exclude reference="hfA-1p-kYo"/>
-                                                    </mask>
-                                                </variation>
-                                                <connections>
-                                                    <outlet property="delegate" destination="gzg-CI-fYU" id="Lfm-QO-gWZ"/>
-                                                </connections>
-                                            </textField>
+                                            </stackView>
                                         </subviews>
                                         <animations/>
                                         <constraints>
@@ -1094,15 +1170,19 @@
                     <navigationItem key="navigationItem" id="x08-n9-UMR"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
                     <connections>
+                        <outlet property="coupleStackView" destination="bip-Yq-GBJ" id="Ox7-XI-ct6"/>
                         <outlet property="dob1TextField" destination="sVU-ds-rMP" id="sLt-Ta-Fte"/>
                         <outlet property="dob2TextField" destination="b12-Bc-HHx" id="Av7-vM-18d"/>
+                        <outlet property="firstPersonStackView" destination="Ipo-aP-zKG" id="NkC-nJ-ntR"/>
                         <outlet property="gender1SegmentedControl" destination="9Gn-at-DvA" id="Jj6-6r-64v"/>
                         <outlet property="gender2SegmentedControl" destination="qqo-BJ-fVf" id="Dam-zX-HdX"/>
                         <outlet property="locationTextField" destination="Umj-XE-zPZ" id="fIF-cE-euF"/>
                         <outlet property="name1TextField" destination="m29-nt-zvR" id="jPW-q5-Tab"/>
                         <outlet property="name2TextField" destination="l1e-rF-0Wl" id="awQ-wG-0mb"/>
+                        <outlet property="numberOfKidsTextField" destination="LpB-c7-iwm" id="hFz-hM-0jw"/>
                         <outlet property="relationshipSegmentedControl" destination="aDj-we-KKT" id="EFP-YP-5Ga"/>
                         <outlet property="relationshipStartTextField" destination="3Hd-ib-SGg" id="yjr-JF-VBO"/>
+                        <outlet property="secondPersonStackView" destination="Cu9-W3-HWe" id="JOA-0J-pe0"/>
                         <segue destination="bNo-KW-c8x" kind="show" identifier="fromBasicInfoToEditProfile" id="1t0-Ma-Qd7"/>
                     </connections>
                 </viewController>
@@ -1120,7 +1200,7 @@
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <view key="tableFooterView" contentMode="scaleToFill" id="V7L-0S-Vdl">
-                            <rect key="frame" x="0.0" y="441" width="320" height="44"/>
+                            <rect key="frame" x="0.0" y="505" width="320" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="x3j-Ep-9VR">
@@ -1141,7 +1221,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" verticalHuggingPriority="1000" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileTitleCell" id="5kH-ge-6tj" customClass="ProfileTitleCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="92" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" tableViewCell="5kH-ge-6tj" id="dgj-41-eii">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1169,7 +1249,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileImageCell" rowHeight="281" id="AlF-DJ-YTZ" customClass="ProfileImageCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="72" width="320" height="281"/>
+                                <rect key="frame" x="0.0" y="136" width="320" height="281"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="AlF-DJ-YTZ" id="BCD-BS-nlM">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="281"/>
@@ -1206,36 +1286,40 @@
                                     <outlet property="profileImageView" destination="oyC-OK-2Xq" id="1rh-vg-QPx"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileAboutCoupleCell" id="2JI-yC-xWH" customClass="ProfileAboutCoupleCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="353" width="320" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileAboutCoupleCell" id="2JI-yC-xWH" customClass="ProfileAboutCoupleCell" customModule="Double" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="417" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="2JI-yC-xWH" id="GDV-dX-NZD">
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="2JI-yC-xWH" id="GDV-dX-NZD">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="About couple" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kuG-42-cGv">
-                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="4l7-Le-pMi">
+                                            <rect key="frame" x="8" y="8" width="304" height="28"/>
                                             <animations/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="t6s-hz-y7O"/>
+                                            </constraints>
+                                            <mutableString key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</mutableString>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                        </textView>
                                     </subviews>
                                     <animations/>
                                     <constraints>
-                                        <constraint firstItem="kuG-42-cGv" firstAttribute="top" secondItem="GDV-dX-NZD" secondAttribute="top" id="5nk-KR-RUO"/>
-                                        <constraint firstAttribute="trailing" secondItem="kuG-42-cGv" secondAttribute="trailing" id="eis-Ty-Z36"/>
-                                        <constraint firstAttribute="bottom" secondItem="kuG-42-cGv" secondAttribute="bottom" id="iyk-Y8-wpS"/>
-                                        <constraint firstItem="kuG-42-cGv" firstAttribute="leading" secondItem="GDV-dX-NZD" secondAttribute="leading" id="pZ8-dC-bzb"/>
+                                        <constraint firstItem="4l7-Le-pMi" firstAttribute="leading" secondItem="GDV-dX-NZD" secondAttribute="leadingMargin" id="GPq-Jx-XyV"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="4l7-Le-pMi" secondAttribute="bottom" id="Jzt-Ps-OT5"/>
+                                        <constraint firstItem="4l7-Le-pMi" firstAttribute="top" secondItem="GDV-dX-NZD" secondAttribute="topMargin" id="Vhh-hI-hZH"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="4l7-Le-pMi" secondAttribute="trailing" id="Zg7-EU-c9H"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <animations/>
                                 <connections>
-                                    <outlet property="aboutLabel" destination="kuG-42-cGv" id="yJc-7z-1Bj"/>
+                                    <outlet property="aboutTextView" destination="4l7-Le-pMi" id="v9D-Tg-vxD"/>
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="profileAboutIndividualsCell" id="uLS-WI-Znb" customClass="ProfileAboutIndividualsCell" customModule="Double" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="397" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="461" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="uLS-WI-Znb" id="fi8-5Z-WiW">
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -1275,7 +1359,7 @@
                                                                 <constraint firstAttribute="height" constant="70" id="hX0-Kd-McU"/>
                                                             </constraints>
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done"/>
                                                         </textView>
                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Tell us about your significant other too!" translatesAutoresizingMaskIntoConstraints="NO" id="iDN-1I-Klx">
                                                             <rect key="frame" x="163" y="0.0" width="158" height="70"/>
@@ -1326,6 +1410,38 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1607" y="-739"/>
+        </scene>
+        <!--Table View Controller-->
+        <scene sceneID="gQb-8y-WmC">
+            <objects>
+                <tableViewController id="sVg-QY-6HY" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="sR6-g0-neb">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <animations/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="mf8-e5-twV">
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="mf8-e5-twV" id="KHv-BD-s2C">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <animations/>
+                                </tableViewCellContentView>
+                                <animations/>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="sVg-QY-6HY" id="mHn-iF-MWY"/>
+                            <outlet property="delegate" destination="sVg-QY-6HY" id="rJM-e4-bx4"/>
+                        </connections>
+                    </tableView>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OX9-gQ-IGM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1972" y="-739"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="Sed-08-O6X">
@@ -1607,9 +1723,9 @@
     <inferredMetricsTieBreakers>
         <segue reference="Mdh-yY-4zp"/>
         <segue reference="AzT-8c-A1p"/>
+        <segue reference="1t0-Ma-Qd7"/>
         <segue reference="HVQ-hD-DFf"/>
         <segue reference="VOf-vH-hh6"/>
-        <segue reference="tgw-JN-0xC"/>
-        <segue reference="FqE-UQ-7WQ"/>
+        <segue reference="nmi-P6-cHe"/>
     </inferredMetricsTieBreakers>
 </document>

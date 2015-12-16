@@ -28,7 +28,10 @@ struct Person: FirebaseType {
     var profileIdentifier: String?
     
     var age: Int {
-        return Int(dob.timeIntervalSinceNow) * (-1) / (365*24*60*60)
+        let calendar = NSCalendar.currentCalendar()
+        let ageComponents = calendar.components(.Year, fromDate: dob, toDate: NSDate(), options: .MatchFirst)
+        return ageComponents.year
+
     }
     
     // FirebaseType attributes and failable initializer

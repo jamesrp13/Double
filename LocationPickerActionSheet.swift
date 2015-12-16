@@ -8,7 +8,7 @@
 
 import UIKit
 
-class LocationPickerActionSheet: UIView {
+class LocationPickerActionSheet: UIView, UITextFieldDelegate {
     
     let doneButton = UIButton()
     let useLocationButton = UIButton()
@@ -42,6 +42,7 @@ class LocationPickerActionSheet: UIView {
         
         //zipTextField properties
         zipTextField.placeholder = "Enter your zip code"
+        zipTextField.delegate = self
         
         //Add properties to doneButton
         doneButton.frame = CGRect(x: 0.0, y: 0.0, width: self.frame.width, height: 30)
@@ -50,5 +51,10 @@ class LocationPickerActionSheet: UIView {
         doneButton.setTitleColor(.blueColor(), forState: .Normal)
         doneButton.addTarget(parent, action: doneActionSelector, forControlEvents: .TouchUpInside)
         
+    }
+    
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }

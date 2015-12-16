@@ -22,6 +22,11 @@ struct Child: FirebaseType {
     var dob: NSDate
     var gender: Gender
     var profileIdentifier: String?
+    var age: Int {
+        let calendar = NSCalendar.currentCalendar()
+        let ageComponents = calendar.components(.Month, fromDate: dob, toDate: NSDate(), options: .MatchFirst)
+        return ageComponents.month
+    }
     
     // FirebaseType attributes and failable initializer
     var identifier: String?
@@ -48,7 +53,7 @@ struct Child: FirebaseType {
     }
     
     // Standard initializer
-    init(dob: NSDate, gender: Gender, profileIdentifier: String? = nil, identifier: String? = nil) {
+    init(dob: NSDate, gender: Gender, profileIdentifier: String, identifier: String? = nil) {
         self.dob = dob
         self.gender = gender
         self.profileIdentifier = profileIdentifier

@@ -9,47 +9,50 @@
 import UIKit
 
 class ProfileAboutCoupleCell: UITableViewCell {
-
+    
     @IBOutlet weak var aboutLabel: UILabel!
+    @IBOutlet weak var aboutTextView: UITextView!
     
     var relationshipStatus: String? = nil
     var relationshipStart: NSDate? = nil
+    var children: [Child] = []
     var location: CLLocation? = nil
     
     var relationshipLength: String? {
         var lengthString = ""
         if let relationshipStart = relationshipStart,
             let relationshipStatus = relationshipStatus {
-            let years = relationshipStart.timeIntervalSinceNow/(-365)/24/60/60
-            let months = (relationshipStart.timeIntervalSinceNow)/(-24)/60/60/30
-            let yearsRounded = Int(round(years))
-            let monthsRounded = Int(round(months))
-            if years < 1 {
-                if monthsRounded == 0 {
-                    switch relationshipStatus {
+                let calendar = NSCalendar.currentCalendar()
+                let lengthComponents = calendar.components(.Month, fromDate: relationshipStart, toDate: NSDate(), options: .MatchFirst)
+                
+                let years = lengthComponents.month/12
+                let months = lengthComponents.month
+                if years < 1 {
+                    if months == 0 {
+                        switch relationshipStatus {
                         case "dating":
-                        lengthString = "just started dating"
+                            lengthString = "just started dating"
                         case "married":
-                        lengthString = "just got married"
+                            lengthString = "just got married"
                         case "engaged":
-                        lengthString = "just got engaged"
-                    default:
-                        lengthString = "just started dating"
+                            lengthString = "just got engaged"
+                        default:
+                            lengthString = "just started dating"
+                        }
+                    } else {
+                        lengthString = months == 1 ? "have been \(relationshipStatus) for \(months) month":"have been \(relationshipStatus) for \(months) months"
                     }
                 } else {
-                    lengthString = monthsRounded == 1 ? "have been \(relationshipStatus) for \(monthsRounded) month":"have been \(relationshipStatus) for \(monthsRounded) months"
+                    if months%12 >= 4 && months%12 <= 8 {
+                        lengthString = "have been \(relationshipStatus) for \(years) and a half years"
+                    } else {
+                        lengthString = years == 1 ? "have been \(relationshipStatus) for \(years) year":"have been \(relationshipStatus) for \(years) years"
+                    }
                 }
-            } else {
-                if months%12 >= 4 && months%12 <= 8 {
-                    lengthString = "have been \(relationshipStatus) for \(yearsRounded) and a half years"
-                } else {
-                    lengthString = yearsRounded == 1 ? "have been \(relationshipStatus) for \(yearsRounded) year":"have been \(relationshipStatus) for \(yearsRounded) years"
-                }
-            }
         }
         return lengthString
     }
-
+    
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -63,30 +66,85 @@ class ProfileAboutCoupleCell: UITableViewCell {
     }
     
     func updateWithProfile(profile: Profile) {
-        let person1 = profile.people.0
-        let person2 = profile.people.1
         self.relationshipStart = profile.relationshipStart
         self.relationshipStatus = profile.relationshipStatus.rawValue.lowercaseString
         self.location = profile.location
-        if let relationshipLength = relationshipLength {
-            guard let location = location else {return}
-            LocationController.locationAsCityCountry(location, completion: { (cityState) -> Void in
-                guard let cityState = cityState else {return}
-                if let children = profile.children where children.count > 0 {
-                    self.aboutLabel.text = "\(person1.name) and \(person2.name) \(relationshipLength), have \(children.count) \(children.count == 1 ? "child":"children") and live in \(cityState)."
-                } else {
-                    self.aboutLabel.text = "\(person1.name) and \(person2.name) \(relationshipLength) and live in \(cityState)."
+        self.children = profile.children ?? []
+        
+        guard let relationshipLength = relationshipLength,
+            location = self.location else {return}
+        let people = profile.people
+        
+        LocationController.locationAsCityCountry(location, completion: { (cityState) -> Void in
+            guard let cityState = cityState else {return}
+            var childString: String = ""
+            var description: String = ""
+            if self.children.count > 0 && self.children.count < 5 {
+                for var i=1; i<self.children.count; i++ {
+                    let child = self.children[i]
+                    let gender = child.gender.rawValue == "M" ? "son":"daughter"
+                    var childAgeString: String = ""
+                    if child.age < 12 {
+                        childAgeString = "\(child.age) month old"
+                    } else {
+                        childAgeString = "\(child.age/12) year old"
+                    }
+                    if childString.characters.count > 0 {
+                        childString += ", "
+                    }
+                    childString += "\(childAgeString) \(gender)"
                 }
-            })
-        }
+                description = "\(people.0.name) and \(people.1.name) \(relationshipLength) and live in \(cityState) with their \(childString)."
+            } else if self.children.count >= 5 {
+                childString = "\(self.children.count) children"
+                description = "\(people.0.name) and \(people.1.name) \(relationshipLength) and live in \(cityState) with their \(childString)."
+            } else {
+                description = "\(people.0.name) and \(people.1.name) \(relationshipLength) and live in \(cityState)."
+            }
+            
+            if self.aboutLabel != nil {
+                self.aboutLabel.text = description
+            } else if self.aboutTextView != nil {
+                self.aboutTextView.text = description
+            }
+        })
     }
     
-    func updateWithPeople(people: (Person, Person), relationshipStatus: String, relationshipStart: NSDate) {
+    func updateWithPeople(people: (Person, Person), relationshipStatus: String, relationshipStart: NSDate, children: [Child], location: CLLocation) {
         self.relationshipStart = relationshipStart
         self.relationshipStatus = relationshipStatus.lowercaseString
-        if let relationshipLength = relationshipLength {
-            aboutLabel.text = "\(people.0.name) and \(people.1.name) \(relationshipLength)."
-        }
+        self.location = location
+        self.children = children
+        
+        guard let relationshipLength = relationshipLength,
+            location = self.location else {return}
+        
+        LocationController.locationAsCityCountry(location, completion: { (cityState) -> Void in
+            guard let cityState = cityState else {return}
+            var childString: String = ""
+            var description: String = ""
+            if children.count > 0 && children.count < 5 {
+                for var i=1; i<children.count; i++ {
+                    let child = children[i]
+                    let gender = child.gender.rawValue == "M" ? "son":"daughter"
+                    if childString.characters.count > 0 {
+                        childString += ", "
+                    }
+                    childString += "\(child.age) year old \(gender)"
+                }
+                description = "\(people.0.name) and \(people.1.name) \(relationshipLength) and live in \(cityState) with their \(childString)."
+            } else if children.count >= 5 {
+                childString = "\(children.count) children"
+                description = "\(people.0.name) and \(people.1.name) \(relationshipLength) and live in \(cityState) with their \(childString)."
+            } else {
+                description = "\(people.0.name) and \(people.1.name) \(relationshipLength) and live in \(cityState)."
+            }
+            
+            if self.aboutLabel != nil {
+                self.aboutLabel.text = description
+            } else if self.aboutTextView != nil {
+                self.aboutTextView.text = description
+            }
+        })
     }
-    
 }

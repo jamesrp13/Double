@@ -188,6 +188,15 @@ class ProfileTableViewController: UITableViewController {
         return UITableViewCell()
 
     }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath.row == 3 {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let viewController = storyboard.instantiateViewControllerWithIdentifier("basicInfoController") as? BasicInfoViewController
+            viewController
+            
+        }
+    }
 
     
     // MARK: - Navigation

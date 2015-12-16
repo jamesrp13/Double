@@ -42,6 +42,12 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
         }
     }
     
+    var children: [Child] = [] {
+        didSet {
+            tableView.reloadData()
+        }
+    }
+    
     var profile: Profile? = nil {
         didSet {
             tableView.reloadData()
@@ -191,8 +197,9 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
                 } else {
                     if let people = people {
                         if let relationshipStart = relationshipStart,
-                            relationshipStatus = relationshipStatus {
-                            unwrappedCell.updateWithPeople(people, relationshipStatus: "\(relationshipStatus)", relationshipStart: relationshipStart)
+                            relationshipStatus = relationshipStatus,
+                            location = location {
+                                unwrappedCell.updateWithPeople(people, relationshipStatus: "\(relationshipStatus)", relationshipStart: relationshipStart, children: children, location: location)
                         }
                         
                     } else {

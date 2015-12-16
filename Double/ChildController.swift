@@ -37,11 +37,11 @@ class ChildController {
         }
     }
     
-    static func mockChildren() -> [Child] {
-        let child1 = Child(dob: NSDate(timeIntervalSinceNow: (-1.0)*365*24*60*60), gender: Child.Gender.Female)
-        let child2 = Child(dob: NSDate(timeIntervalSinceNow: (-1.0)*365*24*60*60), gender: Child.Gender.Male)
-        let child3 = Child(dob: NSDate(timeIntervalSinceNow: (-1.0)*365*24*60*60), gender: Child.Gender.Female)
-        
-        return [child1, child2, child3]
-    }
+//    static func mockChildren() -> [Child] {
+//        let child1 = Child(dob: NSDate(timeIntervalSinceNow: (-1.0)*365*24*60*60), gender: Child.Gender.Female)
+//        let child2 = Child(dob: NSDate(timeIntervalSinceNow: (-1.0)*365*24*60*60), gender: Child.Gender.Male)
+//        let child3 = Child(dob: NSDate(timeIntervalSinceNow: (-1.0)*365*24*60*60), gender: Child.Gender.Female)
+//        
+//        return [child1, child2, child3]
+//    }
 }

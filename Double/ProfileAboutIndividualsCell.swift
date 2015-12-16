@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileAboutIndividualsCell: UITableViewCell {
+class ProfileAboutIndividualsCell: UITableViewCell, UITextViewDelegate {
 
     @IBOutlet weak var firstPersonNameLabel: UILabel!
     @IBOutlet weak var secondPersonNameLabel: UILabel!
@@ -19,13 +19,24 @@ class ProfileAboutIndividualsCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        if let firstPersonAboutTextView = firstPersonAboutTextView,
+            secondPersonAboutTextView = secondPersonAboutTextView {
+                firstPersonAboutTextView.delegate = self
+                secondPersonAboutTextView.delegate = self
+        }
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.resignFirstResponder()
+        }
+        return false
     }
     
     func updateWithProfile(profile: Profile) {

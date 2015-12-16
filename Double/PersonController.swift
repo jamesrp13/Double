@@ -39,4 +39,16 @@ class PersonController {
         
         return [person1, person2, person3, person4]
     }
+    
+    static func ageInYearsFromBirthday(birthday: NSDate) -> Int {
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components(.Year, fromDate: birthday, toDate: NSDate(), options: .MatchFirst)
+        return components.year
+    }
+    
+    static func ageInMonthsFromBirthday(birthday: NSDate) -> Int {
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components(.Month, fromDate: birthday, toDate: NSDate(), options: .MatchFirst)
+        return components.month
+    }
 }
