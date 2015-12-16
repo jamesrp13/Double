@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileAboutCoupleCell: UITableViewCell {
+class ProfileAboutCoupleCell: UITableViewCell, UITextViewDelegate {
     
     @IBOutlet weak var aboutLabel: UILabel!
     @IBOutlet weak var aboutTextView: UITextView!
@@ -17,6 +17,7 @@ class ProfileAboutCoupleCell: UITableViewCell {
     var relationshipStart: NSDate? = nil
     var children: [Child] = []
     var location: CLLocation? = nil
+    var parentTableViewController: EditProfileTableViewController? = nil
     
     var relationshipLength: String? {
         var lengthString = ""
@@ -56,7 +57,10 @@ class ProfileAboutCoupleCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        if aboutTextView != nil {
+            aboutTextView.delegate = self
+            aboutTextView.inputView = UIView()
+        }
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
@@ -146,5 +150,13 @@ class ProfileAboutCoupleCell: UITableViewCell {
                 self.aboutTextView.text = description
             }
         })
+    }
+    
+    func textViewDidBeginEditing(textView: UITextView) {
+        if textView == aboutTextView {
+            if let parentTableViewController = parentTableViewController {
+                parentTableViewController.displayBasicInfoPopoverViewController()
+            }
+        }
     }
 }

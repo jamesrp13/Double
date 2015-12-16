@@ -8,18 +8,18 @@
 
 import UIKit
 
-class LocationPickerActionSheet: UIView, UITextFieldDelegate {
+class LocationPickerActionSheet: UIView {
     
     let doneButton = UIButton()
     let useLocationButton = UIButton()
     let orLabel = UILabel()
-    let zipTextField = UITextField()
+    let useZipButton = UIButton()
     
-    convenience init(parent: UIViewController, doneActionSelector: Selector, locationActionSelector: Selector) {
+    convenience init(parent: UIViewController, useZipSelector: Selector, useLocationSelector: Selector) {
         self.init()
         let phoneFrame = parent.view.frame
         
-        let stackView = UIStackView(arrangedSubviews: [useLocationButton, orLabel, zipTextField, doneButton])
+        let stackView = UIStackView(arrangedSubviews: [useLocationButton, orLabel, useZipButton])
         stackView.axis = .Vertical
         
         //Create background view and properties
@@ -31,30 +31,21 @@ class LocationPickerActionSheet: UIView, UITextFieldDelegate {
         stackView.alignment = .Fill
         
         //useLocationButton properties
-        useLocationButton.frame.size.height = zipTextField.frame.height * 2
+        useLocationButton.frame.size.height = 30.0
         useLocationButton.setTitle("Use current location", forState: .Normal)
         useLocationButton.backgroundColor = .blueColor()
         useLocationButton.setTitleColor(.whiteColor(), forState: .Normal)
-        useLocationButton.addTarget(parent, action: locationActionSelector, forControlEvents: .TouchUpInside)
+        useLocationButton.addTarget(parent, action: useLocationSelector, forControlEvents: .TouchUpInside)
         
         //orLabel properties
         orLabel.text = "OR"
         
-        //zipTextField properties
-        zipTextField.placeholder = "Enter your zip code"
-        zipTextField.delegate = self
+        //useZipButton properties
+        useZipButton.frame.size.height = 30.0
+        useZipButton.setTitle("Use zip code", forState: .Normal)
+        useZipButton.backgroundColor = .blueColor()
+        useZipButton.setTitleColor(.whiteColor(), forState: .Normal)
+        useZipButton.addTarget(parent, action: useZipSelector, forControlEvents: .TouchUpInside)
         
-        //Add properties to doneButton
-        doneButton.frame = CGRect(x: 0.0, y: 0.0, width: self.frame.width, height: 30)
-        doneButton.setTitle("Done", forState: .Normal)
-        doneButton.backgroundColor = .whiteColor()
-        doneButton.setTitleColor(.blueColor(), forState: .Normal)
-        doneButton.addTarget(parent, action: doneActionSelector, forControlEvents: .TouchUpInside)
-        
-    }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
     }
 }

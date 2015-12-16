@@ -11,6 +11,11 @@ import CoreLocation
 
 class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     
+    enum basicInfoViewType {
+        case createAccount
+        case editProfile
+    }
+    
     var accountIdentifier: String? {
         get {
             return ProfileController.SharedInstance.currentUserIdentifier
@@ -52,27 +57,51 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     var datePickerActionSheet: DatePickerActionSheet? = nil
     var genericDatePicker: UIDatePicker? = nil
     var locationPicker: LocationPickerActionSheet? = nil
+    var numberOfKidsActionSheet: PickerViewActionSheet? = nil
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBarHidden = true
         
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setLocationTextFieldText:", name: "locationUpdated", object: nil)
+        
+        loadProperState()
+        createChildStackViews()
+        configureInputFields()
+    }
+    
+    // MARK: - Presentation and input configuration
+    
+    func configureInputFields() {
         datePickerActionSheet = DatePickerActionSheet(parent: self, doneActionSelector: "datePickerInputFinished")
         genericDatePicker = datePickerActionSheet!.datePicker
         dob1TextField.inputView = datePickerActionSheet
         dob2TextField.inputView = datePickerActionSheet
         relationshipStartTextField.inputView = datePickerActionSheet
         
-        let locationPickerActionSheet = LocationPickerActionSheet(parent: self, doneActionSelector: "locationInputViaZip", locationActionSelector: "locationViaDeviceLocation")
+        let locationPickerActionSheet = LocationPickerActionSheet(parent: self, useZipSelector: "getLocationFromZip", useLocationSelector: "locationViaDeviceLocation")
         locationPicker = locationPickerActionSheet
         locationTextField.inputView = locationPicker
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setLocationTextFieldText:", name: "locationUpdated", object: nil)
-        
-        secondPersonStackView.hidden = true
-        coupleStackView.hidden = true
-        
-        createChildStackViews()
+        numberOfKidsActionSheet = PickerViewActionSheet(parent: self, doneActionSelector: "numberOfKidsInputDone")
+        numberOfKidsTextField.inputView = numberOfKidsActionSheet
+    }
+    
+    func loadProperState() {
+        switch state {
+        case .first:
+            firstPersonStackView.hidden = false
+            secondPersonStackView.hidden = true
+            coupleStackView.hidden = true
+        case .second:
+            firstPersonStackView.hidden = true
+            secondPersonStackView.hidden = false
+            coupleStackView.hidden = true
+        case .couple:
+            firstPersonStackView.hidden = true
+            secondPersonStackView.hidden = true
+            coupleStackView.hidden = false
+        }
     }
     
     func createChildStackViews() {
@@ -93,32 +122,39 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func locationInputViaZip() {
-        if let locationPicker = locationPicker {
-            if let textField = activeTextField {
-                textField.becomeFirstResponder()
-                guard let zip = locationPicker.zipTextField.text else {textField.resignFirstResponder(); activeTextField = nil; return}
-                LocationController.zipAsCoordinates(zip, completion: { (location) -> Void in
-                    if let location = location {
-                        self.location = location
-                        LocationController.locationAsCityCountry(location, completion: { (cityState) -> Void in
-                            if let cityState = cityState {
-                                textField.text = cityState
-                                textField.resignFirstResponder()
-                                self.activeTextField = nil
-                            } else {
-                                textField.resignFirstResponder()
-                                self.activeTextField = nil
-                                
-                                //TODO: Error handling
-                            }
-                        })
-                    }
-                    textField.resignFirstResponder()
-                    self.activeTextField = nil
-                })
-            }
+    // MARK: - Location input handling
+    
+    func getLocationFromZip() {
+        locationTextField.placeholder = "Enter zip code"
+        locationTextField.resignFirstResponder()
+        locationTextField.inputView = nil
+        locationTextField.keyboardType = .NumberPad
+        
+        let doneButton = UIBarButtonItem()
+        doneButton.title = "Done"
+        doneButton.action = "zipCodeAdded"
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        toolbar.frame.size.height = 30.0
+        toolbar.items = [doneButton]
+        locationTextField.inputAccessoryView = toolbar
+        locationTextField.becomeFirstResponder()
+    }
+    
+    func zipCodeAdded() {
+        if let zip = locationTextField.text where zip.characters.count > 4 {
+            LocationController.zipAsCoordinates(zip, completion: { (location) -> Void in
+                if let location = location {
+                    self.location = location
+                    LocationController.locationAsCityCountry(location, completion: { (cityState) -> Void in
+                        if let cityState = cityState {
+                            self.locationTextField.text = cityState
+                        }
+                    })
+                }
+            })
         }
+        locationTextField.resignFirstResponder()
     }
     
     func locationViaDeviceLocation() {
@@ -151,6 +187,32 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                     }
                 })
             }
+        }
+    }
+    
+    // MARK: - Handling input fields
+    
+    func numberOfKidsInputDone() {
+        if let textField = activeTextField {
+            if let numberOfKidsPicker = numberOfKidsActionSheet?.pickerView {
+                textField.text = String(numberOfKidsPicker.selectedRowInComponent(0))
+                if let numberOfKidsAsText = numberOfKidsTextField.text where numberOfKidsAsText.characters.count > 0 && numberOfKidsAsText != "0" {
+                    let numberOfKids = Int(numberOfKidsAsText)
+                    for var i=0; i < 25; i++ {
+                        if i<numberOfKids {
+                            coupleStackView.subviews[i+9].hidden = false
+                        } else {
+                            coupleStackView.subviews[i+9].hidden = true
+                        }
+                    }
+                } else {
+                    for var i=0; i < 25; i++ {
+                        coupleStackView.subviews[i+9].hidden = true
+                    }
+                }
+
+            }
+            textField.resignFirstResponder()
         }
     }
     
@@ -199,36 +261,61 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         resignFirstResponderForOtherTextFields(textField)
     }
     
-    func resignFirstResponderForOtherTextFields(textFieldInUse: UITextField) {
-        if textFieldInUse != dob1TextField {
-            dob1TextField.resignFirstResponder()
-        }
-        if textFieldInUse != dob2TextField {
-            dob2TextField.resignFirstResponder()
-        }
-        if textFieldInUse != relationshipStartTextField {
-            relationshipStartTextField.resignFirstResponder()
-        }
-        if textFieldInUse != name1TextField {
-            name1TextField.resignFirstResponder()
-        }
-        if textFieldInUse != name2TextField {
-            name2TextField.resignFirstResponder()
-        }
-        if textFieldInUse != locationTextField {
-            locationTextField.resignFirstResponder()
+    func resignFirstResponderForOtherTextFields(textFieldInUse: UITextField?) {
+        findTextFields(self.view) { (textFields) -> Void in
+            if let textFieldInUse = textFieldInUse {
+                for textField in textFields {
+                    if textField != textFieldInUse {
+                        textField.resignFirstResponder()
+                    }
+                }
+            } else {
+                for textField in textFields {
+                    textField.resignFirstResponder()
+                }
+            }
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func findTextFields(view: UIView, completion: (textFields: [UITextField]) -> Void) {
+        var textFieldArray: [UITextField] = []
+        let tunnel = dispatch_group_create()
+        for var i=0; i<view.subviews.count; i++ {
+            dispatch_group_enter(tunnel)
+            findTextFields(view.subviews[i], completion: { (textFields) -> Void in
+                textFieldArray += textFields
+                dispatch_group_leave(tunnel)
+            })
+        }
+        if let view = view as? UITextField {
+            textFieldArray.append(view)
+        }
+        dispatch_group_notify(tunnel, dispatch_get_main_queue()) { () -> Void in
+            completion(textFields: textFieldArray)
+        }
     }
     
-    func presentAlert(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        alert.addAction(UIAlertAction(title: "Try again", style: .Cancel, handler: nil))
-        presentViewController(alert, animated: true, completion: nil)
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        if textField == numberOfKidsTextField {
+            if let numberOfKidsAsText = numberOfKidsTextField.text where numberOfKidsAsText.characters.count > 0 && numberOfKidsAsText != "0" {
+                let numberOfKids = Int(numberOfKidsAsText)
+                for var i=0; i < 25; i++ {
+                    if i<numberOfKids {
+                        coupleStackView.subviews[i+9].hidden = false
+                    } else {
+                        coupleStackView.subviews[i+9].hidden = true
+                    }
+                }
+            } else {
+                for var i=0; i < 25; i++ {
+                    coupleStackView.subviews[i+9].hidden = true
+                }
+            }
+        }
+        name1TextField.resignFirstResponder()
+        name2TextField.resignFirstResponder()
+        numberOfKidsTextField.resignFirstResponder()
+        return true
     }
     
     @IBAction func nextButtonTapped(sender: AnyObject) {
@@ -258,6 +345,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 let _ = dob1,
                 let _ = dob2,
                 let relationshipStart = relationshipStart else {presentAlert("Empty fields", message: "Please fill in all requested information. This will be shown in your profile"); return}
+            guard let _ = location else {presentAlert("Invalid location", message:  "Please give us a valid location or the app just won't work for you.");return}
             
             let relationshipLength = relationshipStart.timeIntervalSinceNow/(-365)/24/60/60
             guard relationshipLength > 0 else {presentAlert("Invalid relationship length", message: "Turns out we don't allow relationships that haven't started yet..."); return}
@@ -280,40 +368,10 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             self.performSegueWithIdentifier("fromBasicInfoToEditProfile", sender: self)
         }
     }
-    
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if textField == numberOfKidsTextField {
-            if let numberOfKidsAsText = numberOfKidsTextField.text where numberOfKidsAsText.characters.count > 0 && numberOfKidsAsText != "0" {
-                let numberOfKids = Int(numberOfKidsAsText)
-                for var i=0; i < 25; i++ {
-                    if i<numberOfKids {
-                        coupleStackView.subviews[i+9].hidden = false
-                    } else {
-                        coupleStackView.subviews[i+9].hidden = true
-                    }
-                }
-            } else {
-                for var i=0; i < 25; i++ {
-                    coupleStackView.subviews[i+9].hidden = true
-                }
-            }
-        }
-        name1TextField.resignFirstResponder()
-        name2TextField.resignFirstResponder()
-        numberOfKidsTextField.resignFirstResponder()
-        return true
-    }
-    
-    func reloadView(view: UIView) {
-        if view.subviews.count > 0 {
-            for var i=0; i<view.subviews.count; i++ {
-                reloadView(view.subviews[i])
-            }
-        }
-        view.setNeedsDisplay()
-        view.setNeedsLayout()
-    }
 
+    func updateWithProfile(profile: Profile) {
+        
+    }
     
     // MARK: - Navigation
 
@@ -341,5 +399,12 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // MARK: - Miscellaneous
+    
+    func presentAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
+        alert.addAction(UIAlertAction(title: "Try again", style: .Cancel, handler: nil))
+        presentViewController(alert, animated: true, completion: nil)
+    }
 
 }

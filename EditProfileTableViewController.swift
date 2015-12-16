@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditProfileTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class EditProfileTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UIPopoverControllerDelegate {
 
     var accountIdentifier: String? = nil
     
@@ -192,6 +192,7 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
             }
         case 2:
             if let unwrappedCell = tableView.dequeueReusableCellWithIdentifier("profileAboutCoupleCell", forIndexPath: indexPath) as? ProfileAboutCoupleCell {
+                unwrappedCell.parentTableViewController = self
                 if let profile = profile {
                     unwrappedCell.updateWithProfile(profile)
                 } else {
@@ -240,8 +241,25 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
         alert.addAction(UIAlertAction(title: "Try again", style: .Cancel, handler: nil))
         presentViewController(alert, animated: true, completion: nil)
     }
+    
+    func displayBasicInfoPopoverViewController() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let basicInfoViewController = storyboard.instantiateViewControllerWithIdentifier("basicInfoController") as! BasicInfoViewController
+        basicInfoViewController.modalPresentationStyle = .Popover
+        basicInfoViewController.preferredContentSize = CGSizeMake(self.view.frame.width - 40, self.view.frame.height - 100)
+        
+        let popoverBasicinfoController = basicInfoViewController.popoverPresentationController
+        popoverBasicinfoController?.permittedArrowDirections = .Up
+        popoverBasicinfoController?.sourceView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0))!
+        popoverBasicinfoController?.sourceRect = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0))!.bounds
+        presentViewController(basicInfoViewController, animated: true, completion: nil)
+    }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController!) -> UIModalPresentationStyle {
+        return .None
+    }
 
-       // MARK: - Navigation
+    // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A01DC7D1C1F5D1E005BB5F2 /* LocationPickerActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A01DC7C1C1F5D1E005BB5F2 /* LocationPickerActionSheet.swift */; };
 		1A01DC7F1C20A30A005BB5F2 /* AboutCoupleActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A01DC7E1C20A30A005BB5F2 /* AboutCoupleActionSheet.swift */; };
+		1A6002171C2200A10003C026 /* PickerViewActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A6002161C2200A10003C026 /* PickerViewActionSheet.swift */; };
 		1A75329B1C0CB9F400F42FFA /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A75329A1C0CB9F400F42FFA /* ChatTableViewController.swift */; };
 		1A75329D1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A75329C1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift */; };
 		1A75329F1C0CBAC400F42FFA /* ChatRightAlignedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A75329E1C0CBAC400F42FFA /* ChatRightAlignedTableViewCell.swift */; };
@@ -97,6 +98,7 @@
 /* Begin PBXFileReference section */
 		1A01DC7C1C1F5D1E005BB5F2 /* LocationPickerActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocationPickerActionSheet.swift; sourceTree = "<group>"; };
 		1A01DC7E1C20A30A005BB5F2 /* AboutCoupleActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AboutCoupleActionSheet.swift; sourceTree = "<group>"; };
+		1A6002161C2200A10003C026 /* PickerViewActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PickerViewActionSheet.swift; sourceTree = "<group>"; };
 		1A75329A1C0CB9F400F42FFA /* ChatTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTableViewController.swift; sourceTree = "<group>"; };
 		1A75329C1C0CBA7300F42FFA /* ChatLeftAlignedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatLeftAlignedTableViewCell.swift; sourceTree = "<group>"; };
 		1A75329E1C0CBAC400F42FFA /* ChatRightAlignedTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatRightAlignedTableViewCell.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 			children = (
 				1AA7262B1C1A132700F90F92 /* Double-Bridging-Header.h */,
 				1AA725D01C1797D200F90F92 /* DatePickerActionSheet.swift */,
+				1A6002161C2200A10003C026 /* PickerViewActionSheet.swift */,
 				1A01DC7C1C1F5D1E005BB5F2 /* LocationPickerActionSheet.swift */,
 				1A01DC7E1C20A30A005BB5F2 /* AboutCoupleActionSheet.swift */,
 				1ABD3B951BFD77B600544104 /* Frameworks */,
@@ -548,6 +551,7 @@
 				1ABD3B991BFE2D0200544104 /* PersonController.swift in Sources */,
 				1AA725581C15545200F90F92 /* LoginSignupPickerViewController.swift in Sources */,
 				1ABD3B9F1BFE2D3000544104 /* FriendshipController.swift in Sources */,
+				1A6002171C2200A10003C026 /* PickerViewActionSheet.swift in Sources */,
 				1A01DC7F1C20A30A005BB5F2 /* AboutCoupleActionSheet.swift in Sources */,
 				1AA726431C1A30EC00F90F92 /* GFBase32Utils.m in Sources */,
 				1ABD3B821BFD73F800544104 /* Friendship.swift in Sources */,
