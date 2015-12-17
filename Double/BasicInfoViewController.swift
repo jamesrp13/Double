@@ -47,8 +47,8 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var locationTextField: UITextField!
     @IBOutlet weak var numberOfKidsTextField: UITextField!
     
-    var dob1: NSDate? = nil
-    var dob2: NSDate? = nil
+    var person1: Person? = nil
+    var person2: Person? = nil
     var relationshipStart: NSDate? = nil
     var location: CLLocation? = nil
     var children: [Child] = []
@@ -68,6 +68,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         loadProperState()
         createChildStackViews()
         configureInputFields()
+        
     }
     
     // MARK: - Presentation and input configuration
@@ -120,6 +121,11 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             coupleStackView.insertArrangedSubview(horizontalStackView, atIndex: 7+i)
             coupleStackView.subviews.last?.hidden = true
         }
+    }
+    
+    func updateWithProfile(profile: Profile) {
+        state = .couple
+        
     }
     
     // MARK: - Location input handling
@@ -224,18 +230,6 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 dateFormatter.dateStyle = .MediumStyle
                 dateFormatter.timeStyle = .NoStyle
                 textField.text = dateFormatter.stringFromDate(date)
-                
-                switch textField {
-                case dob1TextField:
-                    dob1 = date
-                case dob2TextField:
-                    dob2 = date
-                case relationshipStartTextField:
-                    relationshipStart = date
-                default:
-                    break
-                }
-                
                 textField.resignFirstResponder()
                 activeTextField = nil
             }
@@ -318,73 +312,69 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         return true
     }
     
+    // MARK: - Navigation
+    
     @IBAction func nextButtonTapped(sender: AnyObject) {
+        
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = .MediumStyle
         
         switch state {
         case State.first:
             guard let firstPersonName = name1TextField.text where firstPersonName.characters.count > 0,
-                let dob1 = dob1 else {presentAlert("Empty fields", message: "Please fill in all requested information. This will be shown in your profile"); return}
-            let age1 = (dob1.timeIntervalSinceNow/(-365)/24/60/60)
-            guard age1 > 18 else {presentAlert("Not old enough", message: "Sorry - both partners need to be 18 or older to use this app."); return}
-            firstPersonStackView.hidden = true
-            secondPersonStackView.hidden = false
-            coupleStackView.hidden = true
+                let dobAsText = dob1TextField.text where dobAsText.characters.count > 0 else {presentAlert("Empty fields", message: "Please fill in all requested information. This will be shown in your profile"); return}
+            let dob = dateFormatter.dateFromString(dobAsText)!
+            guard PersonController.ageInYearsFromBirthday(dob) >= 18 else {presentAlert("Not old enough", message: "Sorry - both partners need to be 18 or older to use this app."); return}
+            let gender = gender1SegmentedControl.selectedSegmentIndex == 0 ? "M":"F"
+            person1 = Person(name: firstPersonName, dob: dob, gender: Person.Gender(rawValue: gender)!)
+            if var person = person1 {
+                person.save()
+            }
             state = State.second
+            loadProperState()
         case State.second:
             guard let secondPersonName = name2TextField.text where secondPersonName.characters.count > 0,
-                let dob2 = dob2 else {presentAlert("Empty fields", message: "Please fill in all requested information. This will be shown in your profile"); return}
-            let age2 = (dob2.timeIntervalSinceNow/(-365)/24/60/60)
-            guard age2 > 18 else {presentAlert("Not old enough", message: "Sorry - both partners need to be 18 or older to use this app."); return}
-            firstPersonStackView.hidden = true
-            secondPersonStackView.hidden = true
-            coupleStackView.hidden = false
+                let dobAsText = dob2TextField.text where dobAsText.characters.count > 0 else {presentAlert("Empty fields", message: "Please fill in all requested information. This will be shown in your profile"); return}
+            let dob = dateFormatter.dateFromString(dobAsText)!
+            guard PersonController.ageInYearsFromBirthday(dob) >= 18 else {presentAlert("Not old enough", message: "Sorry - both partners need to be 18 or older to use this app."); return}
+            let gender = gender2SegmentedControl.selectedSegmentIndex == 0 ? "M":"F"
+            person2 = Person(name: secondPersonName, dob: dob, gender: Person.Gender(rawValue: gender)!)
+            if var person = person2 {
+                person.save()
+            }
             state = State.couple
+            loadProperState()
         case State.couple:
-            guard let name1 = name1TextField.text where name1.characters.count > 0,
-                let name2 = name2TextField.text where name2.characters.count > 0,
-                let _ = dob1,
-                let _ = dob2,
-                let relationshipStart = relationshipStart else {presentAlert("Empty fields", message: "Please fill in all requested information. This will be shown in your profile"); return}
+            guard let _ = person1,
+                _ = person2,
+                relationshipStartAsText = relationshipStartTextField.text where relationshipStartAsText.characters.count > 0 else {presentAlert("Empty fields", message: "Please fill in all required information. This will be shown in your profile"); return}
             guard let _ = location else {presentAlert("Invalid location", message:  "Please give us a valid location or the app just won't work for you.");return}
-            
-            let relationshipLength = relationshipStart.timeIntervalSinceNow/(-365)/24/60/60
+            relationshipStart = dateFormatter.dateFromString(relationshipStartAsText)!
+            let relationshipLength = relationshipStart!.timeIntervalSinceNow/(-365)/24/60/60
             guard relationshipLength > 0 else {presentAlert("Invalid relationship length", message: "Turns out we don't allow relationships that haven't started yet..."); return}
             
-            if let numberOfKidsAsText = numberOfKidsTextField.text where numberOfKidsAsText.characters.count > 0 && numberOfKidsAsText != "0" {
-                let numberOfKids = Int(numberOfKidsAsText)
-                for var i=0; i<numberOfKids; i++ {
-                    guard let genderSegmentedControl = coupleStackView.subviews[i+9].subviews[1] as? UISegmentedControl,
-                        dobTextField = coupleStackView.subviews[i+9].subviews[2] as? UITextField else {break}
-                    guard let dobText = dobTextField.text where dobText.characters.count > 0 else {presentAlert("Missing Information", message: "We use information about your kids to complete your profile, but it isn't required. If you don't want to provide this information please leave the number of children blank or enter \"0\""); return}
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.dateStyle = .MediumStyle
-                    let dob = dateFormatter.dateFromString(dobText)
-                    let gender = genderSegmentedControl.selectedSegmentIndex==0 ? "M":"F"
-                    let child = Child(dob: dob!, gender: Child.Gender(rawValue: gender)!, profileIdentifier: accountIdentifier!)
-                    children.append(child)
-                }
+            let numberOfKids = Int(numberOfKidsTextField.text!) ?? 0
+            for var i=0; i<numberOfKids; i++ {
+                guard let genderSegmentedControl = coupleStackView.subviews[i+9].subviews[1] as? UISegmentedControl,
+                    dobTextField = coupleStackView.subviews[i+9].subviews[2] as? UITextField else {break}
+                guard let dobText = dobTextField.text where dobText.characters.count > 0 else {presentAlert("Missing Information", message: "We use information about your kids to complete your profile, but it isn't required. If you don't want to provide this information please leave the number of children blank or enter \"0\""); return}
+                let dateFormatter = NSDateFormatter()
+                dateFormatter.dateStyle = .MediumStyle
+                let dob = dateFormatter.dateFromString(dobText)
+                let gender = genderSegmentedControl.selectedSegmentIndex==0 ? "M":"F"
+                let child = Child(dob: dob!, gender: Child.Gender(rawValue: gender)!, profileIdentifier: accountIdentifier!)
+                children.append(child)
             }
-            
             self.performSegueWithIdentifier("fromBasicInfoToEditProfile", sender: self)
         }
     }
-
-    func updateWithProfile(profile: Profile) {
-        
-    }
-    
-    // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "fromBasicInfoToEditProfile" {
             if let editProfileView = segue.destinationViewController as? EditProfileTableViewController {
-                let gender1 = gender1SegmentedControl.selectedSegmentIndex == 0 ? "M":"F"
-                let gender2 = gender2SegmentedControl.selectedSegmentIndex == 0 ? "M":"F"
-                var person1 = Person(name: name1TextField.text!, dob: dob1!, gender: Person.Gender(rawValue: gender1)!)
-                person1.save()
-                var person2 = Person(name: name2TextField.text!, dob: dob2!, gender: Person.Gender(rawValue: gender2)!)
-                person2.save()
+                guard let person1 = person1,
+                    person2 = person2 else {return}
                 let relationshipStatusInt = relationshipSegmentedControl.selectedSegmentIndex
                 let relationshipStatus = relationshipStatusInt == 0 ? "Dating":(relationshipStatusInt == 1 ? "Engaged":"Married")
                 
