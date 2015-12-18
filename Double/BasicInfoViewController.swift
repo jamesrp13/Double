@@ -67,11 +67,11 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         navigationController?.navigationBarHidden = true
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "setLocationTextFieldText:", name: "locationUpdated", object: nil)
-        
-        loadProperState()
+        if firstPersonStackView != nil {
+            loadProperState()
+        }
         configureInputFields()
         createChildStackViews()
-        
     }
     
     // MARK: - Presentation and input configuration
@@ -79,8 +79,11 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     func configureInputFields() {
         datePickerActionSheet = DatePickerActionSheet(parent: self, doneActionSelector: "datePickerInputFinished")
         genericDatePicker = datePickerActionSheet!.datePicker
-        dob1TextField.inputView = datePickerActionSheet
-        dob2TextField.inputView = datePickerActionSheet
+        if dob1TextField != nil &&
+            dob2TextField != nil {
+                dob1TextField.inputView = datePickerActionSheet
+                dob2TextField.inputView = datePickerActionSheet
+        }
         relationshipStartTextField.inputView = datePickerActionSheet
         
         let locationPickerActionSheet = LocationPickerActionSheet(parent: self, useZipSelector: "getLocationFromZip", useLocationSelector: "locationViaDeviceLocation")
@@ -130,7 +133,6 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     func updateWithProfile(profile: Profile) {
         state = .couple
         viewType = .editProfile
-        loadProperState()
         self.profile = profile
         person1 = profile.people.0
         person2 = profile.people.1
@@ -140,23 +142,29 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateStyle = .MediumStyle
         
-        guard let person1 = person1,
-            person2 = person2,
+        guard let _ = person1,
+            _ = person2,
             relationshipStart = relationshipStart,
             location = location else {return}
-        
-        name1TextField.text = person1.name
-        dob1TextField.text = dateFormatter.stringFromDate(person1.dob)
-        gender1SegmentedControl.selectedSegmentIndex = person1.gender.rawValue == "M" ? 0:1
-        name2TextField.text = person2.name
-        dob2TextField.text = dateFormatter.stringFromDate(person2.dob)
-        gender2SegmentedControl.selectedSegmentIndex = person2.gender.rawValue == "M" ? 0:1
         
         relationshipStartTextField.text = dateFormatter.stringFromDate(relationshipStart)
         relationshipSegmentedControl.selectedSegmentIndex = profile.relationshipStatus.rawValue == "Dating" ? 0:(profile.relationshipStatus.rawValue == "Engaged" ? 1:2)
         LocationController.locationAsCityCountry(location) { (cityState) -> Void in
             if let cityState = cityState {
                 self.locationTextField.text = cityState
+            }
+        }
+        if children.count > 0 {
+            numberOfKidsTextField.text = "\(children.count)"
+            for var i=0; i<children.count; i++ {
+                let child = children[i]
+                let stackView = coupleStackView.subviews[i+9]
+                stackView.hidden = false
+                if let genderSegment = stackView.subviews[1] as? UISegmentedControl,
+                    dobTextField = stackView.subviews[2] as? UITextField {
+                        genderSegment.selectedSegmentIndex = child.gender.rawValue == "M" ? 0:1
+                        dobTextField.text = dateFormatter.stringFromDate(child.dob)
+                }
             }
         }
     }

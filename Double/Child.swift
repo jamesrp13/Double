@@ -31,7 +31,7 @@ struct Child: FirebaseType {
     // FirebaseType attributes and failable initializer
     var identifier: String?
     var jsonValue: [String: AnyObject] {
-        var json: [String: AnyObject] = [kDob: dob, kGender: gender.rawValue]
+        var json: [String: AnyObject] = [kDob: dob.timeIntervalSince1970, kGender: gender.rawValue]
         if let profileIdentifier = profileIdentifier {
             json.updateValue(profileIdentifier, forKey: kProfileIdentifier)
         }
@@ -42,11 +42,11 @@ struct Child: FirebaseType {
     }
     
     init?(json: [String : AnyObject], identifier: String) {
-        guard let dob = json[kDob] as? NSDate,
+        guard let dob = json[kDob] as? NSTimeInterval,
             let genderRawValue = json[kGender] as? String,
             let gender = Gender(rawValue: genderRawValue) else {return nil}
         
-        self.dob = dob
+        self.dob = NSDate(timeIntervalSince1970: dob)
         self.gender = gender
         self.profileIdentifier = json[kProfileIdentifier] as? String
         self.identifier = identifier

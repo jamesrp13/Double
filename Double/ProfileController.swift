@@ -74,7 +74,7 @@ class ProfileController {
                 people.1.save()
                 
                 // Save location
-                let geofire = GeoFire(firebaseRef: FirebaseController.base)
+                let geofire = GeoFire(firebaseRef: FirebaseController.base.childByAppendingPath("locations"))
                 geofire.setLocation(location, forKey: profileIdentifier)
                 
                 // When profile is created, responses must be created in Firebase as well despite there being none, so let's create a false response from the profile's own profile
@@ -152,8 +152,8 @@ class ProfileController {
     
     func fetchRegionalProfileIdentifiers(completion: (profilesIdentifiers: [String]?) -> Void) {
         let location = self.currentUserProfile!.location
-        let geofire = GeoFire(firebaseRef: FirebaseController.base)
-        let query = geofire.queryAtLocation(location, withRadius: 100)
+        let geofire = GeoFire(firebaseRef: FirebaseController.base.childByAppendingPath("locations"))
+        let query = geofire.queryAtLocation(location, withRadius: 80)
         query.observeSingleEventOfTypeValue { (locations) -> Void in
             if let locationDictionary = locations as? [String: CLLocation] {
                 let profileIdentifiers = Array(locationDictionary.keys)

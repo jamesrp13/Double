@@ -134,7 +134,7 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
         let newPerson1 = Person(name: oldPerson1.name, dob: oldPerson1.dob, gender: oldPerson1.gender, about: profileAboutIndividualsCell.firstPersonAboutTextView.text, profileIdentifier: accountIdentifier, identifier: oldPerson1.identifier!)
         let newPerson2 = Person(name: oldPerson2.name, dob: oldPerson2.dob, gender: oldPerson2.gender, about: profileAboutIndividualsCell.secondPersonAboutTextView.text, profileIdentifier: accountIdentifier, identifier: oldPerson2.identifier)
         
-        ProfileController.createProfile((newPerson1, newPerson2), relationshipStatus: relationshipStatus, relationshipStart: relationshipStart, about: nil, location: location, children: nil, image: image, profileIdentifier: accountIdentifier, completion: { (profile) -> Void in
+        ProfileController.createProfile((newPerson1, newPerson2), relationshipStatus: relationshipStatus, relationshipStart: relationshipStart, about: nil, location: location, children: children, image: image, profileIdentifier: accountIdentifier, completion: { (profile) -> Void in
             if let profile = profile {
                 ProfileController.SharedInstance.currentUserProfile = profile
                 FirebaseController.loadNecessaryDataFromNetwork()
@@ -246,8 +246,9 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
     
     func displayBasicInfoPopoverViewController() {
         if let indexPath = tableView.indexPathForSelectedRow {
-            tableView.cellForRowAtIndexPath(indexPath)?.selected = false
+            tableView.deselectRowAtIndexPath(indexPath, animated: true)
         }
+        
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             let basicInfoViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("basicInfoController") as! BasicInfoViewController
             basicInfoViewController.modalPresentationStyle = .Popover
@@ -258,6 +259,9 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
             popoverBasicinfoController?.permittedArrowDirections = .Down
             popoverBasicinfoController?.sourceView = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0))!
             popoverBasicinfoController?.sourceRect = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0))!.bounds
+            
+            basicInfoViewController.view.layer.shouldRasterize = true
+            basicInfoViewController.view.layer.rasterizationScale = UIScreen.mainScreen().scale
             
             self.presentViewController(basicInfoViewController, animated: true) { () -> Void in
                 if let profile = self.profile {

@@ -84,7 +84,7 @@ class ProfileAboutCoupleCell: UITableViewCell, UITextViewDelegate {
             var childString: String = ""
             var description: String = ""
             if self.children.count > 0 && self.children.count < 5 {
-                for var i=1; i<self.children.count; i++ {
+                for var i=0; i<self.children.count; i++ {
                     let child = self.children[i]
                     let gender = child.gender.rawValue == "M" ? "son":"daughter"
                     var childAgeString: String = ""
@@ -93,8 +93,14 @@ class ProfileAboutCoupleCell: UITableViewCell, UITextViewDelegate {
                     } else {
                         childAgeString = "\(child.age/12) year old"
                     }
+                    
                     if childString.characters.count > 0 {
-                        childString += ", "
+                        if self.children.count > 2 {
+                            childString += ", "
+                        }
+                        if i+1 == self.children.count {
+                            childString += "and "
+                        }
                     }
                     childString += "\(childAgeString) \(gender)"
                 }
@@ -128,13 +134,25 @@ class ProfileAboutCoupleCell: UITableViewCell, UITextViewDelegate {
             var childString: String = ""
             var description: String = ""
             if children.count > 0 && children.count < 5 {
-                for var i=1; i<children.count; i++ {
+                for var i=0; i<children.count; i++ {
                     let child = children[i]
                     let gender = child.gender.rawValue == "M" ? "son":"daughter"
-                    if childString.characters.count > 0 {
-                        childString += ", "
+                    var childAgeString: String = ""
+                    if child.age < 12 {
+                        childAgeString = "\(child.age) month old"
+                    } else {
+                        childAgeString = "\(child.age/12) year old"
                     }
-                    childString += "\(child.age) year old \(gender)"
+
+                    if childString.characters.count > 0 {
+                        if children.count > 2{
+                            childString += ", "
+                        }
+                        if i+1 == children.count {
+                            childString += "and "
+                        }
+                    }
+                    childString += "\(childAgeString) \(gender)"
                 }
                 description = "\(people.0.name) and \(people.1.name) \(relationshipLength) and live in \(cityState) with their \(childString)."
             } else if children.count >= 5 {
@@ -153,6 +171,9 @@ class ProfileAboutCoupleCell: UITableViewCell, UITextViewDelegate {
     }
     
     func textViewDidBeginEditing(textView: UITextView) {
+
+        textView.resignFirstResponder()
+        
         if textView == aboutTextView {
             if let parentTableViewController = parentTableViewController {
                 parentTableViewController.displayBasicInfoPopoverViewController()
