@@ -153,7 +153,7 @@ class ProfileController {
     func fetchRegionalProfileIdentifiers(completion: (profilesIdentifiers: [String]?) -> Void) {
         let location = self.currentUserProfile!.location
         let geofire = GeoFire(firebaseRef: FirebaseController.base)
-        let query = geofire.queryAtLocation(location, withRadius: 40)
+        let query = geofire.queryAtLocation(location, withRadius: 100)
         query.observeSingleEventOfTypeValue { (locations) -> Void in
             if let locationDictionary = locations as? [String: CLLocation] {
                 let profileIdentifiers = Array(locationDictionary.keys)
