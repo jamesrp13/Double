@@ -73,6 +73,10 @@ class ProfileController {
                 people.1.profileIdentifier = profile.identifier!
                 people.1.save()
                 
+                // Save location
+                let geofire = GeoFire(firebaseRef: FirebaseController.base)
+                geofire.setLocation(location, forKey: profileIdentifier)
+                
                 // When profile is created, responses must be created in Firebase as well despite there being none, so let's create a false response from the profile's own profile
                 var response = Responses(profileViewedByIdentifier: profile.identifier!, like: false, profileIdentifier: profile.identifier!)
                 response.save()
@@ -105,24 +109,85 @@ class ProfileController {
     // MARK: - Prepare profiles for viewing
     
     static func fetchProfileForDisplay() {
-        fetchUnseenProfiles { (profiles) -> Void in
-            if let profiles = profiles {
-                guard profiles.count > 0 else {return}
-                
-                let tunnel = dispatch_group_create()
-                for profile in profiles {
-                    dispatch_group_enter(tunnel)
-                    ResponseController.createResponse(profile.identifier!, liked: false, completion: { (responses) -> Void in
-                        if let _ = responses {
-                            dispatch_group_leave(tunnel)
+        SharedInstance.fetchRegionalProfileIdentifiers { (profilesIdentifiers) -> Void in
+            if let profileIdentifiers = profilesIdentifiers {
+                SharedInstance.filterForUnseenProfiles(profileIdentifiers, unseenProfileIdentifiers: [], completion: { (profileIdentifiers) -> Void in
+                    if let profileIdentifiers = profileIdentifiers {
+                        for profileIdentifier in profileIdentifiers {
+                            fetchProfileForIdentifier(profileIdentifier, completion: { (profile) -> Void in
+                                if let profile = profile {
+                                    ResponseController.createResponse(profile.identifier!, liked: false, completion: { (responses) -> Void in
+                                        if let _ = responses {
+                                            observeResponsesFromProfiles([profile])
+                                            SharedInstance.profilesBeingViewed.append(profile)
+                                        }
+                                    })
+                                }
+                            })
                         }
-                    })
-                }
-                dispatch_group_notify(tunnel, dispatch_get_main_queue(), { () -> Void in
-                    ProfileController.SharedInstance.profilesBeingViewed += profiles
-                    ProfileController.observeResponsesFromProfiles(profiles)
+                    }
                 })
             }
+        }
+//        fetchUnseenProfiles { (profiles) -> Void in
+//            if let profiles = profiles {
+//                guard profiles.count > 0 else {return}
+//                
+//                let tunnel = dispatch_group_create()
+//                for profile in profiles {
+//                    dispatch_group_enter(tunnel)
+//                    ResponseController.createResponse(profile.identifier!, liked: false, completion: { (responses) -> Void in
+//                        if let _ = responses {
+//                            dispatch_group_leave(tunnel)
+//                        }
+//                    })
+//                }
+//                dispatch_group_notify(tunnel, dispatch_get_main_queue(), { () -> Void in
+//                    ProfileController.SharedInstance.profilesBeingViewed += profiles
+//                    ProfileController.observeResponsesFromProfiles(profiles)
+//                })
+//            }
+//        }
+    }
+    
+    func fetchRegionalProfileIdentifiers(completion: (profilesIdentifiers: [String]?) -> Void) {
+        let location = self.currentUserProfile!.location
+        let geofire = GeoFire(firebaseRef: FirebaseController.base)
+        let query = geofire.queryAtLocation(location, withRadius: 40)
+        query.observeSingleEventOfTypeValue { (locations) -> Void in
+            if let locationDictionary = locations as? [String: CLLocation] {
+                let profileIdentifiers = Array(locationDictionary.keys)
+                completion(profilesIdentifiers: profileIdentifiers)
+            }
+        }
+    }
+    
+    func filterForUnseenProfiles(profileIdentifiers: [String], unseenProfileIdentifiers: [String], completion: (profileIdentifiers: [String]?) -> Void) {
+        if profileIdentifiers.count > 0 {
+            ResponseController.fetchResponsesForIdentifier(profileIdentifiers[0], completion: { (responses) -> Void in
+                if let responses = responses where responses.responsesDictionary[self.currentUserIdentifier!] == nil {
+                    let unseenProfileIdentifiers = unseenProfileIdentifiers + [profileIdentifiers[0]]
+                    if unseenProfileIdentifiers.count >= 10 {
+                        completion(profileIdentifiers: unseenProfileIdentifiers)
+                    } else {
+                        var profileIdentifiers = profileIdentifiers
+                        profileIdentifiers.removeFirst()
+                        self.filterForUnseenProfiles(profileIdentifiers, unseenProfileIdentifiers: unseenProfileIdentifiers) { (profileIdentifiers) -> Void in
+                            completion(profileIdentifiers: profileIdentifiers)
+                        }
+                    }
+                } else {
+                    print("We've already seen the profile for \(profileIdentifiers[0])")
+                    var profileIdentifiers = profileIdentifiers
+                    profileIdentifiers.removeFirst()
+                    self.filterForUnseenProfiles(profileIdentifiers, unseenProfileIdentifiers: unseenProfileIdentifiers) { (profileIdentifiers) -> Void in
+                        completion(profileIdentifiers: profileIdentifiers)
+                    }
+                }
+            })
+        } else {
+            print("There are no more profiles to be seen in the area")
+            completion(profileIdentifiers: unseenProfileIdentifiers)
         }
     }
     

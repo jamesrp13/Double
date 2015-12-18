@@ -1179,6 +1179,7 @@
                         <outlet property="locationTextField" destination="Umj-XE-zPZ" id="fIF-cE-euF"/>
                         <outlet property="name1TextField" destination="m29-nt-zvR" id="jPW-q5-Tab"/>
                         <outlet property="name2TextField" destination="l1e-rF-0Wl" id="awQ-wG-0mb"/>
+                        <outlet property="nextButton" destination="35w-5M-zl4" id="bQH-Tl-UGa"/>
                         <outlet property="numberOfKidsTextField" destination="LpB-c7-iwm" id="hFz-hM-0jw"/>
                         <outlet property="relationshipSegmentedControl" destination="aDj-we-KKT" id="EFP-YP-5Ga"/>
                         <outlet property="relationshipStartTextField" destination="3Hd-ib-SGg" id="yjr-JF-VBO"/>

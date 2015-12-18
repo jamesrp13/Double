@@ -8,7 +8,7 @@
 
 import UIKit
 
-class EditProfileTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UIPopoverControllerDelegate {
+class EditProfileTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UIPopoverPresentationControllerDelegate {
 
     var accountIdentifier: String? = nil
     
@@ -66,11 +66,13 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
         }
     }
     
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updatedLocation:", name: "locationUpdated", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "locationFailed", name: "FailedToFindLocation", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updatedLocation:", name: "locationUpdated", object: nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "locationFailed", name: "FailedToFindLocation", object: nil)
         
         tableView.estimatedRowHeight = 30
         tableView.rowHeight = UITableViewAutomaticDimension
@@ -243,19 +245,29 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
     }
     
     func displayBasicInfoPopoverViewController() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let basicInfoViewController = storyboard.instantiateViewControllerWithIdentifier("basicInfoController") as! BasicInfoViewController
-        basicInfoViewController.modalPresentationStyle = .Popover
-        basicInfoViewController.preferredContentSize = CGSizeMake(self.view.frame.width - 40, self.view.frame.height - 100)
-        
-        let popoverBasicinfoController = basicInfoViewController.popoverPresentationController
-        popoverBasicinfoController?.permittedArrowDirections = .Up
-        popoverBasicinfoController?.sourceView = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0))!
-        popoverBasicinfoController?.sourceRect = tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0))!.bounds
-        presentViewController(basicInfoViewController, animated: true, completion: nil)
+        if let indexPath = tableView.indexPathForSelectedRow {
+            tableView.cellForRowAtIndexPath(indexPath)?.selected = false
+        }
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            let basicInfoViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("basicInfoController") as! BasicInfoViewController
+            basicInfoViewController.modalPresentationStyle = .Popover
+            basicInfoViewController.preferredContentSize = CGSizeMake(self.view.frame.width-20, self.view.frame.height-100)
+            
+            let popoverBasicinfoController = basicInfoViewController.popoverPresentationController
+            popoverBasicinfoController?.delegate = self
+            popoverBasicinfoController?.permittedArrowDirections = .Down
+            popoverBasicinfoController?.sourceView = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0))!
+            popoverBasicinfoController?.sourceRect = self.tableView.cellForRowAtIndexPath(NSIndexPath(forRow: 3, inSection: 0))!.bounds
+            
+            self.presentViewController(basicInfoViewController, animated: true) { () -> Void in
+                if let profile = self.profile {
+                    basicInfoViewController.updateWithProfile(profile)
+                }
+            }
+        }
     }
     
-    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController!) -> UIModalPresentationStyle {
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
         return .None
     }
 
