@@ -36,7 +36,10 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var firstPersonStackView: UIStackView!
     @IBOutlet weak var secondPersonStackView: UIStackView!
     @IBOutlet weak var coupleStackView: UIStackView!
+    @IBOutlet weak var coupleParentStackView: UIStackView!
+    @IBOutlet weak var mainStackView: UIStackView!
     
+    @IBOutlet weak var relationshipStartLabel: UILabel!
     @IBOutlet weak var name1TextField: UITextField!
     @IBOutlet weak var dob1TextField: UITextField!
     @IBOutlet weak var gender1SegmentedControl: UISegmentedControl!
@@ -70,11 +73,20 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         if firstPersonStackView != nil {
             loadProperState()
         }
+        setupConstraints()
         configureInputFields()
         createChildStackViews()
     }
     
     // MARK: - Presentation and input configuration
+    
+    func setupConstraints() {
+        let topConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1, constant: self.view.frame.height / 6)
+        let bottomConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: -self.view.frame.height / 5)
+        
+        self.view.addConstraint(topConstraint)
+        self.view.addConstraint(bottomConstraint)
+    }
     
     func configureInputFields() {
         datePickerActionSheet = DatePickerActionSheet(parent: self, doneActionSelector: "datePickerInputFinished")
@@ -99,15 +111,15 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         case .first:
             firstPersonStackView.hidden = false
             secondPersonStackView.hidden = true
-            coupleStackView.hidden = true
+            coupleParentStackView.hidden = true
         case .second:
             firstPersonStackView.hidden = true
             secondPersonStackView.hidden = false
-            coupleStackView.hidden = true
+            coupleParentStackView.hidden = true
         case .couple:
             firstPersonStackView.hidden = true
             secondPersonStackView.hidden = true
-            coupleStackView.hidden = false
+            coupleParentStackView.hidden = false
             nextButton.setTitle("Save", forState: .Normal)
         }
     }
@@ -115,17 +127,33 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     func createChildStackViews() {
         for var i=0; i<25; i++ {
             let childLabel = UILabel()
-            childLabel.text = "Child \(i+1)"
+            childLabel.text = "    Child \(i+1):"
+            let font = UIFont(name: "HelveticaNeue-Thin", size: 18)
+            childLabel.font = font
+            childLabel.textColor = .whiteColor()
             let genderSegmentedControl = UISegmentedControl(items: ["Male", "Female"])
+            genderSegmentedControl.selectedSegmentIndex = 0
+            genderSegmentedControl.frame.size.width = relationshipSegmentedControl.frame.width * (2.0/3.0)
             let dobTextField = UITextField()
             dobTextField.placeholder = "Birthday"
+            dobTextField.font = font
+            dobTextField.textColor = .whiteColor()
             dobTextField.inputView = datePickerActionSheet
             dobTextField.delegate = self
-            let horizontalStackView = UIStackView(arrangedSubviews: [childLabel, genderSegmentedControl, dobTextField])
+            dobTextField.layer.cornerRadius = relationshipStartTextField.layer.cornerRadius
+            dobTextField.backgroundColor = relationshipStartTextField.backgroundColor
+            let verticalStackView = UIStackView(arrangedSubviews: [genderSegmentedControl, dobTextField])
+            verticalStackView.frame.size.width = relationshipSegmentedControl.frame.width * (2.0/3.0)
+            verticalStackView.distribution = .FillEqually
+            verticalStackView.alignment = .Fill
+            verticalStackView.spacing = 5
+            verticalStackView.axis = .Vertical
+            let horizontalStackView = UIStackView(arrangedSubviews: [childLabel, verticalStackView])
             horizontalStackView.frame.size.width = coupleStackView.frame.width
-            horizontalStackView.distribution = .FillEqually
+            horizontalStackView.distribution = .FillProportionally
+            horizontalStackView.spacing = 5
             horizontalStackView.axis = .Horizontal
-            coupleStackView.insertArrangedSubview(horizontalStackView, atIndex: 7+i)
+            coupleStackView.insertArrangedSubview(horizontalStackView, atIndex: 6+i)
             coupleStackView.subviews.last?.hidden = true
         }
     }
@@ -154,11 +182,21 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 self.locationTextField.text = cityState
             }
         }
+        
+        switch profile.relationshipStatus {
+        case .Dating:
+            relationshipStartLabel.text = "When did you start dating?"
+        case .Engaged:
+            relationshipStartLabel.text = "When did you get engaged?"
+        case .Married:
+            relationshipStartLabel.text = "When did you get married?"
+        }
+        
         if children.count > 0 {
             numberOfKidsTextField.text = "\(children.count)"
             for var i=0; i<children.count; i++ {
                 let child = children[i]
-                let stackView = coupleStackView.subviews[i+9]
+                let stackView = coupleStackView.subviews[i+8]
                 stackView.hidden = false
                 if let genderSegment = stackView.subviews[1] as? UISegmentedControl,
                     dobTextField = stackView.subviews[2] as? UITextField {
@@ -166,6 +204,19 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                         dobTextField.text = dateFormatter.stringFromDate(child.dob)
                 }
             }
+        }
+    }
+    
+    @IBAction func segmentedControlTapped(sender: UISegmentedControl) {
+        switch sender.selectedSegmentIndex {
+        case 0:
+            relationshipStartLabel.text = "When did you start dating?"
+        case 1:
+            relationshipStartLabel.text = "When did you get engaged?"
+        case 2:
+            relationshipStartLabel.text = "When did you get married?"
+        default:
+            break
         }
     }
     
@@ -247,14 +298,14 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                     let numberOfKids = Int(numberOfKidsAsText)
                     for var i=0; i < 25; i++ {
                         if i<numberOfKids {
-                            coupleStackView.subviews[i+9].hidden = false
+                            coupleStackView.subviews[i+8].hidden = false
                         } else {
-                            coupleStackView.subviews[i+9].hidden = true
+                            coupleStackView.subviews[i+8].hidden = true
                         }
                     }
                 } else {
                     for var i=0; i < 25; i++ {
-                        coupleStackView.subviews[i+9].hidden = true
+                        coupleStackView.subviews[i+8].hidden = true
                     }
                 }
                 
@@ -336,14 +387,14 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 let numberOfKids = Int(numberOfKidsAsText)
                 for var i=0; i < 25; i++ {
                     if i<numberOfKids {
-                        coupleStackView.subviews[i+9].hidden = false
+                        coupleStackView.subviews[i+8].hidden = false
                     } else {
-                        coupleStackView.subviews[i+9].hidden = true
+                        coupleStackView.subviews[i+8].hidden = true
                     }
                 }
             } else {
                 for var i=0; i < 25; i++ {
-                    coupleStackView.subviews[i+9].hidden = true
+                    coupleStackView.subviews[i+8].hidden = true
                 }
             }
         }
@@ -367,8 +418,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 let dob = dateFormatter.dateFromString(dobAsText)!
                 guard PersonController.ageInYearsFromBirthday(dob) >= 18 else {presentAlert("Not old enough", message: "Sorry - both partners need to be 18 or older to use this app."); return}
                 let gender = gender1SegmentedControl.selectedSegmentIndex == 0 ? "M":"F"
-                var person = Person(name: firstPersonName, dob: dob, gender: Person.Gender(rawValue: gender)!)
-                person.save()
+                let person = Person(name: firstPersonName, dob: dob, gender: Person.Gender(rawValue: gender)!)
                 person1 = person
                 state = State.second
                 loadProperState()
@@ -378,8 +428,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 let dob = dateFormatter.dateFromString(dobAsText)!
                 guard PersonController.ageInYearsFromBirthday(dob) >= 18 else {presentAlert("Not old enough", message: "Sorry - both partners need to be 18 or older to use this app."); return}
                 let gender = gender2SegmentedControl.selectedSegmentIndex == 0 ? "M":"F"
-                var person = Person(name: secondPersonName, dob: dob, gender: Person.Gender(rawValue: gender)!)
-                person.save()
+                let person = Person(name: secondPersonName, dob: dob, gender: Person.Gender(rawValue: gender)!)
                 person2 = person
                 state = State.couple
                 loadProperState()
@@ -394,8 +443,8 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 
                 let numberOfKids = Int(numberOfKidsTextField.text!) ?? 0
                 for var i=0; i<numberOfKids; i++ {
-                    guard let genderSegmentedControl = coupleStackView.subviews[i+9].subviews[1] as? UISegmentedControl,
-                        dobTextField = coupleStackView.subviews[i+9].subviews[2] as? UITextField else {break}
+                    guard let genderSegmentedControl = coupleStackView.subviews[i+8].subviews[1] as? UISegmentedControl,
+                        dobTextField = coupleStackView.subviews[i+8].subviews[2] as? UITextField else {break}
                     guard let dobText = dobTextField.text where dobText.characters.count > 0 else {presentAlert("Missing Information", message: "We use information about your kids to complete your profile, but it isn't required. If you don't want to provide this information please leave the number of children blank or enter \"0\""); return}
                     let dateFormatter = NSDateFormatter()
                     dateFormatter.dateStyle = .MediumStyle
@@ -435,13 +484,15 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "fromBasicInfoToEditProfile" {
             if let editProfileView = segue.destinationViewController as? EditProfileTableViewController {
-                guard let person1 = person1,
+                guard var person1 = person1,
                     person2 = person2,
-                    location = location,
-                    relationshipStart = relationshipStart else {return}
+                    let location = location,
+                    let relationshipStart = relationshipStart else {return}
                 let relationshipStatusInt = relationshipSegmentedControl.selectedSegmentIndex
                 let relationshipStatus = relationshipStatusInt == 0 ? "Dating":(relationshipStatusInt == 1 ? "Engaged":"Married")
                 
+                person1.save()
+                person2.save()
                 editProfileView.people = (person1, person2)
                 editProfileView.relationshipStart = relationshipStart
                 editProfileView.relationshipStatus = relationshipStatus

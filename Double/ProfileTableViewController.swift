@@ -10,7 +10,8 @@ import UIKit
 import CoreLocation
 
 
-class ProfileTableViewController: UITableViewController {
+class ProfileTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    @IBOutlet weak var tableView: UITableView!
     
     var profilesBeingViewed: [Profile] {
         return ProfileController.SharedInstance.profilesBeingViewed
@@ -55,12 +56,12 @@ class ProfileTableViewController: UITableViewController {
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.setNeedsLayout()
         self.tableView.layoutIfNeeded()
+        navigationController?.navigationBarHidden = true
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+//    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        return evaluationStackView
+//    }
     
     @IBAction func doneButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -130,7 +131,7 @@ class ProfileTableViewController: UITableViewController {
     
     // MARK: - Table view data source
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if profilesBeingViewed.count > 0 || profileForViewing != nil {
             return 4
         } else {
@@ -139,7 +140,7 @@ class ProfileTableViewController: UITableViewController {
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell: UITableViewCell
         
@@ -189,7 +190,7 @@ class ProfileTableViewController: UITableViewController {
 
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         if indexPath.row == 3 {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let viewController = storyboard.instantiateViewControllerWithIdentifier("basicInfoController") as? BasicInfoViewController

@@ -97,6 +97,8 @@ class ProfileAboutCoupleCell: UITableViewCell, UITextViewDelegate {
                     if childString.characters.count > 0 {
                         if self.children.count > 2 {
                             childString += ", "
+                        } else {
+                            childString += " "
                         }
                         if i+1 == self.children.count {
                             childString += "and "

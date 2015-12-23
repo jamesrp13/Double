@@ -14,21 +14,30 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var mainStackView: UIStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBarHidden = true
+        setupConstraints()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
     }
     
     func presentAlert(title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
         alert.addAction(UIAlertAction(title: "Try again", style: .Cancel, handler: nil))
         presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func setupConstraints() {
+        let topConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1, constant: self.view.frame.height / 6)
+        let bottomConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: -self.view.frame.height / 5)
+        
+        self.view.addConstraint(topConstraint)
+        self.view.addConstraint(bottomConstraint)
     }
     
     @IBAction func loginTapped(sender: AnyObject) {

@@ -15,15 +15,20 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var passwordRetypedTextField: UITextField!
+    @IBOutlet weak var mainStackView: UIStackView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationController?.navigationBarHidden = true
+        setupConstraints()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func setupConstraints() {
+        let topConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1, constant: self.view.frame.height / 6)
+        let bottomConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: -self.view.frame.height / 5)
+        
+        self.view.addConstraint(topConstraint)
+        self.view.addConstraint(bottomConstraint)
     }
     
     @IBAction func createAccountTapped(sender: AnyObject) {

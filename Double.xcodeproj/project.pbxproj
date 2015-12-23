@@ -62,6 +62,7 @@
 		1ABD3BA11BFE2D3A00544104 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3BA01BFE2D3A00544104 /* MessageController.swift */; };
 		1ABD3BA31BFE2D4F00544104 /* ChildController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3BA21BFE2D4F00544104 /* ChildController.swift */; };
 		1AD29FD11C10E1760062D4D3 /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD29FD01C10E1760062D4D3 /* EditProfileTableViewController.swift */; };
+		1AF676521C2B254F00AAC71F /* DesignController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF676511C2B254F00AAC71F /* DesignController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -166,6 +167,7 @@
 		1ABD3BA01BFE2D3A00544104 /* MessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		1ABD3BA21BFE2D4F00544104 /* ChildController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildController.swift; sourceTree = "<group>"; };
 		1AD29FD01C10E1760062D4D3 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditProfileTableViewController.swift; path = ../EditProfileTableViewController.swift; sourceTree = "<group>"; };
+		1AF676511C2B254F00AAC71F /* DesignController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DesignController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -365,6 +367,7 @@
 				1ABD3BA21BFE2D4F00544104 /* ChildController.swift */,
 				1AA725541C13720900F90F92 /* AccountController.swift */,
 				1AA725F21C18E74000F90F92 /* LocationController.swift */,
+				1AF676511C2B254F00AAC71F /* DesignController.swift */,
 			);
 			name = "Model Controllers";
 			sourceTree = "<group>";
@@ -547,6 +550,7 @@
 				1AA726421C1A30EC00F90F92 /* GFQuery.m in Sources */,
 				1ABD3B991BFE2D0200544104 /* PersonController.swift in Sources */,
 				1AA725581C15545200F90F92 /* LoginSignupPickerViewController.swift in Sources */,
+				1AF676521C2B254F00AAC71F /* DesignController.swift in Sources */,
 				1ABD3B9F1BFE2D3000544104 /* FriendshipController.swift in Sources */,
 				1A6002171C2200A10003C026 /* PickerViewActionSheet.swift in Sources */,
 				1AA726431C1A30EC00F90F92 /* GFBase32Utils.m in Sources */,

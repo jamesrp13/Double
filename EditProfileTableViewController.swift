@@ -78,11 +78,12 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.setNeedsLayout()
         self.tableView.layoutIfNeeded()
+        customizeNavigationBar()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    func customizeNavigationBar() {
+        let nav = self.navigationController?.navigationBar
+        nav?.barTintColor = DesignController.SharedInstance.blueColor
     }
 
     @IBAction func imageTapped(sender: AnyObject) {
