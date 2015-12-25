@@ -11,10 +11,32 @@ import CoreLocation
 
 class ProfileController {
     
+    private let kUser = "kUser"
     static let SharedInstance = ProfileController()
     
-    var currentUserProfile: Profile? = nil
-    
+    var currentUserProfile: Profile! {
+        get{
+            guard let uid = FirebaseController.base.authData?.uid,
+                let profileDictionary = NSUserDefaults.standardUserDefaults().valueForKey(kUser) as? [String: AnyObject] else {return nil}
+            guard let profile = Profile(json: profileDictionary, identifier: uid) else {return nil}
+            currentUserIdentifier = profile.identifier!
+            return profile
+            
+        }
+        
+        set{
+            
+            if let newValue = newValue {
+                NSUserDefaults.standardUserDefaults().setValue(newValue.jsonValueForPersisting, forKey: kUser)
+                NSUserDefaults.standardUserDefaults().synchronize()
+                currentUserIdentifier = newValue.identifier!
+            } else {
+                NSUserDefaults.standardUserDefaults().removeObjectForKey(kUser)
+                NSUserDefaults.standardUserDefaults().synchronize()
+            }
+        }
+    }
+
     var currentUserIdentifier: String? = nil
     
     var profilesBeingViewed: [Profile] = [] {
@@ -129,25 +151,6 @@ class ProfileController {
                 })
             }
         }
-//        fetchUnseenProfiles { (profiles) -> Void in
-//            if let profiles = profiles {
-//                guard profiles.count > 0 else {return}
-//                
-//                let tunnel = dispatch_group_create()
-//                for profile in profiles {
-//                    dispatch_group_enter(tunnel)
-//                    ResponseController.createResponse(profile.identifier!, liked: false, completion: { (responses) -> Void in
-//                        if let _ = responses {
-//                            dispatch_group_leave(tunnel)
-//                        }
-//                    })
-//                }
-//                dispatch_group_notify(tunnel, dispatch_get_main_queue(), { () -> Void in
-//                    ProfileController.SharedInstance.profilesBeingViewed += profiles
-//                    ProfileController.observeResponsesFromProfiles(profiles)
-//                })
-//            }
-//        }
     }
     
     func fetchRegionalProfileIdentifiers(completion: (profilesIdentifiers: [String]?) -> Void) {
@@ -280,6 +283,15 @@ class ProfileController {
         }
     }
 
+    static func fetchImageForProfile(profile: Profile, completion: (image: UIImage?)->Void) {
+        ImageController.imageForIdentifier(profile.imageEndPoint) { (image) -> Void in
+            if let image = image {
+                completion(image: image)
+            } else {
+                completion(image: nil)
+            }
+        }
+    }
 //    
 //    static func mockProfiles() -> [Profile] {
 //        let couples = [(PersonController.mockPeople()[0], PersonController.mockPeople()[1]), (PersonController.mockPeople()[2], PersonController.mockPeople()[3])]

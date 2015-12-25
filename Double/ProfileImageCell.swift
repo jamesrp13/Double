@@ -26,14 +26,24 @@ class ProfileImageCell: UITableViewCell {
     
     func updateWithProfile(profile: Profile) {
         ImageController.imageForIdentifier(profile.imageEndPoint) { (image) -> Void in
-            self.profileImageView.contentMode = .ScaleAspectFit
+            self.profileImageView.contentMode = .ScaleAspectFill
             self.profileImageView.image = image
+            self.profileImageView.clipsToBounds = true
+            self.profileImageView.layer.borderWidth = 2
+            self.profileImageView.layer.borderColor = DesignController.SharedInstance.blueColor.CGColor
+            self.profileImageView.frame.size.width = self.frame.width - 80
+            self.profileImageView.frame.size.height = self.profileImageView.frame.width
         }
     }
     
     func updateWithImage(image: UIImage?) {
-        self.profileImageView.contentMode = .ScaleAspectFit
+        self.profileImageView.contentMode = .ScaleAspectFill
         self.profileImageView.image = image
+        self.profileImageView.clipsToBounds = true
+        self.profileImageView.layer.borderWidth = 2
+        self.profileImageView.layer.borderColor = DesignController.SharedInstance.blueColor.CGColor
+        self.profileImageView.frame.size.width = self.frame.width - 80
+        self.profileImageView.frame.size.height = self.profileImageView.frame.width
     }
 
 }

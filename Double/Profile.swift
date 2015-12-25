@@ -42,13 +42,6 @@ struct Profile: FirebaseType, Equatable {
         return "\(people.0.name) and \(people.1.name)"
     }
     
-    var profilePicture: UIImage? {
-        ImageController.imageForIdentifier(imageEndPoint) { (image) -> Void in
-            return image
-        }
-        return nil
-    }
-    
     var relationshipLength: String? {
         var lengthString = ""
         let years = relationshipStart.timeIntervalSinceNow/(-365)/24/60/60
@@ -80,6 +73,30 @@ struct Profile: FirebaseType, Equatable {
         if let about = about {
             json.updateValue(about, forKey: kAbout)
         }
+        return json
+    }
+    
+    var jsonValueForPersisting: [String: AnyObject] {
+        let locationDictionary = ["latitude": location.coordinate.latitude, "longitude": location.coordinate.longitude]
+        var profileJson: [String: AnyObject] = [kRelationshipStatus: relationshipStatus.rawValue, kRelationshipStart: relationshipStart.timeIntervalSince1970, kLocation: locationDictionary, kImageEndpoint: imageEndPoint]
+        
+        if let about = about {
+            profileJson.updateValue(about, forKey: kAbout)
+        }
+        
+        let peopleJson: [String: AnyObject] = [people.0.identifier!: people.0.jsonValue, people.1.identifier!: people.1.jsonValue]
+        var childrenJson: [String: AnyObject] = [:]
+        if let children = children {
+            for child in children {
+                childrenJson.updateValue(child.jsonValue, forKey: child.identifier!)
+            }
+        }
+        
+        var json: [String: AnyObject] = [kProfiles: profileJson, kPeople: peopleJson]
+        if childrenJson.count > 0 {
+            json.updateValue(childrenJson, forKey: kChildren)
+        }
+        
         return json
     }
     

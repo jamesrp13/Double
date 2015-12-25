@@ -46,7 +46,23 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         AccountController.authenticateAccount(email, password: password, completion: { (account) -> Void in
             if let account = account {
                 ProfileController.fetchProfileForIdentifier(account.identifier!, completion: { (profile) -> Void in
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                    if let profile = profile {
+                        ImageController.imageForIdentifier(profile.imageEndPoint, completion: { (image) -> Void in
+                            if let tabBarController = self.presentingViewController as? UITabBarController {
+                                if let navController = tabBarController.viewControllers?.first as? UINavigationController {
+                                    let profileViewController = navController.viewControllers.first! as! ProfileTableViewController
+                                    if let image = image {
+                                        profileViewController.ourProfileButton.setImage(image, forState: .Normal)
+                                        self.dismissViewControllerAnimated(true, completion: nil)
+                                    } else {
+                                        print("There is no image for the current user profile!")
+                                    }
+                                }
+                            }
+                        })
+                    } else {
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
                 })
             } else {
                 self.presentAlert("Authentication failed", message: "Please check your email and password and try again.")

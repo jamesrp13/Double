@@ -16,12 +16,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     override init() {
         super.init()
-        Firebase.defaultConfig().persistenceEnabled = true
+        //Firebase.defaultConfig().persistenceEnabled = true
         FirebaseController.loadNecessaryDataFromNetwork()
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.
+        
+        UITabBar.appearance().layer.borderWidth = 20
+        UITabBar.appearance().layer.borderColor = DesignController.SharedInstance.blueColor.CGColor
+        UITabBar.appearance().barTintColor = .whiteColor()
+        UITabBar.appearance().tintColor = DesignController.SharedInstance.blueColor
         return true
     }
 

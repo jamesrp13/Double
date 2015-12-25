@@ -17,7 +17,9 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         return ProfileController.SharedInstance.profilesBeingViewed
     }
     
-    @IBOutlet weak var ourProfileButton: UIBarButtonItem!
+    @IBOutlet weak var ourProfileView: UIView!
+    
+    @IBOutlet weak var ourProfileButton: UIButton!
     
     @IBOutlet weak var logoutButton: UIBarButtonItem!
     
@@ -39,29 +41,37 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         
         if let profile = profileForViewing {
-            if profile.identifier! == ProfileController.SharedInstance.currentUserIdentifier! {
-                ourProfileButton.title = "Edit Profile"
-                logoutButton.title = "Log out"
-            } else {
-                ourProfileButton.enabled = false
-                ourProfileButton.title = ""
-                logoutButton.title = "Unfriend"
+//            if profile.identifier! == ProfileController.SharedInstance.currentUserIdentifier! {
+//                ourProfileButton.title = "Edit Profile"
+//                logoutButton.title = "Log out"
+//            } else {
+//                ourProfileButton.enabled = false
+//                ourProfileButton.title = ""
+//                logoutButton.title = "Unfriend"
+//            }
+            ProfileController.fetchImageForProfile(profile) { (image) -> Void in
+                if let image = image {
+                    self.ourProfileButton.setImage(image, forState: .Normal)
+                }
+            }
+        } else {
+            if let profile = ProfileController.SharedInstance.currentUserProfile {
+                ProfileController.fetchImageForProfile(profile) { (image) -> Void in
+                    if let image = image {
+                        self.ourProfileButton.setImage(image, forState: .Normal)
+                    }
+                }
             }
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateProfileForViewing", name: "profileEdited", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: "ProfilesChanged", object: nil)
         
-        tableView.estimatedRowHeight = 30
-        tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.setNeedsLayout()
-        self.tableView.layoutIfNeeded()
+        ourProfileView.layer.cornerRadius = ourProfileView.frame.height / 2
+        ourProfileButton.layer.cornerRadius = ourProfileButton.frame.height / 2
         navigationController?.navigationBarHidden = true
+        self.view.sendSubviewToBack(tableView)
     }
-    
-//    override func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        return evaluationStackView
-//    }
     
     @IBAction func doneButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -130,6 +140,25 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     
     // MARK: - Table view data source
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+//        guard let profile = profileForViewing != nil ? profileForViewing:profilesBeingViewed[0] else {return 44}
+//        var height: CGFloat = 40
+//        switch indexPath.row {
+//        case 0:
+//            break
+//        case 1:
+//            height = (self.view.frame.width - 16) * (2.0 / 3.0)
+//        default:
+//            break
+//        }
+//        return height
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if profilesBeingViewed.count > 0 || profileForViewing != nil {
@@ -183,6 +212,11 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 return cell
                 
             }
+            
+//            tableView.estimatedRowHeight = 25
+//            tableView.rowHeight = UITableViewAutomaticDimension
+//            cell.setNeedsDisplay()
+//            cell.setNeedsLayout()
             
             return cell
         }
