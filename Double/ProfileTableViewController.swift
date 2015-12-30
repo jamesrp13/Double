@@ -24,9 +24,12 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     @IBOutlet weak var logoutButton: UIBarButtonItem!
     
     var profileForViewing: Profile? = nil
+    var profileForEvaluation: Profile? = nil
     var fromFriendship: Friendship? = nil
     
     @IBOutlet weak var evaluationStackView: UIStackView!
+    
+    @IBOutlet weak var noMoreProfilesStackView: UIStackView!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
@@ -41,14 +44,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         super.viewDidLoad()
         
         if let profile = profileForViewing {
-//            if profile.identifier! == ProfileController.SharedInstance.currentUserIdentifier! {
-//                ourProfileButton.title = "Edit Profile"
-//                logoutButton.title = "Log out"
-//            } else {
-//                ourProfileButton.enabled = false
-//                ourProfileButton.title = ""
-//                logoutButton.title = "Unfriend"
-//            }
             ProfileController.fetchImageForProfile(profile) { (image) -> Void in
                 if let image = image {
                     self.ourProfileButton.setImage(image, forState: .Normal)
@@ -63,27 +58,36 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 }
             }
         }
-        
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateProfileForViewing", name: "profileEdited", object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: "ProfilesChanged", object: nil)
-        
-        ourProfileView.layer.cornerRadius = ourProfileView.frame.height / 2
-        ourProfileButton.layer.cornerRadius = ourProfileButton.frame.height / 2
-        navigationController?.navigationBarHidden = true
-        self.view.sendSubviewToBack(tableView)
+
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "profilesBeingViewedChanged", name: "profilesBeingViewedChanged", object: nil)
+        if profilesBeingViewed.count == 0 {
+            updateViewForNoProfiles()
+        }
+        layoutNavigationBar()
     }
     
     @IBAction func doneButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
+    func layoutNavigationBar() {
+        ourProfileView.layer.cornerRadius = ourProfileView.frame.height / 2
+        ourProfileButton.layer.cornerRadius = ourProfileButton.frame.height / 2
+        navigationController?.navigationBarHidden = true
+        self.view.sendSubviewToBack(tableView)
+    }
+    
     func updateTableView() {
         tableView.reloadData()
     }
     
-    func updateProfileForViewing() {
-        if let _ = profileForViewing {
-            self.profileForViewing = ProfileController.SharedInstance.currentUserProfile
+    func profilesBeingViewedChanged() {
+        guard profileForViewing == nil else {return}
+        if profilesBeingViewed.count == 0 {
+            updateViewForNoProfiles()
+            updateTableView()
+        } else {
+            updateViewForMoreProfiles()
             updateTableView()
         }
     }
@@ -138,6 +142,17 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         }
     }
     
+    func updateViewForNoProfiles() {
+        tableView.hidden = true
+        evaluationStackView.hidden = true
+        noMoreProfilesStackView.hidden = false
+    }
+    
+    func updateViewForMoreProfiles() {
+        tableView.hidden = false
+        evaluationStackView.hidden = false
+        noMoreProfilesStackView.hidden = true
+    }
     
     // MARK: - Table view data source
     
@@ -246,7 +261,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             }
         } else if segue.identifier == "toEditProfile" {
             if let editProfileViewController = segue.destinationViewController as? EditProfileTableViewController {
-                editProfileViewController.profile = self.profileForViewing
+                editProfileViewController.profile = ProfileController.SharedInstance.currentUserProfile
             }
         }
     }

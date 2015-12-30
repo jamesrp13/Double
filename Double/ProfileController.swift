@@ -37,26 +37,15 @@ class ProfileController {
         }
     }
 
+    var profilesLeft = true
     var currentUserIdentifier: String? = nil
     
     var profilesBeingViewed: [Profile] = [] {
         didSet {
-            if oldValue.count != 0 && profilesBeingViewed.count > 0{
-                if profilesBeingViewed.count < 10 && (oldValue[0].identifier! != profilesBeingViewed[0].identifier!) {
-                    ProfileController.fetchProfileForDisplay()
-                }
-                if profilesBeingViewed.count > 0 && (oldValue[0].identifier! != profilesBeingViewed[0].identifier!) {
-                    NSNotificationCenter.defaultCenter().postNotificationName("ProfilesChanged", object: self)
-                }
-            } else {
-                if profilesBeingViewed.count < 10 {
-                    ProfileController.fetchProfileForDisplay()
-                }
-                if profilesBeingViewed.count > 0 {
-                    NSNotificationCenter.defaultCenter().postNotificationName("ProfilesChanged", object: self)
-                }
+            NSNotificationCenter.defaultCenter().postNotificationName("profilesBeingViewedChanged", object: self)
+            if profilesLeft && profilesBeingViewed.count < 10 {
+                ProfileController.fetchProfileForDisplay()
             }
-            ProfileController.SharedInstance.saveProfileIdentifiersToPersistentStore()
         }
     }
     
@@ -131,10 +120,11 @@ class ProfileController {
     // MARK: - Prepare profiles for viewing
     
     static func fetchProfileForDisplay() {
+        SharedInstance.profilesLeft = true
         SharedInstance.fetchRegionalProfileIdentifiers { (profilesIdentifiers) -> Void in
             if let profileIdentifiers = profilesIdentifiers {
                 SharedInstance.filterForUnseenProfiles(profileIdentifiers, unseenProfileIdentifiers: [], completion: { (profileIdentifiers) -> Void in
-                    if let profileIdentifiers = profileIdentifiers {
+                    if let profileIdentifiers = profileIdentifiers where profileIdentifiers.count > 0 {
                         for profileIdentifier in profileIdentifiers {
                             fetchProfileForIdentifier(profileIdentifier, completion: { (profile) -> Void in
                                 if let profile = profile {
@@ -147,6 +137,8 @@ class ProfileController {
                                 }
                             })
                         }
+                    } else {
+                        SharedInstance.profilesLeft = false
                     }
                 })
             }

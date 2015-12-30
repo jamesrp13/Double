@@ -8,49 +8,65 @@
 
 import UIKit
 
-class EditProfileTableViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UIPopoverPresentationControllerDelegate {
+class EditProfileTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextViewDelegate, UIPopoverPresentationControllerDelegate {
 
+    @IBOutlet weak var tableView: UITableView!
+    
     var accountIdentifier: String? = nil
     
     var image: UIImage? = nil {
         didSet {
-            tableView.reloadData()
+            if let tableView = tableView {
+                tableView.reloadData()
+            }
         }
     }
     
     var people: (Person, Person)? = nil {
         didSet {
-            tableView.reloadData()
+            if let tableView = tableView {
+                tableView.reloadData()
+            }
         }
     }
     
     var relationshipStatus: String? = nil {
         didSet {
-            tableView.reloadData()
+            if let tableView = tableView {
+                tableView.reloadData()
+            }
         }
     }
     
     var relationshipStart: NSDate? = nil {
         didSet {
-            tableView.reloadData()
+            if let tableView = tableView {
+                tableView.reloadData()
+            }
         }
     }
     
     var location: CLLocation? = nil {
         didSet {
-            tableView.reloadData()
+            if let tableView = tableView {
+                tableView.reloadData()
+            }
         }
     }
     
     var children: [Child] = [] {
         didSet {
-            tableView.reloadData()
+            if let tableView = tableView {
+                tableView.reloadData()
+            }
         }
     }
     
     var profile: Profile? = nil {
         didSet {
-            tableView.reloadData()
+            if let tableView = tableView {
+                tableView.reloadData()
+            }
             if let profile = profile {
                 people = profile.people
                 relationshipStatus = profile.relationshipStatus.rawValue
@@ -71,9 +87,6 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
     override func viewDidLoad() {
         super.viewDidLoad()
         
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updatedLocation:", name: "locationUpdated", object: nil)
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: "locationFailed", name: "FailedToFindLocation", object: nil)
-        
         tableView.estimatedRowHeight = 30
         tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.setNeedsLayout()
@@ -87,6 +100,7 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
     }
 
     @IBAction func imageTapped(sender: AnyObject) {
+
         let imagePicker = UIImagePickerController()
         
         imagePicker.delegate = self
@@ -139,9 +153,7 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
             if let profile = profile {
                 ProfileController.SharedInstance.currentUserProfile = profile
                 FirebaseController.loadNecessaryDataFromNetwork()
-                self.dismissViewControllerAnimated(true, completion: { () -> Void in
-                    NSNotificationCenter.defaultCenter().postNotificationName("profileEdited", object: self)
-                })
+                self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 print("profile not created")
             }
@@ -149,17 +161,26 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
         
     }
     
+    @IBAction func logoutButtonTapped(sender: AnyObject) {
+        AccountController.logoutCurrentUser { () -> Void in
+            self.dismissViewControllerAnimated(false, completion: nil)
+            if let tabBarController = UIApplication.sharedApplication().delegate?.window??.rootViewController as? UITabBarController {
+                tabBarController.selectedIndex = 0
+            }
+        }
+    }
+    
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 4
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell: UITableViewCell
         
         switch indexPath.row {
@@ -253,7 +274,9 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
             let basicInfoViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("basicInfoController") as! BasicInfoViewController
             basicInfoViewController.modalPresentationStyle = .Popover
-            basicInfoViewController.preferredContentSize = CGSizeMake(self.view.frame.width-20, self.view.frame.height-100)
+            basicInfoViewController.preferredContentSize = CGSizeMake(self.view.frame.width-20, self.view.frame.height-300)
+            basicInfoViewController.viewType = .editProfile
+            basicInfoViewController.state = .couple
             
             let popoverBasicinfoController = basicInfoViewController.popoverPresentationController
             popoverBasicinfoController?.delegate = self
@@ -267,6 +290,12 @@ class EditProfileTableViewController: UITableViewController, UIImagePickerContro
             self.presentViewController(basicInfoViewController, animated: true) { () -> Void in
                 if let profile = self.profile {
                     basicInfoViewController.updateWithProfile(profile)
+                } else {
+                    guard let people = self.people,
+                        relationshipStatus = self.relationshipStatus,
+                        relationshipStart = self.relationshipStart,
+                        location = self.location else {basicInfoViewController.dismissViewControllerAnimated(false, completion: nil); return}
+                    basicInfoViewController.updateWithInfo(people, relationshipStatus: relationshipStatus, relationshipStart: relationshipStart, location: location, children: self.children, accountIdentifier: self.accountIdentifier!)
                 }
             }
         }

@@ -114,8 +114,9 @@ struct Profile: FirebaseType, Equatable {
             }
         
         // Guard against network call to children failing, set children
-        guard let childDictionaries = json[kChildren] as? [String: AnyObject] else {return nil}
+        if let childDictionaries = json[kChildren] as? [String: AnyObject] {
             children = childDictionaries.flatMap({Child(json: $0.1 as! [String: AnyObject], identifier: $0.0)})
+        }
     
         guard let profileDictionary = json[kProfiles] as? [String: AnyObject] else {return nil}
         

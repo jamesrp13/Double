@@ -16,16 +16,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "EditProfileTableViewController.swift"
-            timestampString = "472165120.614695"
+            filePath = "Double/BasicInfoViewController.swift"
+            timestampString = "473010301.656702"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "71"
-            endingLineNumber = "71"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "164"
+            endingLineNumber = "164"
+            landmarkName = "updateWithProfile(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -35,14 +35,94 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Double/BasicInfoViewController.swift"
-            timestampString = "472587929.130615"
+            filePath = "Double/AccountController.swift"
+            timestampString = "473100910.715092"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "162"
-            endingLineNumber = "162"
-            landmarkName = "updateWithProfile(_:)"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "authenticateAccount(_:password:completion:)"
             landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Double/AccountController.swift"
+            timestampString = "473100949.842951"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "54"
+            endingLineNumber = "54"
+            landmarkName = "authenticateAccount(_:password:completion:)"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Double/AccountController.swift"
+            timestampString = "473100959.562138"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "53"
+            endingLineNumber = "53"
+            landmarkName = "authenticateAccount(_:password:completion:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static Double.AccountController.(authenticateAccount (Double.AccountController.Type) -&gt; (Swift.String, password : Swift.String, completion : (account : Swift.Optional&lt;Double.Account&gt;) -&gt; ()) -&gt; ()).(closure #1).(closure #1)"
+                  moduleName = "Double"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/James/Documents/Development/iOS%20Development/DevMountain/Capstone/Double/Double/AccountController.swift"
+                  timestampString = "473101998.635374"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "53"
+                  endingLineNumber = "53"
+                  offsetFromSymbolStart = "614">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "static Double.AccountController.(authenticateAccount (Double.AccountController.Type) -&gt; (Swift.String, password : Swift.String, completion : (account : Swift.Optional&lt;Double.Account&gt;) -&gt; ()) -&gt; ()).(closure #1).(closure #1).(closure #1)"
+                  moduleName = "Double"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/James/Documents/Development/iOS%20Development/DevMountain/Capstone/Double/Double/AccountController.swift"
+                  timestampString = "473101998.635994"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "54"
+                  endingLineNumber = "54"
+                  offsetFromSymbolStart = "2850">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Double/ProfileController.swift"
+            timestampString = "473191928.642465"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "44"
+            endingLineNumber = "44"
+            landmarkName = "ProfileController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

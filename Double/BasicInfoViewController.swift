@@ -81,11 +81,13 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Presentation and input configuration
     
     func setupConstraints() {
-        let topConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1, constant: self.view.frame.height / 6)
-        let bottomConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: -self.view.frame.height / 5)
-        
-        self.view.addConstraint(topConstraint)
-        self.view.addConstraint(bottomConstraint)
+        if viewType != .editProfile {
+            let topConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1, constant: self.view.frame.height / 6)
+            let bottomConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: -self.view.frame.height / 5)
+            
+            self.view.addConstraint(topConstraint)
+            self.view.addConstraint(bottomConstraint)
+        }
     }
     
     func configureInputFields() {
@@ -190,6 +192,54 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             relationshipStartLabel.text = "When did you get engaged?"
         case .Married:
             relationshipStartLabel.text = "When did you get married?"
+        }
+        
+        if children.count > 0 {
+            numberOfKidsTextField.text = "\(children.count)"
+            for var i=0; i<children.count; i++ {
+                let child = children[i]
+                let stackView = coupleStackView.subviews[i+8]
+                stackView.hidden = false
+                if let genderSegment = stackView.subviews[1] as? UISegmentedControl,
+                    dobTextField = stackView.subviews[2] as? UITextField {
+                        genderSegment.selectedSegmentIndex = child.gender.rawValue == "M" ? 0:1
+                        dobTextField.text = dateFormatter.stringFromDate(child.dob)
+                }
+            }
+        }
+    }
+    
+    func updateWithInfo(people: (Person, Person), relationshipStatus: String, relationshipStart: NSDate, location: CLLocation, children: [Child], accountIdentifier: String) {
+        self.person1 = people.0
+        self.person2 = people.1
+        self.relationshipStart = relationshipStart
+        self.location = location
+        self.children = children
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.dateStyle = .MediumStyle
+        
+        guard let _ = self.person1,
+            _ = self.person2,
+            _ = self.relationshipStart,
+            _ = self.location else {return}
+        
+        relationshipStartTextField.text = dateFormatter.stringFromDate(relationshipStart)
+        relationshipSegmentedControl.selectedSegmentIndex = relationshipStatus == "Dating" ? 0:(relationshipStatus == "Engaged" ? 1:2)
+        LocationController.locationAsCityCountry(location) { (cityState) -> Void in
+            if let cityState = cityState {
+                self.locationTextField.text = cityState
+            }
+        }
+        
+        switch relationshipStatus {
+        case "dating":
+            relationshipStartLabel.text = "When did you start dating?"
+        case "engaged":
+            relationshipStartLabel.text = "When did you get engaged?"
+        case "married":
+            relationshipStartLabel.text = "When did you get married?"
+        default:
+            relationshipStartLabel.text = "When did you start dating?"
         }
         
         if children.count > 0 {
@@ -331,10 +381,10 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     func textFieldDidBeginEditing(textField: UITextField) {
         activeTextField = textField
         switch textField {
-        case dob1TextField:
+        case dob1TextField ?? "":
             genericDatePicker!.maximumDate = NSDate(timeIntervalSinceNow: (-18)*365*24*60*60)
             genericDatePicker!.date = genericDatePicker!.maximumDate!
-        case dob2TextField:
+        case dob2TextField ?? "":
             genericDatePicker!.maximumDate = NSDate(timeIntervalSinceNow: (-18)*365*24*60*60)
             genericDatePicker!.date = genericDatePicker!.maximumDate!
         case relationshipStartTextField:
@@ -476,6 +526,16 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                     editProfileViewController.tableView.reloadData()
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }
+            } else {
+                if let navigationViewController = self.presentingViewController as? UINavigationController,
+                    let presentingViewController = navigationViewController.viewControllers[1] as? EditProfileTableViewController {
+                    presentingViewController.people = (person1!, person2!)
+                    presentingViewController.relationshipStart = relationshipStart
+                    presentingViewController.relationshipStatus = relationshipStatus
+                    presentingViewController.children = children
+                    presentingViewController.tableView.reloadData()
+                    self.dismissViewControllerAnimated(true, completion: nil)
+                }
             }
         }
     }
@@ -484,16 +544,18 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "fromBasicInfoToEditProfile" {
             if let editProfileView = segue.destinationViewController as? EditProfileTableViewController {
-                guard var person1 = person1,
-                    person2 = person2,
+                guard var personOne = person1,
+                    personTwo = person2,
                     let location = location,
                     let relationshipStart = relationshipStart else {return}
                 let relationshipStatusInt = relationshipSegmentedControl.selectedSegmentIndex
                 let relationshipStatus = relationshipStatusInt == 0 ? "Dating":(relationshipStatusInt == 1 ? "Engaged":"Married")
                 
-                person1.save()
-                person2.save()
-                editProfileView.people = (person1, person2)
+                personOne.profileIdentifier = accountIdentifier!
+                personTwo.profileIdentifier = accountIdentifier!
+                personOne.save()
+                personTwo.save()
+                editProfileView.people = (personOne, personTwo)
                 editProfileView.relationshipStart = relationshipStart
                 editProfileView.relationshipStatus = relationshipStatus
                 editProfileView.accountIdentifier = accountIdentifier
