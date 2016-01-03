@@ -23,6 +23,10 @@ class FriendshipCell: UICollectionViewCell {
                 self.profile = profile
                 ImageController.imageForIdentifier(profile.imageEndPoint, completion: { (image) -> Void in
                     self.profileImageView.image = image
+                    self.profileImageView.layer.cornerRadius = self.profileImageView.frame.height / 2
+                    self.profileImageView.layer.borderWidth = 2
+                    self.profileImageView.layer.borderColor = DesignController.SharedInstance.blueColor.CGColor
+                    self.profileImageView.clipsToBounds = true
                 })
                 self.coupleTitleLabel.text = profile.coupleTitle
             }

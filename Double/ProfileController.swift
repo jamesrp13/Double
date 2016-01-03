@@ -43,6 +43,7 @@ class ProfileController {
     var profilesBeingViewed: [Profile] = [] {
         didSet {
             NSNotificationCenter.defaultCenter().postNotificationName("profilesBeingViewedChanged", object: self)
+            saveProfileIdentifiersToPersistentStore()
             if profilesLeft && profilesBeingViewed.count < 10 {
                 ProfileController.fetchProfileForDisplay()
             }
@@ -232,12 +233,13 @@ class ProfileController {
                         let children = childrenDictionary ?? [:]
                         if let people = peopleDictionary {
                             let profileJson = ["profiles": profileAttributeDictionary, "children": children, "people": people]
-                            if let profile = Profile(json: profileJson, identifier: profileIdentifier) {
-                                completion(profile: profile)
-                                
-                            } else {
-                                completion(profile: nil)
-                            }
+                            let _ = Profile(json: profileJson, identifier: profileIdentifier, completion: { (profile) -> Void in
+                                if let profile = profile {
+                                    completion(profile: profile)
+                                } else {
+                                    completion(profile: nil)
+                                }
+                            })
                         } else {
                             completion(profile: nil)
                         }

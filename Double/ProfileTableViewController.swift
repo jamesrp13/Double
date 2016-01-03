@@ -43,10 +43,15 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        tableView.layer.cornerRadius = 10
+        tableView.backgroundColor = DesignController.SharedInstance.grayBackground
         if let profile = profileForViewing {
             ProfileController.fetchImageForProfile(profile) { (image) -> Void in
                 if let image = image {
-                    self.ourProfileButton.setImage(image, forState: .Normal)
+                    if self.ourProfileView != nil {
+                        self.ourProfileButton.setImage(image, forState: .Normal)
+                    }
                 }
             }
         } else {
@@ -64,6 +69,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             updateViewForNoProfiles()
         }
         layoutNavigationBar()
+        
+        tableView.estimatedRowHeight = 50
+        tableView.rowHeight = UITableViewAutomaticDimension
+    }
+    
+    @IBAction func checkForProfilesButtonTapped(sender: AnyObject) {
+        ProfileController.fetchProfileForDisplay()
     }
     
     @IBAction func doneButtonTapped(sender: AnyObject) {
@@ -71,8 +83,10 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     func layoutNavigationBar() {
-        ourProfileView.layer.cornerRadius = ourProfileView.frame.height / 2
-        ourProfileButton.layer.cornerRadius = ourProfileButton.frame.height / 2
+        if ourProfileView != nil {
+            ourProfileView.layer.cornerRadius = ourProfileView.frame.height / 2
+            ourProfileButton.layer.cornerRadius = ourProfileButton.frame.height / 2
+        }
         navigationController?.navigationBarHidden = true
         self.view.sendSubviewToBack(tableView)
     }
@@ -155,25 +169,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     }
     
     // MARK: - Table view data source
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-//        guard let profile = profileForViewing != nil ? profileForViewing:profilesBeingViewed[0] else {return 44}
-//        var height: CGFloat = 40
-//        switch indexPath.row {
-//        case 0:
-//            break
-//        case 1:
-//            height = (self.view.frame.width - 16) * (2.0 / 3.0)
-//        default:
-//            break
-//        }
-//        return height
-        return UITableViewAutomaticDimension
-    }
-    
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        return UITableViewAutomaticDimension
-    }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if profilesBeingViewed.count > 0 || profileForViewing != nil {
@@ -227,11 +222,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 return cell
                 
             }
-            
-//            tableView.estimatedRowHeight = 25
-//            tableView.rowHeight = UITableViewAutomaticDimension
-//            cell.setNeedsDisplay()
-//            cell.setNeedsLayout()
             
             return cell
         }

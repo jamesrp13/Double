@@ -8,10 +8,14 @@
 
 import UIKit
 
-class ChatTableViewController: UITableViewController, UITextFieldDelegate {
+class ChatTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
+    @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTextField: UITextField!
     
+    @IBOutlet weak var ourProfileView: UIView!
+    @IBOutlet weak var ourProfileButton: UIButton!
+   
     var friendship: Friendship? = nil {
         didSet {
             messages = friendship?.messages
@@ -29,13 +33,17 @@ class ChatTableViewController: UITableViewController, UITextFieldDelegate {
                     }
                 }
             }
-            tableView.reloadData()
+            if tableView != nil {
+                tableView.reloadData()
+            }
         }
     }
     
     var messages: [Message]? = nil {
         didSet {
-            tableView.reloadData()
+            if tableView != nil {
+                tableView.reloadData()
+            }
         }
     }
     
@@ -43,11 +51,25 @@ class ChatTableViewController: UITableViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        layoutNavigationBar()
+    }
+    
+    func layoutNavigationBar() {
+        if ourProfileView != nil {
+            ourProfileView.layer.cornerRadius = ourProfileView.frame.height / 2
+            ourProfileButton.layer.cornerRadius = ourProfileButton.frame.height / 2
+        }
+        navigationController?.navigationBarHidden = true
+        self.view.sendSubviewToBack(tableView)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func backButtonTapped(sender: AnyObject) {
+        self.navigationController?.popViewControllerAnimated(true)
     }
     
     @IBAction func sendButtonTapped(sender: AnyObject) {
@@ -66,11 +88,11 @@ class ChatTableViewController: UITableViewController, UITextFieldDelegate {
     
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let messages = messages {
             return messages.count
         } else {
@@ -79,7 +101,7 @@ class ChatTableViewController: UITableViewController, UITextFieldDelegate {
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         if let messages = messages {
             if messages[indexPath.row].profileId == ProfileController.SharedInstance.currentUserProfile!.identifier! {

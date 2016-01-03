@@ -8,12 +8,17 @@
 
 import UIKit
 
-class FriendshipTableViewController: UITableViewController {
+class FriendshipTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    @IBOutlet weak var tableView: UITableView!
     var friendships: [Friendship] {
         
         return FriendshipController.SharedInstance.friendships
     }
+    
+    @IBOutlet weak var ourProfileView: UIView!
+    
+    @IBOutlet weak var ourProfileButton: UIButton!
     
     var conversations: [Friendship] {
             return FriendshipController.conversationsForFriendships(friendships)
@@ -24,16 +29,34 @@ class FriendshipTableViewController: UITableViewController {
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: FriendshipController.kFriendshipsChanged, object: nil)
      
-        tableView.estimatedRowHeight = 30
-        tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.setNeedsLayout()
-        self.tableView.layoutIfNeeded()
+        layoutNavigationBar()
+        
+        if let image = ProfileController.SharedInstance.currentUserProfile.image {
+            self.ourProfileButton.setImage(image, forState: .Normal)
+        } else {
+            ProfileController.fetchImageForProfile(ProfileController.SharedInstance.currentUserProfile) { (image) -> Void in
+                if let image = image { 
+                    self.ourProfileButton.setImage(image, forState: .Normal)
+                }
+            }
+        }
+
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         tableView.reloadData()
     }
+    
+    func layoutNavigationBar() {
+        if ourProfileView != nil {
+            ourProfileView.layer.cornerRadius = ourProfileView.frame.height / 2
+            ourProfileButton.layer.cornerRadius = ourProfileButton.frame.height / 2
+        }
+        navigationController?.navigationBarHidden = true
+        self.view.sendSubviewToBack(tableView)
+    }
+
     
     func updateTableView() {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
@@ -47,12 +70,28 @@ class FriendshipTableViewController: UITableViewController {
     }
 
     // MARK: - Table view data source
+    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 95
+        } else {
+            return 80
+        }
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return 95
+        } else {
+            return 80
+        }
+    }
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 2
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
             return 1
@@ -63,7 +102,7 @@ class FriendshipTableViewController: UITableViewController {
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         switch indexPath.section {
         case 0:
@@ -83,7 +122,7 @@ class FriendshipTableViewController: UITableViewController {
         return UITableViewCell()
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         switch section {
         case 0:
             return "Friends"
@@ -114,11 +153,9 @@ class FriendshipTableViewController: UITableViewController {
                     chatViewController.profile = collectionCell.profile
                 }
             }
-        case "toOwnProfile":
-            if let navigationViewController = segue.destinationViewController as? UINavigationController {
-                if let profileViewController = navigationViewController.viewControllers.first as? ProfileTableViewController {
-                    profileViewController.profileForViewing = ProfileController.SharedInstance.currentUserProfile
-                }
+        case "toEditProfile":
+            if let editProfileViewController = segue.destinationViewController as? EditProfileTableViewController {
+                editProfileViewController.profile = ProfileController.SharedInstance.currentUserProfile
             }
         default:
             break

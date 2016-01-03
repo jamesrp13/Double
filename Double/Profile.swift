@@ -33,9 +33,28 @@ struct Profile: FirebaseType, Equatable {
     var relationshipStatus: RelationshipStatus
     var relationshipStart: NSDate
     var about: String?
-    var location: CLLocation
+    var location: CLLocation {
+        didSet {
+            LocationController.locationAsCityCountry(location) { (cityState) -> Void in
+                if let cityState = cityState {
+                    self.locationAsString = cityState
+                }
+            }
+        }
+    }
     var children: [Child]?
-    var imageEndPoint: String
+    var imageEndPoint: String {
+        didSet {
+            ImageController.imageForIdentifier(imageEndPoint) { (image) -> Void in
+                if let image = image {
+                    self.image = image
+                }
+            }
+        }
+    }
+    
+    var locationAsString: String? = nil
+    var image: UIImage? = nil
     
     // Profile computed variables
     var coupleTitle: String {
@@ -137,6 +156,63 @@ struct Profile: FirebaseType, Equatable {
         self.about = profileDictionary[kAbout] as? String
         self.people = people
         self.children = children
+    }
+
+    init?(json: [String : AnyObject], identifier: String, completion: (profile: Profile?) -> Void) {
+        var peopleTuple: (Person, Person)? = nil
+        var children: [Child]? = nil
+        
+        // Guard against not having two people, set people
+        guard let peopleDictionaries = json[kPeople] as? [String: AnyObject] else {completion(profile: nil); return nil}
+        let peopleArray = peopleDictionaries.flatMap({Person(json: $0.1 as! [String: AnyObject], identifier: $0.0)})
+        if peopleArray.count == 2 {
+            peopleTuple = (peopleArray[0], peopleArray[1])
+        } else {
+            completion(profile: nil)
+            return nil
+        }
+        
+        // Guard against network call to children failing, set children
+        if let childDictionaries = json[kChildren] as? [String: AnyObject] {
+            children = childDictionaries.flatMap({Child(json: $0.1 as! [String: AnyObject], identifier: $0.0)})
+        }
+        
+        guard let profileDictionary = json[kProfiles] as? [String: AnyObject] else {completion(profile: nil); return nil}
+        
+        guard let relationshipStatusString = profileDictionary[kRelationshipStatus] as? String,
+            relationshipStatus = Profile.RelationshipStatus(rawValue: relationshipStatusString) else {completion(profile: nil); return nil}
+        guard let imageEndPoint = profileDictionary[kImageEndpoint] as? String,
+            let people = peopleTuple,
+            let relationshipTimeInterval = profileDictionary[kRelationshipStart] as? NSTimeInterval,
+            let locationDictionary = profileDictionary[kLocation] as? [String: Double],
+            latitude = locationDictionary["latitude"],
+            longitude = locationDictionary["longitude"] else {completion(profile: nil); return nil}
+        
+        self.identifier = identifier
+        self.relationshipStatus = relationshipStatus
+        self.relationshipStart = NSDate(timeIntervalSince1970: relationshipTimeInterval)
+        self.location = CLLocation(latitude: latitude, longitude: longitude)
+        self.imageEndPoint = imageEndPoint
+        self.about = profileDictionary[kAbout] as? String
+        self.people = people
+        self.children = children
+        
+        ImageController.imageForIdentifier(imageEndPoint) { (image) -> Void in
+            if let image = image {
+                self.image = image
+            } else {
+                print("Image not returned during initializer")
+            }
+            LocationController.locationAsCityCountry(CLLocation(latitude: latitude, longitude: longitude), completion: { (cityState) -> Void in
+                if let cityState = cityState {
+                    self.locationAsString = cityState
+                    completion(profile: self)
+                } else {
+                    completion(profile: nil)
+                    print("Couldn't find location during initializer")
+                }
+            })
+        }
     }
 
     

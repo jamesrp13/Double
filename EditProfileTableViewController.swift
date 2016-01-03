@@ -87,10 +87,8 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.estimatedRowHeight = 30
+        tableView.estimatedRowHeight = 50
         tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.setNeedsLayout()
-        self.tableView.layoutIfNeeded()
         customizeNavigationBar()
     }
 
@@ -131,7 +129,7 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         picker.dismissViewControllerAnimated(true, completion: nil)
         let croppedImage = info[UIImagePickerControllerEditedImage] as? UIImage
-        self.image = croppedImage
+        self.image = ImageController.resizeImage(croppedImage!)
     }
     
     @IBAction func saveButtonTapped(sender: AnyObject) {
@@ -152,7 +150,9 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
         ProfileController.createProfile((newPerson1, newPerson2), relationshipStatus: relationshipStatus, relationshipStart: relationshipStart, about: nil, location: location, children: children, image: image, profileIdentifier: accountIdentifier, completion: { (profile) -> Void in
             if let profile = profile {
                 ProfileController.SharedInstance.currentUserProfile = profile
-                FirebaseController.loadNecessaryDataFromNetwork()
+                if ProfileController.SharedInstance.profilesBeingViewed.count == 0 {
+                    FirebaseController.loadNecessaryDataFromNetwork()
+                }
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 print("profile not created")
@@ -185,7 +185,7 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
         
         switch indexPath.row {
         case 0:
-            if let unwrappedCell = self.tableView.dequeueReusableCellWithIdentifier("profileTitleCell", forIndexPath: indexPath) as? ProfileTitleCell {
+            if let unwrappedCell = self.tableView.dequeueReusableCellWithIdentifier("editProfileTitleCell", forIndexPath: indexPath) as? ProfileTitleCell {
                 //unwrappedCell.updateWithProfile(profile)
                 if let profile = profile {
                     unwrappedCell.updateWithProfile(profile)
@@ -201,7 +201,7 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
                 cell = UITableViewCell()
             }
         case 1:
-            if let unwrappedCell = tableView.dequeueReusableCellWithIdentifier("profileImageCell", forIndexPath: indexPath) as? ProfileImageCell {
+            if let unwrappedCell = tableView.dequeueReusableCellWithIdentifier("editProfileImageCell", forIndexPath: indexPath) as? ProfileImageCell {
                 if let image = image {
                     unwrappedCell.updateWithImage(image)
                 } else if let profile = profile {
@@ -215,7 +215,7 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
                 cell = UITableViewCell()
             }
         case 2:
-            if let unwrappedCell = tableView.dequeueReusableCellWithIdentifier("profileAboutCoupleCell", forIndexPath: indexPath) as? ProfileAboutCoupleCell {
+            if let unwrappedCell = tableView.dequeueReusableCellWithIdentifier("editProfileAboutCoupleCell", forIndexPath: indexPath) as? ProfileAboutCoupleCell {
                 unwrappedCell.parentTableViewController = self
                 if let profile = profile {
                     unwrappedCell.updateWithProfile(profile)
@@ -237,7 +237,7 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
                 cell = UITableViewCell()
             }
         case 3:
-            if let unwrappedCell = tableView.dequeueReusableCellWithIdentifier("profileAboutIndividualsCell", forIndexPath: indexPath) as? ProfileAboutIndividualsCell {
+            if let unwrappedCell = tableView.dequeueReusableCellWithIdentifier("editProfileAboutIndividualsCell", forIndexPath: indexPath) as? ProfileAboutIndividualsCell {
                 if let profile = profile {
                     unwrappedCell.updateWithProfile(profile)
                 } else {

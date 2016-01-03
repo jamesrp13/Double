@@ -72,6 +72,7 @@ class AccountController {
         ProfileController.SharedInstance.currentUserIdentifier = nil
         FriendshipController.SharedInstance.friendships = []
         ProfileController.SharedInstance.responsesFromProfilesBeingViewed = [:]
+        ProfileController.SharedInstance.profilesBeingViewed = []
         completion()
     }
     

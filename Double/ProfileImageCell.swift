@@ -14,36 +14,34 @@ class ProfileImageCell: UITableViewCell {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
         
     }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
-        // Configure the view for the selected state
     }
     
     func updateWithProfile(profile: Profile) {
-        ImageController.imageForIdentifier(profile.imageEndPoint) { (image) -> Void in
-            self.profileImageView.contentMode = .ScaleAspectFill
+        self.profileImageView.contentMode = .ScaleAspectFit
+        self.profileImageView.clipsToBounds = true
+        self.profileImageView.layer.borderWidth = 2
+        self.profileImageView.layer.borderColor = DesignController.SharedInstance.blueColor.CGColor
+        if let image = profile.image {
             self.profileImageView.image = image
-            self.profileImageView.clipsToBounds = true
-            self.profileImageView.layer.borderWidth = 2
-            self.profileImageView.layer.borderColor = DesignController.SharedInstance.blueColor.CGColor
-            self.profileImageView.frame.size.width = self.frame.width - 80
-            self.profileImageView.frame.size.height = self.profileImageView.frame.width
+        } else {
+            ImageController.imageForIdentifier(profile.imageEndPoint) { (image) -> Void in
+                self.profileImageView.image = image
+            }
         }
     }
     
     func updateWithImage(image: UIImage?) {
-        self.profileImageView.contentMode = .ScaleAspectFill
+        self.profileImageView.contentMode = .ScaleAspectFit
         self.profileImageView.image = image
         self.profileImageView.clipsToBounds = true
         self.profileImageView.layer.borderWidth = 2
         self.profileImageView.layer.borderColor = DesignController.SharedInstance.blueColor.CGColor
-        self.profileImageView.frame.size.width = self.frame.width - 80
-        self.profileImageView.frame.size.height = self.profileImageView.frame.width
     }
 
 }

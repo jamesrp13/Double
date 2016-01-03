@@ -46,6 +46,17 @@ class ImageController {
         }
     }
     
+    static func resizeImage(image: UIImage) -> UIImage {
+        let originalWidth  = image.size.width
+        
+        let posX = CGFloat(0.0)
+        let posY = CGFloat(0.0)
+
+        let cropRectangle = CGRectMake(posX, posY, originalWidth, originalWidth * (2.0/3.0))
+        
+        let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropRectangle);
+        return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
+    }
     
 }
 
