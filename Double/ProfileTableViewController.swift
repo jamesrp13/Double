@@ -43,29 +43,39 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         tableView.layer.cornerRadius = 10
         tableView.backgroundColor = DesignController.SharedInstance.grayBackground
         if let profile = profileForViewing {
-            ProfileController.fetchImageForProfile(profile) { (image) -> Void in
-                if let image = image {
-                    if self.ourProfileView != nil {
-                        self.ourProfileButton.setImage(image, forState: .Normal)
+            if self.ourProfileView != nil {
+                if let image = profile.image {
+                    self.ourProfileButton.setImage(image, forState: .Normal)
+                } else {
+                    ProfileController.fetchImageForProfile(profile) { (image) -> Void in
+                        if let image = image {
+                            self.ourProfileButton.setImage(image, forState: .Normal)
+                        }
                     }
                 }
             }
         } else {
             if let profile = ProfileController.SharedInstance.currentUserProfile {
-                ProfileController.fetchImageForProfile(profile) { (image) -> Void in
-                    if let image = image {
+                if self.ourProfileView != nil {
+                    if let image = profile.image {
                         self.ourProfileButton.setImage(image, forState: .Normal)
+                    } else {
+                        ProfileController.fetchImageForProfile(profile) { (image) -> Void in
+                            if let image = image {
+                                self.ourProfileButton.setImage(image, forState: .Normal)
+                            }
+                        }
                     }
                 }
             }
         }
 
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "profilesBeingViewedChanged", name: "profilesBeingViewedChanged", object: nil)
-        if profilesBeingViewed.count == 0 {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCurrentUserProfileImage", name: "profileImageChanged", object: nil)
+        if profilesBeingViewed.count == 0 && fromFriendship == nil {
             updateViewForNoProfiles()
         }
         layoutNavigationBar()
@@ -80,6 +90,17 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     @IBAction func doneButtonTapped(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func reloadCurrentUserProfileImage() {
+        if ourProfileView != nil {
+            ImageController.imageForIdentifier(ProfileController.SharedInstance.currentUserProfile.imageEndPoint, completion: { (image) -> Void in
+                if let image = image {
+                    ProfileController.SharedInstance.currentUserProfile.image = image
+                    self.ourProfileButton.setImage(image, forState: .Normal)
+                }
+            })
+        }
     }
     
     func layoutNavigationBar() {
@@ -127,35 +148,26 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         tableView.reloadData()
     }
     
-    @IBAction func logoutButtonTapped(sender: AnyObject) {
-        if let profile = profileForViewing {
-            if profile == ProfileController.SharedInstance.currentUserProfile! {
-                AccountController.logoutCurrentUser { () -> Void in
-                    self.dismissViewControllerAnimated(false, completion: nil)
-                    if let tabBarController = UIApplication.sharedApplication().delegate?.window??.rootViewController as? UITabBarController {
-                        tabBarController.selectedIndex = 0
-                    }
-                }
-            } else {
-                if let friendship = fromFriendship {
-                    let otherProfileIdentifier = friendship.profileIdentifiers.0 == ProfileController.SharedInstance.currentUserIdentifier! ? friendship.profileIdentifiers.1:friendship.profileIdentifiers.0
-                    FirebaseController.base.childByAppendingPath("responses/\(otherProfileIdentifier)/\(ProfileController.SharedInstance.currentUserIdentifier!)").setValue(false)
-                    friendship.delete()
-                    self.dismissViewControllerAnimated(false, completion: nil)
-                    if let tabBarController = UIApplication.sharedApplication().delegate?.window??.rootViewController as? UITabBarController {
-                            tabBarController.selectedIndex = 1
-                        if let navigationController = tabBarController.selectedViewController as? UINavigationController {
-                            if let friendshipViewController = navigationController.viewControllers[0] as? FriendshipTableViewController {
-                                friendshipViewController.tableView.reloadData()
-                                navigationController.popToRootViewControllerAnimated(false)
-                            }
+    @IBAction func unfriendButtonTapped(sender: AnyObject) {
+        if let _ = profileForViewing {
+            if let friendship = fromFriendship {
+                let otherProfileIdentifier = friendship.profileIdentifiers.0 == ProfileController.SharedInstance.currentUserIdentifier! ? friendship.profileIdentifiers.1:friendship.profileIdentifiers.0
+                FirebaseController.base.childByAppendingPath("responses/\(otherProfileIdentifier)/\(ProfileController.SharedInstance.currentUserIdentifier!)").setValue(false)
+                friendship.delete()
+                self.dismissViewControllerAnimated(false, completion: nil)
+                if let tabBarController = UIApplication.sharedApplication().delegate?.window??.rootViewController as? UITabBarController {
+                    tabBarController.selectedIndex = 1
+                    if let navigationController = tabBarController.selectedViewController as? UINavigationController {
+                        if let friendshipViewController = navigationController.viewControllers[0] as? FriendshipTableViewController {
+                            friendshipViewController.tableView.reloadData()
+                            navigationController.popToRootViewControllerAnimated(false)
                         }
                     }
                 }
             }
         }
     }
-    
+      
     func updateViewForNoProfiles() {
         tableView.hidden = true
         evaluationStackView.hidden = true

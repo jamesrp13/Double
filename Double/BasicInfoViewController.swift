@@ -447,6 +447,8 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                     coupleStackView.subviews[i+8].hidden = true
                 }
             }
+        } else if textField == relationshipStartTextField {
+            
         }
         name1TextField.resignFirstResponder()
         name2TextField.resignFirstResponder()
@@ -506,9 +508,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 self.performSegueWithIdentifier("fromBasicInfoToEditProfile", sender: self)
             }
         } else if viewType == .editProfile {
-            guard let _ = person1,
-                _ = person2,
-                location = location,
+            guard let location = location,
                 relationshipStart = relationshipStart else {return}
             let relationshipStatusInt = relationshipSegmentedControl.selectedSegmentIndex
             let relationshipStatus = relationshipStatusInt == 0 ? "dating":(relationshipStatusInt == 1 ? "engaged":"married")
@@ -527,14 +527,22 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                     self.dismissViewControllerAnimated(true, completion: nil)
                 }
             } else {
-                if let navigationViewController = self.presentingViewController as? UINavigationController,
-                    let presentingViewController = navigationViewController.viewControllers[1] as? EditProfileTableViewController {
-                    presentingViewController.people = (person1!, person2!)
-                    presentingViewController.relationshipStart = relationshipStart
-                    presentingViewController.relationshipStatus = relationshipStatus
-                    presentingViewController.children = children
-                    presentingViewController.tableView.reloadData()
-                    self.dismissViewControllerAnimated(true, completion: nil)
+                if let navigationViewController = self.presentingViewController as? UINavigationController {
+                    if let presentingViewController = navigationViewController.viewControllers[1] as? EditProfileTableViewController {
+                        presentingViewController.relationshipStart = relationshipStart
+                        presentingViewController.relationshipStatus = relationshipStatus
+                        presentingViewController.location = location
+                        presentingViewController.children = children
+                        presentingViewController.tableView.reloadData()
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    } else if let presentingViewController = navigationViewController.viewControllers[3] as? EditProfileTableViewController {
+                        presentingViewController.relationshipStart = relationshipStart
+                        presentingViewController.relationshipStatus = relationshipStatus
+                        presentingViewController.location = location
+                        presentingViewController.children = children
+                        presentingViewController.tableView.reloadData()
+                        self.dismissViewControllerAnimated(true, completion: nil)
+                    }
                 }
             }
         }

@@ -12,6 +12,7 @@ struct Friendship: FirebaseType, Equatable {
     
     var profileIdentifiers: (String, String)
     var messages: [Message]?
+    var image: UIImage? = nil
     
     // FirebaseType attributes and failable initializer
     var identifier: String?

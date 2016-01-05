@@ -11,7 +11,7 @@ import UIKit
 class ChatTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var messageTextField: UITextField!
+    @IBOutlet weak var messageTextView: UITextView!
     
     @IBOutlet weak var ourProfileView: UIView!
     @IBOutlet weak var ourProfileButton: UIButton!
@@ -52,6 +52,16 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutNavigationBar()
+        
+        if let image = ProfileController.SharedInstance.currentUserProfile.image {
+            self.ourProfileButton.setImage(image, forState: .Normal)
+        } else {
+            ProfileController.fetchImageForProfile(ProfileController.SharedInstance.currentUserProfile) { (image) -> Void in
+                if let image = image {
+                    self.ourProfileButton.setImage(image, forState: .Normal)
+                }
+            }
+        }
     }
     
     func layoutNavigationBar() {
@@ -73,12 +83,12 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, UITableVie
     }
     
     @IBAction func sendButtonTapped(sender: AnyObject) {
-        guard let text = messageTextField.text, friendship = self.friendship where text.characters.count > 0 else {return}
+        guard let text = messageTextView.text, friendship = self.friendship where text.characters.count > 0 else {return}
         
         MessageController.createMessage(friendship, text: text, senderProfileIdentifier: ProfileController.SharedInstance.currentUserProfile!.identifier!)
         
-        messageTextField.text = nil
-        messageTextField.resignFirstResponder()
+        messageTextView.text = nil
+        messageTextView.resignFirstResponder()
     }
 
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -124,14 +134,13 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, UITableVie
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toFriendsProfile" {
-            if let navigationController = segue.destinationViewController as? UINavigationController {
-                if let profileViewController = navigationController.viewControllers.first as? ProfileTableViewController {
-                    if let profile = self.profile,
-                        friendship = self.friendship {
+            if let profileViewController = segue.destinationViewController as? ProfileTableViewController {
+                if let profile = self.profile,
+                    friendship = self.friendship {
                         profileViewController.profileForViewing = profile
                         profileViewController.fromFriendship = friendship
-                    }
                 }
+                
             }
         }
     }

@@ -28,7 +28,8 @@ class FriendshipTableViewController: UIViewController, UITableViewDataSource, UI
         super.viewDidLoad()
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: FriendshipController.kFriendshipsChanged, object: nil)
-     
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCurrentUserProfileImage", name: "profileImageChanged", object: nil)
+        
         layoutNavigationBar()
         
         if let image = ProfileController.SharedInstance.currentUserProfile.image {
@@ -67,6 +68,17 @@ class FriendshipTableViewController: UIViewController, UITableViewDataSource, UI
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
 
+    }
+    
+    func reloadCurrentUserProfileImage() {
+        if ourProfileView != nil {
+            ImageController.imageForIdentifier(ProfileController.SharedInstance.currentUserProfile.imageEndPoint, completion: { (image) -> Void in
+                if let image = image {
+                    ProfileController.SharedInstance.currentUserProfile.image = image
+                    self.ourProfileButton.setImage(image, forState: .Normal)
+                }
+            })
+        }
     }
 
     // MARK: - Table view data source

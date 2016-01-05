@@ -234,8 +234,22 @@ class ProfileController {
                         if let people = peopleDictionary {
                             let profileJson = ["profiles": profileAttributeDictionary, "children": children, "people": people]
                             let _ = Profile(json: profileJson, identifier: profileIdentifier, completion: { (profile) -> Void in
-                                if let profile = profile {
-                                    completion(profile: profile)
+                                if var profile = profile {
+                                    ImageController.imageForIdentifier(profile.imageEndPoint, completion: { (image) -> Void in
+                                        if let image = image {
+                                            profile.image = image
+                                            LocationController.locationAsCityCountry(profile.location, completion: { (cityState) -> Void in
+                                                if let cityState = cityState {
+                                                    profile.locationAsString = cityState
+                                                    completion(profile: profile)
+                                                } else {
+                                                    print("Location fetched for profile doesn't register as a real city")
+                                                }
+                                            })
+                                        } else {
+                                            print("No image found when profile fetched")
+                                        }
+                                    })
                                 } else {
                                     completion(profile: nil)
                                 }

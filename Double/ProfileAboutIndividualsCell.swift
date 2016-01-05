@@ -31,12 +31,13 @@ class ProfileAboutIndividualsCell: UITableViewCell, UITextViewDelegate {
 
         // Configure the view for the selected state
     }
-    
+
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
             textView.resignFirstResponder()
+            return false
         }
-        return false
+        return true
     }
     
     func updateWithProfile(profile: Profile) {

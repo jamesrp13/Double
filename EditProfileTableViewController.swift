@@ -153,6 +153,7 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
                 if ProfileController.SharedInstance.profilesBeingViewed.count == 0 {
                     FirebaseController.loadNecessaryDataFromNetwork()
                 }
+                NSNotificationCenter.defaultCenter().postNotificationName("profileImageChanged", object: self)
                 self.dismissViewControllerAnimated(true, completion: nil)
             } else {
                 print("profile not created")

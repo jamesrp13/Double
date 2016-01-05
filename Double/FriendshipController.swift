@@ -14,26 +14,32 @@ class FriendshipController {
     
     static let kFriendshipsChanged = "FriendshipsChanged"
     
-    var friendships: [Friendship] = [] {
+    var friendships: [Friendship] = [] 
+//        didSet {
+//            if oldValue != friendships {
+//                for (index, var friendship) in friendships.enumerate() {
+//                    FriendshipController.observeConversationForFriendshipIdentifier(friendship.identifier!, completion: { (messages) -> (Void) in
+//                        if let newMessages = messages {
+//                            if let oldMessages = friendship.messages {
+//                                if oldMessages != newMessages {
+//                                    friendship.messages = newMessages
+//                                        self.friendships[index] = friendship
+//                                    }
+//                            } else {
+//                                friendship.messages = newMessages
+//                                    self.friendships[index] = friendship   
+//                            }
+//                        }
+//                    })
+//                }
+//                NSNotificationCenter.defaultCenter().postNotificationName(FriendshipController.kFriendshipsChanged, object: self)
+//            }
+//        }
+    
+    
+    var friendshipDictionary: [String:Friendship] = [:] {
         didSet {
-            if oldValue != friendships {
-                for (index, var friendship) in friendships.enumerate() {
-                    FriendshipController.observeConversationForFriendshipIdentifier(friendship.identifier!, completion: { (messages) -> (Void) in
-                        if let newMessages = messages {
-                            if let oldMessages = friendship.messages {
-                                if oldMessages != newMessages {
-                                    friendship.messages = newMessages
-                                        self.friendships[index] = friendship
-                                    }
-                            } else {
-                                friendship.messages = newMessages
-                                    self.friendships[index] = friendship   
-                            }
-                        }
-                    })
-                }
-                NSNotificationCenter.defaultCenter().postNotificationName(FriendshipController.kFriendshipsChanged, object: self)
-            }
+            friendships = Array(friendshipDictionary.values).sort({$0.1.identifier! > $0.1.identifier!})
         }
     }
     
@@ -46,9 +52,14 @@ class FriendshipController {
     }
     
     static func observeFriendshipsForCurrentUser() {
-        FriendshipController.observeFriendshipsForProfileIdentifier(ProfileController.SharedInstance.currentUserIdentifier!) { (friendships) -> Void in
-            if let friendships = friendships {
-                SharedInstance.friendships = friendships
+        FriendshipController.observeFriendshipsAddedForProfileIdentifier(ProfileController.SharedInstance.currentUserIdentifier!) { (friendship) -> Void in
+            if let friendship = friendship {
+                SharedInstance.friendshipDictionary[friendship.identifier!] = friendship
+            }
+        }
+        FriendshipController.observeFriendshipsRemovedForProfileIdentifier(ProfileController.SharedInstance.currentUserIdentifier!) { (friendshipIdentifier) -> Void in
+            if let friendshipIdentifier = friendshipIdentifier {
+                SharedInstance.friendshipDictionary.removeValueForKey(friendshipIdentifier)
             }
         }
     }
@@ -64,19 +75,49 @@ class FriendshipController {
         })
     }
     
-    static func observeFriendshipsForProfileIdentifier(profileIdentifier: String, completion: (friendships: [Friendship]?) -> Void) {
-        FirebaseController.base.childByAppendingPath("friendships").queryOrderedByChild(profileIdentifier).queryEqualToValue(true).observeEventType(.Value, withBlock: { (data) -> Void in
-            if let friendshipDictionaries = data.value as? [String: AnyObject] {
-                let friendships = friendshipDictionaries.flatMap({Friendship(json: $0.1 as! [String: AnyObject], identifier: $0.0)
-                })
-                FirebaseController.base.childByAppendingPath("friendships").queryOrderedByChild(profileIdentifier).queryEqualToValue(true).observeEventType(FEventType.ChildRemoved, withBlock: { (data) -> Void in
-                    guard let key = data.key else {return}
-                    completion(friendships: friendships.filter({$0.identifier! != key}).sort({$0.identifier! < $1.identifier!}))
-                })
-                completion(friendships: friendships.sort({$0.identifier! < $1.identifier!}))
+    static func observeFriendshipsAddedForProfileIdentifier(profileIdentifier: String, completion: (friendship: Friendship?) -> Void) {
+        FirebaseController.base.childByAppendingPath("friendships").queryOrderedByChild(profileIdentifier).queryEqualToValue(true).observeEventType(.ChildAdded, withBlock: { (data) -> Void in
+            if let friendshipDictionary = data.value as? [String: AnyObject],
+                let friendshipKey = data.key {
+                    if var friendship = Friendship(json: friendshipDictionary, identifier: friendshipKey) {
+                        let friendProfileIdentifier = friendship.profileIdentifiers.0 != ProfileController.SharedInstance.currentUserIdentifier! ? friendship.profileIdentifiers.0:friendship.profileIdentifiers.1
+                        ProfileController.fetchProfileForIdentifier(friendProfileIdentifier, completion: { (profile) -> Void in
+                            if let profile = profile {
+                                ProfileController.fetchImageForProfile(profile, completion: { (image) -> Void in
+                                    if let image = image {
+                                        friendship.image = image
+                                        MessageController.observeMessagesForFriendshipIdentifier(friendship.identifier!, completion: { (messages) -> Void in
+                                            if let messages = messages {
+                                                friendship.messages = messages.sort({$0.0.identifier! < $0.1.identifier!})
+                                                completion(friendship: friendship)
+                                            } else {
+                                                completion(friendship: friendship)
+                                            }
+                                        })
+                                    } else {
+                                        completion(friendship: nil)
+                                        print("No image found for friendship \(friendship.identifier!)")
+                                    }
+                                })
+                            } else {
+                                completion(friendship: nil)
+                                print("No profile found for friendship \(friendship.identifier!)")
+                            }
+                        })
+                    } else {
+                        completion(friendship: nil)
+                        print("Friendship not initialized for friendship \(friendshipKey)")
+                    }
             } else {
-                completion(friendships: nil)
+                completion(friendship: nil)
             }
+        })
+    }
+    
+    static func observeFriendshipsRemovedForProfileIdentifier(profileIdentifier: String, completion: (friendshipIdentifier: String?) -> Void) {
+        FirebaseController.base.childByAppendingPath("friendships").queryOrderedByChild(profileIdentifier).queryEqualToValue(true).observeEventType(FEventType.ChildRemoved, withBlock: { (data) -> Void in
+            guard let key = data.key else {completion(friendshipIdentifier: nil);return}
+            completion(friendshipIdentifier: key)
         })
     }
     

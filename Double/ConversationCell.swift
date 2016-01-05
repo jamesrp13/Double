@@ -35,6 +35,10 @@ class ConversationCell: UITableViewCell {
                 
                 ImageController.imageForIdentifier(profile.imageEndPoint, completion: { (image) -> Void in
                     self.profileImageView.image = image
+                    self.profileImageView.layer.cornerRadius = self.profileImageView.frame.height / 2
+                    self.profileImageView.layer.borderWidth = 2
+                    self.profileImageView.layer.borderColor = DesignController.SharedInstance.blueColor.CGColor
+                    self.profileImageView.clipsToBounds = true
                 })
                 if let messages = friendship.messages {
                     self.conversationTitleLabel.text = profile.coupleTitle
