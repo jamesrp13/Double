@@ -129,7 +129,7 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         picker.dismissViewControllerAnimated(true, completion: nil)
         let croppedImage = info[UIImagePickerControllerEditedImage] as? UIImage
-        self.image = ImageController.resizeImage(croppedImage!)
+        self.image = ImageController.cropImageForProfiles(croppedImage!)
     }
     
     @IBAction func saveButtonTapped(sender: AnyObject) {
@@ -160,6 +160,10 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
             }
         })
         
+    }
+    
+    @IBAction func cancelButtonTapped(sender: AnyObject) {
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     @IBAction func logoutButtonTapped(sender: AnyObject) {

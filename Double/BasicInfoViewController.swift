@@ -60,8 +60,8 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     var profile: Profile? = nil
     
     var activeTextField: UITextField? = nil
-    var datePickerActionSheet: DatePickerActionSheet? = nil
-    var genericDatePicker: UIDatePicker? = nil
+    var datePicker: UIDatePicker? = nil
+    var toolbar: UIToolbar? = nil
     var locationPicker: LocationPickerActionSheet? = nil
     var numberOfKidsActionSheet: PickerViewActionSheet? = nil
     
@@ -74,6 +74,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             loadProperState()
         }
         setupConstraints()
+        createInputView()
         configureInputFields()
         createChildStackViews()
     }
@@ -90,15 +91,56 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func createInputView() {
+        let datePicker = UIDatePicker()
+        datePicker.datePickerMode = .Date
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let doneButton = UIBarButtonItem()
+        doneButton.title = "Done"
+        doneButton.target = self
+        doneButton.action = "datePickerDone"
+        doneButton.tintColor = DesignController.SharedInstance.blueColor
+        let backButton = UIBarButtonItem()
+        let forwardButton = UIBarButtonItem()
+        backButton.target = self
+        backButton.action = "inputBackButtonTapped"
+        backButton.image = UIImage(named: "BackButton")
+        forwardButton.target = self
+        forwardButton.action = "inputForwardButtonTapped"
+        forwardButton.image = UIImage(named: "ForwardButton")
+        let flex = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
+        toolbar.setItems([backButton, forwardButton, flex, doneButton], animated: true)
+        toolbar.frame.size.height = toolbar.frame.height * 0.75
+        self.datePicker = datePicker
+        self.toolbar = toolbar
+    }
+    
+    func datePickerDone() {
+        if let activeTextField = activeTextField {
+            activeTextField.text = DateController.stringFromDate(datePicker!.date)
+            activeTextField.resignFirstResponder()
+        }
+    }
+    
+    func inputBackButtonTapped() {
+        
+    }
+    
+    func inputForwardButtonTapped() {
+        
+    }
+    
     func configureInputFields() {
-        datePickerActionSheet = DatePickerActionSheet(parent: self, doneActionSelector: "datePickerInputFinished")
-        genericDatePicker = datePickerActionSheet!.datePicker
         if dob1TextField != nil &&
             dob2TextField != nil {
-                dob1TextField.inputView = datePickerActionSheet
-                dob2TextField.inputView = datePickerActionSheet
+                dob1TextField.inputView = datePicker
+                dob1TextField.inputAccessoryView = toolbar
+                dob2TextField.inputView = datePicker
+                dob2TextField.inputAccessoryView = toolbar
         }
-        relationshipStartTextField.inputView = datePickerActionSheet
+        relationshipStartTextField.inputView = datePicker
+        relationshipStartTextField.inputAccessoryView = toolbar
         
         let locationPickerActionSheet = LocationPickerActionSheet(parent: self, useZipSelector: "getLocationFromZip", useLocationSelector: "locationViaDeviceLocation")
         locationPicker = locationPickerActionSheet
@@ -140,9 +182,11 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             dobTextField.placeholder = "Birthday"
             dobTextField.font = font
             dobTextField.textColor = .whiteColor()
-            dobTextField.inputView = datePickerActionSheet
+            dobTextField.inputView = datePicker
+            dobTextField.inputAccessoryView = toolbar
             dobTextField.delegate = self
-            dobTextField.layer.cornerRadius = relationshipStartTextField.layer.cornerRadius
+            dobTextField.layer.cornerRadius = 10
+            dobTextField.clipsToBounds = true
             dobTextField.backgroundColor = relationshipStartTextField.backgroundColor
             let verticalStackView = UIStackView(arrangedSubviews: [genderSegmentedControl, dobTextField])
             verticalStackView.frame.size.width = relationshipSegmentedControl.frame.width * (2.0/3.0)
@@ -364,35 +408,21 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func datePickerInputFinished() {
-        if let datePicker = genericDatePicker {
-            if let textField = activeTextField {
-                let date = datePicker.date
-                let dateFormatter = NSDateFormatter()
-                dateFormatter.dateStyle = .MediumStyle
-                dateFormatter.timeStyle = .NoStyle
-                textField.text = dateFormatter.stringFromDate(date)
-                textField.resignFirstResponder()
-                activeTextField = nil
-            }
-        }
-    }
-    
     func textFieldDidBeginEditing(textField: UITextField) {
         activeTextField = textField
         switch textField {
         case dob1TextField ?? "":
-            genericDatePicker!.maximumDate = NSDate(timeIntervalSinceNow: (-18)*365*24*60*60)
-            genericDatePicker!.date = genericDatePicker!.maximumDate!
+            datePicker!.maximumDate = DateController.dateEighteenYearsAgo()
+            datePicker!.date = datePicker!.maximumDate!
         case dob2TextField ?? "":
-            genericDatePicker!.maximumDate = NSDate(timeIntervalSinceNow: (-18)*365*24*60*60)
-            genericDatePicker!.date = genericDatePicker!.maximumDate!
+            datePicker!.maximumDate = DateController.dateEighteenYearsAgo()
+            datePicker!.date = datePicker!.maximumDate!
         case relationshipStartTextField:
-            genericDatePicker!.maximumDate = NSDate()
-            genericDatePicker!.date = genericDatePicker!.maximumDate!
+            datePicker!.maximumDate = NSDate()
+            datePicker!.date = datePicker!.maximumDate!
         default:
-            genericDatePicker!.maximumDate = NSDate()
-            genericDatePicker!.date = genericDatePicker!.maximumDate!
+            datePicker!.maximumDate = NSDate()
+            datePicker!.date = datePicker!.maximumDate!
         }
         resignFirstResponderForOtherTextFields(textField)
     }

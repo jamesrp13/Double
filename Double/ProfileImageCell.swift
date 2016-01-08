@@ -32,6 +32,9 @@ class ProfileImageCell: UITableViewCell {
         } else {
             ImageController.imageForIdentifier(profile.imageEndPoint) { (image) -> Void in
                 self.profileImageView.image = image
+//                if let tableView = self.tableView {
+//                    tableView.reloadData()
+//                }
             }
         }
     }

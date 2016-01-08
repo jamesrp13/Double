@@ -46,13 +46,32 @@ class ImageController {
         }
     }
     
-    static func resizeImage(image: UIImage) -> UIImage {
+    static func cropImageForProfiles(image: UIImage) -> UIImage {
         let originalWidth  = image.size.width
-        
+        let originalHeight = image.size.height
+        var width = originalWidth
+        var height = originalHeight * (3.0/2.0)
         let posX = CGFloat(0.0)
         let posY = CGFloat(0.0)
+        if originalHeight < (originalWidth * 2.0/3.0) {
+            height = originalHeight
+            width = originalHeight * 3.0/2.0
+        }
 
-        let cropRectangle = CGRectMake(posX, posY, originalWidth, originalWidth * (2.0/3.0))
+        let cropRectangle = CGRectMake(posX, posY, width, height)
+        
+        let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropRectangle);
+        return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
+    }
+    
+    static func cropImageForCircle(image: UIImage) -> UIImage {
+        let originalWidth  = image.size.width
+        let originalHeight = image.size.height
+        
+        let posX = CGFloat(0.0) + (originalWidth - originalHeight) / 2
+        let posY = CGFloat(0.0)
+        
+        let cropRectangle = CGRectMake(posX, posY, originalHeight, originalHeight)
         
         let imageRef = CGImageCreateWithImageInRect(image.CGImage, cropRectangle);
         return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)

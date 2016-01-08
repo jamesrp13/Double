@@ -22,7 +22,10 @@ class FriendshipCell: UICollectionViewCell {
             if let profile = profile {
                 self.profile = profile
                 ImageController.imageForIdentifier(profile.imageEndPoint, completion: { (image) -> Void in
-                    self.profileImageView.image = image
+                    if let image = image {
+                        let croppedImage = ImageController.cropImageForCircle(image)
+                        self.profileImageView.image = croppedImage
+                    }
                     self.profileImageView.layer.cornerRadius = self.profileImageView.frame.height / 2
                     self.profileImageView.layer.borderWidth = 2
                     self.profileImageView.layer.borderColor = DesignController.SharedInstance.blueColor.CGColor

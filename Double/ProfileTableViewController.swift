@@ -48,11 +48,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         if let profile = profileForViewing {
             if self.ourProfileView != nil {
                 if let image = profile.image {
-                    self.ourProfileButton.setImage(image, forState: .Normal)
+                    let croppedImage = ImageController.cropImageForCircle(image)
+                    self.ourProfileButton.setImage(croppedImage, forState: .Normal)
                 } else {
                     ProfileController.fetchImageForProfile(profile) { (image) -> Void in
                         if let image = image {
-                            self.ourProfileButton.setImage(image, forState: .Normal)
+                            let croppedImage = ImageController.cropImageForCircle(image)
+                            self.ourProfileButton.setImage(croppedImage, forState: .Normal)
                         }
                     }
                 }
@@ -61,11 +63,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             if let profile = ProfileController.SharedInstance.currentUserProfile {
                 if self.ourProfileView != nil {
                     if let image = profile.image {
-                        self.ourProfileButton.setImage(image, forState: .Normal)
+                        let croppedImage = ImageController.cropImageForCircle(image)
+                        self.ourProfileButton.setImage(croppedImage, forState: .Normal)
                     } else {
                         ProfileController.fetchImageForProfile(profile) { (image) -> Void in
                             if let image = image {
-                                self.ourProfileButton.setImage(image, forState: .Normal)
+                                let croppedImage = ImageController.cropImageForCircle(image)
+                                self.ourProfileButton.setImage(croppedImage, forState: .Normal)
                             }
                         }
                     }
@@ -96,8 +100,9 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         if ourProfileView != nil {
             ImageController.imageForIdentifier(ProfileController.SharedInstance.currentUserProfile.imageEndPoint, completion: { (image) -> Void in
                 if let image = image {
+                    let croppedImage = ImageController.cropImageForCircle(image)
                     ProfileController.SharedInstance.currentUserProfile.image = image
-                    self.ourProfileButton.setImage(image, forState: .Normal)
+                    self.ourProfileButton.setImage(croppedImage, forState: .Normal)
                 }
             })
         }
@@ -109,7 +114,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             ourProfileButton.layer.cornerRadius = ourProfileButton.frame.height / 2
         }
         navigationController?.navigationBarHidden = true
-        self.view.sendSubviewToBack(tableView)
     }
     
     func updateTableView() {

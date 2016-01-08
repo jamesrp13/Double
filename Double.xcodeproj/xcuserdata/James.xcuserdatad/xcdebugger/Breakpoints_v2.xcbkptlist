@@ -19,22 +19,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Double/BasicInfoViewController.swift"
-            timestampString = "473010301.656702"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "164"
-            endingLineNumber = "164"
-            landmarkName = "updateWithProfile(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Double/AccountController.swift"
             timestampString = "473100910.715092"
             startingColumnNumber = "9223372036854775807"
@@ -115,38 +99,6 @@
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Double/ImageController.swift"
-            timestampString = "473291726.791155"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "57"
-            endingLineNumber = "57"
-            landmarkName = "resizeImage(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Double/ImageController.swift"
-            timestampString = "473291726.791155"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "58"
-            endingLineNumber = "58"
-            landmarkName = "resizeImage(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "Double/ProfileController.swift"
             timestampString = "473375336.753805"
             startingColumnNumber = "9223372036854775807"
@@ -160,31 +112,15 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Double/ProfileImageCell.swift"
-            timestampString = "473375715.415686"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "34"
-            endingLineNumber = "34"
-            landmarkName = "updateWithProfile(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Double/ChatTableViewController.swift"
-            timestampString = "473617954.712692"
+            timestampString = "473926165.793479"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "136"
-            endingLineNumber = "136"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
             landmarkName = "prepareForSegue(_:sender:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -196,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Double/BasicInfoViewController.swift"
-            timestampString = "473706015.633713"
+            timestampString = "473924161.784932"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "528"
-            endingLineNumber = "528"
+            startingLineNumber = "558"
+            endingLineNumber = "558"
             landmarkName = "nextButtonTapped(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -212,11 +148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Double/BasicInfoViewController.swift"
-            timestampString = "473706015.633713"
+            timestampString = "473924161.784932"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "529"
-            endingLineNumber = "529"
+            startingLineNumber = "559"
+            endingLineNumber = "559"
             landmarkName = "nextButtonTapped(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -228,45 +164,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Double/BasicInfoViewController.swift"
-            timestampString = "473706156.181628"
+            timestampString = "473924161.784932"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "536"
-            endingLineNumber = "536"
+            startingLineNumber = "566"
+            endingLineNumber = "566"
             landmarkName = "nextButtonTapped(_:)"
             landmarkType = "5">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Double.BasicInfoViewController.nextButtonTapped (Double.BasicInfoViewController)(Swift.AnyObject) -&gt; ()"
-                  moduleName = "Double"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/James/Documents/Development/iOS%20Development/DevMountain/Capstone/Double/Double/BasicInfoViewController.swift"
-                  timestampString = "473706156.184762"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "536"
-                  endingLineNumber = "536"
-                  offsetFromSymbolStart = "39153">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "Double.BasicInfoViewController.nextButtonTapped (Double.BasicInfoViewController)(Swift.AnyObject) -&gt; ()"
-                  moduleName = "Double"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/James/Documents/Development/iOS%20Development/DevMountain/Capstone/Double/Double/BasicInfoViewController.swift"
-                  timestampString = "473706156.184925"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "536"
-                  endingLineNumber = "536"
-                  offsetFromSymbolStart = "39194">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -276,11 +180,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Double/BasicInfoViewController.swift"
-            timestampString = "473706159.771931"
+            timestampString = "473924161.784932"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "515"
-            endingLineNumber = "515"
+            startingLineNumber = "545"
+            endingLineNumber = "545"
             landmarkName = "nextButtonTapped(_:)"
             landmarkType = "5">
          </BreakpointContent>

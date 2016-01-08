@@ -33,11 +33,13 @@ class FriendshipTableViewController: UIViewController, UITableViewDataSource, UI
         layoutNavigationBar()
         
         if let image = ProfileController.SharedInstance.currentUserProfile.image {
-            self.ourProfileButton.setImage(image, forState: .Normal)
+            let croppedImage = ImageController.cropImageForCircle(image)
+            self.ourProfileButton.setImage(croppedImage, forState: .Normal)
         } else {
             ProfileController.fetchImageForProfile(ProfileController.SharedInstance.currentUserProfile) { (image) -> Void in
-                if let image = image { 
-                    self.ourProfileButton.setImage(image, forState: .Normal)
+                if let image = image {
+                    let croppedImage = ImageController.cropImageForCircle(image)
+                    self.ourProfileButton.setImage(croppedImage, forState: .Normal)
                 }
             }
         }
@@ -55,7 +57,6 @@ class FriendshipTableViewController: UIViewController, UITableViewDataSource, UI
             ourProfileButton.layer.cornerRadius = ourProfileButton.frame.height / 2
         }
         navigationController?.navigationBarHidden = true
-        self.view.sendSubviewToBack(tableView)
     }
 
     
@@ -74,8 +75,9 @@ class FriendshipTableViewController: UIViewController, UITableViewDataSource, UI
         if ourProfileView != nil {
             ImageController.imageForIdentifier(ProfileController.SharedInstance.currentUserProfile.imageEndPoint, completion: { (image) -> Void in
                 if let image = image {
+                    let croppedImage = ImageController.cropImageForCircle(image)
                     ProfileController.SharedInstance.currentUserProfile.image = image
-                    self.ourProfileButton.setImage(image, forState: .Normal)
+                    self.ourProfileButton.setImage(croppedImage, forState: .Normal)
                 }
             })
         }

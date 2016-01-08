@@ -61,6 +61,7 @@
 		1ABD3B9F1BFE2D3000544104 /* FriendshipController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3B9E1BFE2D3000544104 /* FriendshipController.swift */; };
 		1ABD3BA11BFE2D3A00544104 /* MessageController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3BA01BFE2D3A00544104 /* MessageController.swift */; };
 		1ABD3BA31BFE2D4F00544104 /* ChildController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ABD3BA21BFE2D4F00544104 /* ChildController.swift */; };
+		1ACCDCAD1C3F7B4500E39371 /* DateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ACCDCAC1C3F7B4500E39371 /* DateController.swift */; };
 		1AD29FD11C10E1760062D4D3 /* EditProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AD29FD01C10E1760062D4D3 /* EditProfileTableViewController.swift */; };
 		1AF676521C2B254F00AAC71F /* DesignController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF676511C2B254F00AAC71F /* DesignController.swift */; };
 /* End PBXBuildFile section */
@@ -166,6 +167,7 @@
 		1ABD3B9E1BFE2D3000544104 /* FriendshipController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendshipController.swift; sourceTree = "<group>"; };
 		1ABD3BA01BFE2D3A00544104 /* MessageController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageController.swift; sourceTree = "<group>"; };
 		1ABD3BA21BFE2D4F00544104 /* ChildController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChildController.swift; sourceTree = "<group>"; };
+		1ACCDCAC1C3F7B4500E39371 /* DateController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateController.swift; sourceTree = "<group>"; };
 		1AD29FD01C10E1760062D4D3 /* EditProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EditProfileTableViewController.swift; path = ../EditProfileTableViewController.swift; sourceTree = "<group>"; };
 		1AF676511C2B254F00AAC71F /* DesignController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DesignController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -376,6 +378,7 @@
 			isa = PBXGroup;
 			children = (
 				1ABD3B7A1BFD736700544104 /* Person.swift */,
+				1ACCDCAC1C3F7B4500E39371 /* DateController.swift */,
 				1ABD3B7C1BFD737000544104 /* Profile.swift */,
 				1ABD3B7E1BFD73D700544104 /* Responses.swift */,
 				1ABD3B811BFD73F800544104 /* Friendship.swift */,
@@ -571,6 +574,7 @@
 				1A01DC7D1C1F5D1E005BB5F2 /* LocationPickerActionSheet.swift in Sources */,
 				1A82D9D41C01149300524AD2 /* FriendshipCell.swift in Sources */,
 				1ABD3B841BFD740400544104 /* Message.swift in Sources */,
+				1ACCDCAD1C3F7B4500E39371 /* DateController.swift in Sources */,
 				1A7533001C0D10C300F42FFA /* NewChatTableViewCell.swift in Sources */,
 				1AA725D11C1797D200F90F92 /* DatePickerActionSheet.swift in Sources */,
 				1A82D9CB1BFFBF2D00524AD2 /* ProfileAboutIndividualsCell.swift in Sources */,

@@ -54,11 +54,13 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, UITableVie
         layoutNavigationBar()
         
         if let image = ProfileController.SharedInstance.currentUserProfile.image {
-            self.ourProfileButton.setImage(image, forState: .Normal)
+            let croppedImage = ImageController.cropImageForCircle(image)
+            self.ourProfileButton.setImage(croppedImage, forState: .Normal)
         } else {
             ProfileController.fetchImageForProfile(ProfileController.SharedInstance.currentUserProfile) { (image) -> Void in
                 if let image = image {
-                    self.ourProfileButton.setImage(image, forState: .Normal)
+                    let croppedImage = ImageController.cropImageForCircle(image)
+                    self.ourProfileButton.setImage(croppedImage, forState: .Normal)
                 }
             }
         }
