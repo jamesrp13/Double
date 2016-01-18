@@ -90,8 +90,26 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
         tableView.estimatedRowHeight = 50
         tableView.rowHeight = UITableViewAutomaticDimension
         customizeNavigationBar()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
 
+    func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo,
+            keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size {
+                let tableViewDistanceFromBottom = self.view.frame.height - (tableView.frame.origin.y+tableView.frame.height)
+                let contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height - tableViewDistanceFromBottom, 0)
+                tableView.contentInset = contentInset
+                tableView.scrollIndicatorInsets = contentInset
+        }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        let contentInset = UIEdgeInsetsZero
+        tableView.contentInset = contentInset
+        tableView.scrollIndicatorInsets = contentInset
+    }
+    
     func customizeNavigationBar() {
         let nav = self.navigationController?.navigationBar
         nav?.barTintColor = DesignController.SharedInstance.blueColor
@@ -144,11 +162,14 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
         
         let oldPerson1 = people.0
         let oldPerson2 = people.1
-        let newPerson1 = Person(name: oldPerson1.name, dob: oldPerson1.dob, gender: oldPerson1.gender, about: profileAboutIndividualsCell.firstPersonAboutTextView.text, profileIdentifier: accountIdentifier, identifier: oldPerson1.identifier!)
+        let newPerson1 = Person(name: oldPerson1.name, dob: oldPerson1.dob, gender: oldPerson1.gender, about: profileAboutIndividualsCell.firstPersonAboutTextView.text, profileIdentifier: accountIdentifier, identifier: oldPerson1.identifier)
         let newPerson2 = Person(name: oldPerson2.name, dob: oldPerson2.dob, gender: oldPerson2.gender, about: profileAboutIndividualsCell.secondPersonAboutTextView.text, profileIdentifier: accountIdentifier, identifier: oldPerson2.identifier)
         
         ProfileController.createProfile((newPerson1, newPerson2), relationshipStatus: relationshipStatus, relationshipStart: relationshipStart, about: nil, location: location, children: children, image: image, profileIdentifier: accountIdentifier, completion: { (profile) -> Void in
             if let profile = profile {
+                if let oldProfile = self.profile {
+                    FirebaseController.base.childByAppendingPath("images/\(oldProfile.imageEndPoint)").removeValue()
+                }
                 ProfileController.SharedInstance.currentUserProfile = profile
                 if ProfileController.SharedInstance.profilesBeingViewed.count == 0 {
                     FirebaseController.loadNecessaryDataFromNetwork()

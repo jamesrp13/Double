@@ -15,6 +15,7 @@ class DesignController {
     // Colors
     let blueColor = UIColor(red: 107.0/255.0, green: 175.0/255.0, blue: 244.0/255.0, alpha: 1.0)
     let grayBackground = UIColor(red: 192.0/255.0, green: 207.0/255.0, blue: 224.0/255.0, alpha: 0.3)
+    let greenColor = UIColor(red: 149.0/255.0, green: 191.0/255.0, blue: 116.0/255.0, alpha: 0.8)
     
     // Font
     let fontThin = UIFont(name: "HelveticaNeue-Thin", size: 18)

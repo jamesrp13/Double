@@ -36,9 +36,15 @@ class LocationPickerActionSheet: UIView {
         useLocationButton.backgroundColor = .blueColor()
         useLocationButton.setTitleColor(.whiteColor(), forState: .Normal)
         useLocationButton.addTarget(parent, action: useLocationSelector, forControlEvents: .TouchUpInside)
+        useLocationButton.backgroundColor = DesignController.SharedInstance.blueColor
+        useLocationButton.titleLabel?.font = DesignController.SharedInstance.fontLight
         
         //orLabel properties
         orLabel.text = "OR"
+        orLabel.textAlignment = .Center
+        orLabel.frame.size = useLocationButton.frame.size
+        orLabel.textColor = DesignController.SharedInstance.blueColor
+        orLabel.font = DesignController.SharedInstance.fontThin
         
         //useZipButton properties
         useZipButton.frame.size.height = 30.0
@@ -46,6 +52,8 @@ class LocationPickerActionSheet: UIView {
         useZipButton.backgroundColor = .blueColor()
         useZipButton.setTitleColor(.whiteColor(), forState: .Normal)
         useZipButton.addTarget(parent, action: useZipSelector, forControlEvents: .TouchUpInside)
+        useZipButton.backgroundColor = DesignController.SharedInstance.blueColor
+        useZipButton.titleLabel?.font = DesignController.SharedInstance.fontLight
         
     }
 }

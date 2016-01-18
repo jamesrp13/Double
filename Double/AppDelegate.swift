@@ -16,7 +16,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     override init() {
         super.init()
-        //Firebase.defaultConfig().persistenceEnabled = true
+        Firebase.defaultConfig().persistenceEnabled = true
         FirebaseController.loadNecessaryDataFromNetwork()
     }
 

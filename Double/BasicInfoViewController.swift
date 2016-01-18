@@ -20,7 +20,6 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         get {
             return ProfileController.SharedInstance.currentUserIdentifier
         }
-        
         set{}
     }
     
@@ -60,6 +59,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     var profile: Profile? = nil
     
     var activeTextField: UITextField? = nil
+    var ageDatePicker: UIDatePicker? = nil
     var datePicker: UIDatePicker? = nil
     var toolbar: UIToolbar? = nil
     var locationPicker: LocationPickerActionSheet? = nil
@@ -94,6 +94,12 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     func createInputView() {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .Date
+        datePicker.maximumDate = NSDate()
+        datePicker.date = datePicker.maximumDate!
+        let ageDatePicker = UIDatePicker()
+        ageDatePicker.datePickerMode = .Date
+        ageDatePicker.maximumDate = DateController.dateEighteenYearsAgo()
+        ageDatePicker.date = datePicker.maximumDate!
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let doneButton = UIBarButtonItem()
@@ -106,18 +112,22 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         backButton.target = self
         backButton.action = "inputBackButtonTapped"
         backButton.image = UIImage(named: "BackButton")
+        backButton.tintColor = DesignController.SharedInstance.blueColor
         forwardButton.target = self
         forwardButton.action = "inputForwardButtonTapped"
         forwardButton.image = UIImage(named: "ForwardButton")
+        forwardButton.tintColor = DesignController.SharedInstance.blueColor
         let flex = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
         toolbar.setItems([backButton, forwardButton, flex, doneButton], animated: true)
         toolbar.frame.size.height = toolbar.frame.height * 0.75
+        self.ageDatePicker = ageDatePicker
         self.datePicker = datePicker
         self.toolbar = toolbar
     }
     
     func datePickerDone() {
         if let activeTextField = activeTextField {
+            let datePicker = activeTextField.inputView == self.datePicker ? self.datePicker:ageDatePicker
             activeTextField.text = DateController.stringFromDate(datePicker!.date)
             activeTextField.resignFirstResponder()
         }
@@ -132,13 +142,10 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     }
     
     func configureInputFields() {
-        if dob1TextField != nil &&
-            dob2TextField != nil {
-                dob1TextField.inputView = datePicker
-                dob1TextField.inputAccessoryView = toolbar
-                dob2TextField.inputView = datePicker
-                dob2TextField.inputAccessoryView = toolbar
-        }
+        dob1TextField?.inputView = ageDatePicker
+        dob1TextField?.inputAccessoryView = toolbar
+        dob2TextField?.inputView = ageDatePicker
+        dob2TextField?.inputAccessoryView = toolbar
         relationshipStartTextField.inputView = datePicker
         relationshipStartTextField.inputAccessoryView = toolbar
         
@@ -178,6 +185,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             let genderSegmentedControl = UISegmentedControl(items: ["Male", "Female"])
             genderSegmentedControl.selectedSegmentIndex = 0
             genderSegmentedControl.frame.size.width = relationshipSegmentedControl.frame.width * (2.0/3.0)
+            genderSegmentedControl.tintColor = DesignController.SharedInstance.blueColor
             let dobTextField = UITextField()
             dobTextField.placeholder = "Birthday"
             dobTextField.font = font
@@ -185,7 +193,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             dobTextField.inputView = datePicker
             dobTextField.inputAccessoryView = toolbar
             dobTextField.delegate = self
-            dobTextField.layer.cornerRadius = 10
+            dobTextField.layer.cornerRadius = 5
             dobTextField.clipsToBounds = true
             dobTextField.backgroundColor = relationshipStartTextField.backgroundColor
             let verticalStackView = UIStackView(arrangedSubviews: [genderSegmentedControl, dobTextField])
@@ -410,20 +418,20 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     
     func textFieldDidBeginEditing(textField: UITextField) {
         activeTextField = textField
-        switch textField {
-        case dob1TextField ?? "":
-            datePicker!.maximumDate = DateController.dateEighteenYearsAgo()
-            datePicker!.date = datePicker!.maximumDate!
-        case dob2TextField ?? "":
-            datePicker!.maximumDate = DateController.dateEighteenYearsAgo()
-            datePicker!.date = datePicker!.maximumDate!
-        case relationshipStartTextField:
-            datePicker!.maximumDate = NSDate()
-            datePicker!.date = datePicker!.maximumDate!
-        default:
-            datePicker!.maximumDate = NSDate()
-            datePicker!.date = datePicker!.maximumDate!
-        }
+//        switch textField {
+//        case dob1TextField ?? "":
+//            datePicker?.maximumDate = DateController.dateEighteenYearsAgo()
+//            datePicker?.date = datePicker!.maximumDate!
+//        case dob2TextField ?? "":
+//            datePicker?.maximumDate = DateController.dateEighteenYearsAgo()
+//            datePicker?.date = datePicker!.maximumDate!
+//        case relationshipStartTextField:
+//            datePicker?.maximumDate = NSDate()
+//            datePicker?.date = datePicker!.maximumDate!
+//        default:
+//            datePicker?.maximumDate = NSDate()
+//            datePicker?.date = datePicker!.maximumDate!
+//        }
         resignFirstResponderForOtherTextFields(textField)
     }
     
@@ -539,7 +547,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             }
         } else if viewType == .editProfile {
             guard let location = location,
-                relationshipStart = relationshipStart else {return}
+                relationshipStart = DateController.dateFromString(relationshipStartTextField.text ?? "") else {return}
             let relationshipStatusInt = relationshipSegmentedControl.selectedSegmentIndex
             let relationshipStatus = relationshipStatusInt == 0 ? "dating":(relationshipStatusInt == 1 ? "engaged":"married")
             
@@ -591,8 +599,6 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 
                 personOne.profileIdentifier = accountIdentifier!
                 personTwo.profileIdentifier = accountIdentifier!
-                personOne.save()
-                personTwo.save()
                 editProfileView.people = (personOne, personTwo)
                 editProfileView.relationshipStart = relationshipStart
                 editProfileView.relationshipStatus = relationshipStatus

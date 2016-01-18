@@ -14,8 +14,8 @@ class FriendshipController {
     
     static let kFriendshipsChanged = "FriendshipsChanged"
     
-    var friendships: [Friendship] = [] 
-//        didSet {
+    var friendships: [Friendship] = [] {
+        didSet {
 //            if oldValue != friendships {
 //                for (index, var friendship) in friendships.enumerate() {
 //                    FriendshipController.observeConversationForFriendshipIdentifier(friendship.identifier!, completion: { (messages) -> (Void) in
@@ -32,9 +32,10 @@ class FriendshipController {
 //                        }
 //                    })
 //                }
-//                NSNotificationCenter.defaultCenter().postNotificationName(FriendshipController.kFriendshipsChanged, object: self)
+                NSNotificationCenter.defaultCenter().postNotificationName(FriendshipController.kFriendshipsChanged, object: self)
 //            }
-//        }
+        }
+    }
     
     
     var friendshipDictionary: [String:Friendship] = [:] {

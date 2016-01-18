@@ -26,7 +26,6 @@ class FriendshipTableViewController: UIViewController, UITableViewDataSource, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateTableView", name: FriendshipController.kFriendshipsChanged, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCurrentUserProfileImage", name: "profileImageChanged", object: nil)
         
@@ -49,6 +48,7 @@ class FriendshipTableViewController: UIViewController, UITableViewDataSource, UI
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         tableView.reloadData()
+        tabBarController?.tabBar.hidden = false
     }
     
     func layoutNavigationBar() {

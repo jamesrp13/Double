@@ -8,11 +8,13 @@
 
 import UIKit
 
-class ChatTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
+class ChatTableViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var messageTextView: UITextView!
     
+    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var bottomStackViewConstraint: NSLayoutConstraint!
     @IBOutlet weak var ourProfileView: UIView!
     @IBOutlet weak var ourProfileButton: UIButton!
    
@@ -52,6 +54,8 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
         layoutNavigationBar()
+        tabBarController?.tabBar.hidden = true
+        messageTextView.becomeFirstResponder()
         
         if let image = ProfileController.SharedInstance.currentUserProfile.image {
             let croppedImage = ImageController.cropImageForCircle(image)
@@ -64,6 +68,22 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, UITableVie
                 }
             }
         }
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
+        tableView.estimatedRowHeight = UITableViewAutomaticDimension
+        tableView.rowHeight = UITableViewAutomaticDimension
+        titleLabel.text = profile?.coupleTitle ?? ""
+    }
+    
+    func keyboardWillShow(notification: NSNotification) {
+        if let userInfo = notification.userInfo,
+            keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size {
+                bottomStackViewConstraint.constant = keyboardSize.height
+        }
+    }
+
+    func keyboardWillHide(notification: NSNotification) {
+        bottomStackViewConstraint.constant = 0
     }
     
     func layoutNavigationBar() {
@@ -90,12 +110,6 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, UITableVie
         MessageController.createMessage(friendship, text: text, senderProfileIdentifier: ProfileController.SharedInstance.currentUserProfile!.identifier!)
         
         messageTextView.text = nil
-        messageTextView.resignFirstResponder()
-    }
-
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
-        sendButtonTapped(self)
-        return true
     }
     
     // MARK: - Table view data source

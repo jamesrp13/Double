@@ -23,7 +23,7 @@ class ProfileImageCell: UITableViewCell {
     }
     
     func updateWithProfile(profile: Profile) {
-        self.profileImageView.contentMode = .ScaleAspectFit
+        self.profileImageView.contentMode = .ScaleAspectFill
         self.profileImageView.clipsToBounds = true
         self.profileImageView.layer.borderWidth = 2
         self.profileImageView.layer.borderColor = DesignController.SharedInstance.blueColor.CGColor
@@ -40,7 +40,7 @@ class ProfileImageCell: UITableViewCell {
     }
     
     func updateWithImage(image: UIImage?) {
-        self.profileImageView.contentMode = .ScaleAspectFit
+        self.profileImageView.contentMode = .ScaleAspectFill
         self.profileImageView.image = image
         self.profileImageView.clipsToBounds = true
         self.profileImageView.layer.borderWidth = 2
