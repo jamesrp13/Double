@@ -118,7 +118,10 @@ class ProfileAboutCoupleCell: UITableViewCell, UITextViewDelegate {
                 //self.resizeCellsBasedOnLabel(self.aboutLabel)
             } else if self.aboutTextView != nil {
                 self.aboutTextView.text = description
-                //self.resizeCellsBasedOnTextView(self.aboutTextView)
+                //let height = self.aboutTextView.heightThatFits()
+                //self.aboutTextView.frame.size.height = height
+                self.tableView?.beginUpdates()
+                self.tableView?.endUpdates()
             }
 
         } else {
@@ -160,10 +163,13 @@ class ProfileAboutCoupleCell: UITableViewCell, UITextViewDelegate {
                 
                 if self.aboutLabel != nil {
                     self.aboutLabel.text = description
-                    self.resizeCellsBasedOnLabel(self.aboutLabel)
+                    //self.resizeCellsBasedOnLabel([self.aboutLabel])
                 } else if self.aboutTextView != nil {
                     self.aboutTextView.text = description
-                    self.resizeCellsBasedOnTextView(self.aboutTextView)
+                    //let height = self.aboutTextView.heightThatFits()
+                    //self.aboutTextView.frame.size.height = height
+                    self.tableView?.beginUpdates()
+                    self.tableView?.endUpdates()
                 }
             })
         }
@@ -213,10 +219,12 @@ class ProfileAboutCoupleCell: UITableViewCell, UITextViewDelegate {
             
             if self.aboutLabel != nil {
                 self.aboutLabel.text = description
-                self.resizeCellsBasedOnLabel(self.aboutLabel)
             } else if self.aboutTextView != nil {
                 self.aboutTextView.text = description
-                self.resizeCellsBasedOnTextView(self.aboutTextView)
+                let height = self.aboutTextView.heightThatFits()
+                self.aboutTextView.frame.size.height = height
+                self.tableView?.beginUpdates()
+                self.tableView?.endUpdates()
             }
         })
     }
@@ -231,35 +239,4 @@ class ProfileAboutCoupleCell: UITableViewCell, UITextViewDelegate {
             }
         }
     }
-}
-
-extension UITableViewCell {
-    /// Search up the view hierarchy of the table view cell to find the containing table view
-    var tableView: UITableView? {
-        get {
-            var table: UIView? = superview
-            while !(table is UITableView) && table != nil {
-                table = table?.superview
-            }
-            
-            return table as? UITableView
-        }
-    }
-    
-    func resizeCellsBasedOnTextView(textView: UITextView) {
-        textView.sizeThatFits(CGSize(width: textView.bounds.size.width, height: CGFloat.max))
-        UIView.setAnimationsEnabled(false)
-        self.tableView?.beginUpdates()
-        self.tableView?.endUpdates()
-        UIView.setAnimationsEnabled(true)
-    }
-    
-    func resizeCellsBasedOnLabel(label: UILabel) {
-        label.sizeThatFits(CGSize(width: label.bounds.size.width, height: CGFloat.max))
-        UIView.setAnimationsEnabled(false)
-        self.tableView?.beginUpdates()
-        self.tableView?.endUpdates()
-        UIView.setAnimationsEnabled(true)
-    }
-    
 }

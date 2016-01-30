@@ -21,7 +21,6 @@ class ProfileController {
             guard let profile = Profile(json: profileDictionary, identifier: uid) else {return nil}
             currentUserIdentifier = profile.identifier!
             return profile
-            
         }
         
         set{
@@ -42,10 +41,13 @@ class ProfileController {
     
     var profilesBeingViewed: [Profile] = [] {
         didSet {
+            guard let _ = currentUserProfile else {return}
             NSNotificationCenter.defaultCenter().postNotificationName("profilesBeingViewedChanged", object: self)
             saveProfileIdentifiersToPersistentStore()
             if profilesLeft && profilesBeingViewed.count < 10 {
-                ProfileController.fetchProfileForDisplay()
+                if oldValue.count > 0 && profilesBeingViewed.count < oldValue.count {
+                    ProfileController.fetchProfileForDisplay()
+                }
             }
         }
     }
@@ -300,17 +302,7 @@ class ProfileController {
             }
         }
     }
-//    
-//    static func mockProfiles() -> [Profile] {
-//        let couples = [(PersonController.mockPeople()[0], PersonController.mockPeople()[1]), (PersonController.mockPeople()[2], PersonController.mockPeople()[3])]
-//        
-//        let children = [ChildController.mockChildren()[0]]
-//        
-//        let profile1 = Profile(people: couples[0], relationshipStatus: Profile.RelationshipStatus(rawValue: "Married")!, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: [children[0]], imageEndPoint: "", identifier: "K3pg5XfBBcEwOQk50Li")
-//        
-//        let profile2 = Profile(people: couples[1], relationshipStatus: Profile.RelationshipStatus(rawValue: "Married")!, relationshipStart: NSDate(timeIntervalSince1970: 0.0), about: "Test", location: "84109", children: nil, imageEndPoint: "", identifier: "K3pg5XfBBcEwO2ndof0")
-//        
-//        return [profile1, profile2]
-//    }
+
+    
     
 }

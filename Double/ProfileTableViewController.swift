@@ -21,8 +21,6 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
     
     @IBOutlet weak var ourProfileButton: UIButton!
     
-    @IBOutlet weak var logoutButton: UIBarButtonItem!
-    
     var profileForViewing: Profile? = nil
     var profileForEvaluation: Profile? = nil
     var fromFriendship: Friendship? = nil
@@ -38,23 +36,18 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         } else if ProfileController.SharedInstance.currentUserProfile == nil && ProfileController.SharedInstance.currentUserIdentifier != nil {
             tabBarController?.performSegueWithIdentifier("toBasicInfo", sender: self)
         }
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        tableView.layer.cornerRadius = 10
-        tableView.backgroundColor = DesignController.SharedInstance.grayBackground
         if let profile = profileForViewing {
             if self.ourProfileView != nil {
                 if let image = profile.image {
                     let croppedImage = ImageController.cropImageForCircle(image)
-                    self.ourProfileButton.setImage(croppedImage, forState: .Normal)
+                    let resizedImage = ImageController.resizeForCircle(croppedImage)
+                    self.ourProfileButton.setImage(resizedImage, forState: .Normal)
                 } else {
                     ProfileController.fetchImageForProfile(profile) { (image) -> Void in
                         if let image = image {
                             let croppedImage = ImageController.cropImageForCircle(image)
-                            self.ourProfileButton.setImage(croppedImage, forState: .Normal)
+                            let resizedImage = ImageController.resizeForCircle(croppedImage)
+                            self.ourProfileButton.setImage(resizedImage, forState: .Normal)
                         }
                     }
                 }
@@ -64,12 +57,14 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
                 if self.ourProfileView != nil {
                     if let image = profile.image {
                         let croppedImage = ImageController.cropImageForCircle(image)
-                        self.ourProfileButton.setImage(croppedImage, forState: .Normal)
+                        let resizedImage = ImageController.resizeForCircle(croppedImage)
+                        self.ourProfileButton.setImage(resizedImage, forState: .Normal)
                     } else {
                         ProfileController.fetchImageForProfile(profile) { (image) -> Void in
                             if let image = image {
                                 let croppedImage = ImageController.cropImageForCircle(image)
-                                self.ourProfileButton.setImage(croppedImage, forState: .Normal)
+                                let resizedImage = ImageController.resizeForCircle(croppedImage)
+                                self.ourProfileButton.setImage(resizedImage, forState: .Normal)
                             }
                         }
                     }
@@ -77,6 +72,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
 
+        tableView.reloadData()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.layer.cornerRadius = 10
+        tableView.backgroundColor = DesignController.SharedInstance.grayBackground
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "profilesBeingViewedChanged", name: "profilesBeingViewedChanged", object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "reloadCurrentUserProfileImage", name: "profileImageChanged", object: nil)
         if profilesBeingViewed.count == 0 && fromFriendship == nil {
@@ -86,14 +88,31 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
         
         tableView.estimatedRowHeight = 50
         tableView.rowHeight = UITableViewAutomaticDimension
+        
+        
     }
     
     @IBAction func checkForProfilesButtonTapped(sender: AnyObject) {
         ProfileController.fetchProfileForDisplay()
+        let loadingVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("loadingVC")
+        loadingVC.modalPresentationStyle = .OverFullScreen
+        presentViewController(loadingVC, animated: true) {
+            NSTimer.scheduledTimerWithTimeInterval(10, target: self, selector: "removeLoadingView", userInfo: nil, repeats: false)
+        }
+    }
+    
+    func removeLoadingView() {
+        dismissViewControllerAnimated(true) {
+            let alert = UIAlertController(title: nil, message: "There still aren't enough profiles in your area to show just yet, but check again soon!", preferredStyle: .Alert)
+            let dismissAction = UIAlertAction(title: "Dismiss", style: .Cancel, handler: nil)
+            alert.addAction(dismissAction)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
     }
     
     @IBAction func doneButtonTapped(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
+
     }
     
     func reloadCurrentUserProfileImage() {
@@ -126,6 +145,7 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             updateViewForNoProfiles()
             updateTableView()
         } else {
+            dismissViewControllerAnimated(true, completion: nil)
             updateViewForMoreProfiles()
             updateTableView()
         }
@@ -253,6 +273,13 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             
         }
     }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if indexPath.row == 1 {
+            return (2.0/3.0)*(self.view.frame.width - 32) + 8
+        }
+        return UITableViewAutomaticDimension
+    }
 
     
     // MARK: - Navigation
@@ -271,6 +298,11 @@ class ProfileTableViewController: UIViewController, UITableViewDelegate, UITable
             }
         }
     }
+    
+    @IBAction func backButtonTapped(sender: AnyObject) {
+        self.navigationController?.popViewControllerAnimated(true)
+    }
+    
     
 
 }

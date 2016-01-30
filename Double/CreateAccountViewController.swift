@@ -36,10 +36,15 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
         
         guard let password = passwordTextField.text, passwordRetyped = passwordRetypedTextField.text where password == passwordRetyped && AccountController.isValidPassword(password) else {presentAlert("Invalid Password", message: "Please enter a password greater than 5 characters using at least one number and one letter"); return}
         
+        let loadingVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("loadingVC")
+        loadingVC.modalPresentationStyle = .OverFullScreen
+        presentViewController(loadingVC, animated: true, completion: nil)
+        
         AccountController.createAccount(email, password: password, passwordRetyped: passwordRetyped, completion: { (account) -> Void in
             if let account = account {
                 self.account = account
                 self.performSegueWithIdentifier("createAccount", sender: self)
+                self.dismissViewControllerAnimated(false, completion: nil)
             }
         })
 

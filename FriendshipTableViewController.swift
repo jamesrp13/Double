@@ -33,12 +33,14 @@ class FriendshipTableViewController: UIViewController, UITableViewDataSource, UI
         
         if let image = ProfileController.SharedInstance.currentUserProfile.image {
             let croppedImage = ImageController.cropImageForCircle(image)
-            self.ourProfileButton.setImage(croppedImage, forState: .Normal)
+            let resizedImage = ImageController.resizeForCircle(croppedImage)
+            self.ourProfileButton.setImage(resizedImage, forState: .Normal)
         } else {
             ProfileController.fetchImageForProfile(ProfileController.SharedInstance.currentUserProfile) { (image) -> Void in
                 if let image = image {
                     let croppedImage = ImageController.cropImageForCircle(image)
-                    self.ourProfileButton.setImage(croppedImage, forState: .Normal)
+                    let resizedImage = ImageController.resizeForCircle(croppedImage)
+                    self.ourProfileButton.setImage(resizedImage, forState: .Normal)
                 }
             }
         }
@@ -95,7 +97,7 @@ class FriendshipTableViewController: UIViewController, UITableViewDataSource, UI
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return 95
+            return 98
         } else {
             return 80
         }

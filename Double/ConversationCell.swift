@@ -45,8 +45,8 @@ class ConversationCell: UITableViewCell {
                 })
                 if let messages = friendship.messages {
                     self.conversationTitleLabel.text = profile.coupleTitle
-                    self.messagePreviewLabel.text = messages.last?.text
-                    self.messagePreviewLabel.backgroundColor = (messages.last?.identifier ?? "") == ProfileController.SharedInstance.currentUserIdentifier! ? DesignController.SharedInstance.grayBackground:DesignController.SharedInstance.greenColor
+                    self.messagePreviewLabel.text = messages.last?.text ?? ""
+                    self.messagePreviewLabel.backgroundColor = (messages.last?.profileId ?? "") == ProfileController.SharedInstance.currentUserIdentifier! ? DesignController.SharedInstance.greenColor:DesignController.SharedInstance.grayBackground
                 }
             }
         }

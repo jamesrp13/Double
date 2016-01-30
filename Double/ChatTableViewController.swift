@@ -57,20 +57,22 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, UITableVie
         tabBarController?.tabBar.hidden = true
         messageTextView.becomeFirstResponder()
         
-        if let image = ProfileController.SharedInstance.currentUserProfile.image {
+        if let image = profile?.image {
             let croppedImage = ImageController.cropImageForCircle(image)
-            self.ourProfileButton.setImage(croppedImage, forState: .Normal)
+            let resizedImage = ImageController.resizeForCircle(croppedImage)
+            self.ourProfileButton.setImage(resizedImage, forState: .Normal)
         } else {
-            ProfileController.fetchImageForProfile(ProfileController.SharedInstance.currentUserProfile) { (image) -> Void in
+            ProfileController.fetchImageForProfile(profile!) { (image) -> Void in
                 if let image = image {
                     let croppedImage = ImageController.cropImageForCircle(image)
-                    self.ourProfileButton.setImage(croppedImage, forState: .Normal)
+                    let resizedImage = ImageController.resizeForCircle(croppedImage)
+                    self.ourProfileButton.setImage(resizedImage, forState: .Normal)
                 }
             }
         }
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
-        tableView.estimatedRowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 50
         tableView.rowHeight = UITableViewAutomaticDimension
         titleLabel.text = profile?.coupleTitle ?? ""
     }
@@ -79,6 +81,9 @@ class ChatTableViewController: UIViewController, UITableViewDelegate, UITableVie
         if let userInfo = notification.userInfo,
             keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size {
                 bottomStackViewConstraint.constant = keyboardSize.height
+                if let messages = messages where messages.count > 0 {
+                    tableView.scrollToRowAtIndexPath(NSIndexPath(forRow: messages.count - 1, inSection: 0), atScrollPosition: UITableViewScrollPosition.Bottom, animated: true)
+                }
         }
     }
 

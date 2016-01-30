@@ -20,7 +20,7 @@
 
 - (id)initWithLocation:(CLLocationCoordinate2D)location
 {
-    return [self initWithLocation:location precision:GF_DEFAULT_PRECISION];
+    return [self initWithLocation:location precision:GF_MAX_PRECISION];
 }
 
 - (id)initWithLocation:(CLLocationCoordinate2D)location precision:(NSUInteger)precision

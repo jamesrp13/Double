@@ -19,7 +19,6 @@ class ProfileTitleCell: UITableViewCell {
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
         // Configure the view for the selected state
     }
 
@@ -33,6 +32,8 @@ class ProfileTitleCell: UITableViewCell {
         titleLabel.text = "Really long title that requires word wrapping and maybe automatic increase in row height"
     }
     
-    
-    
+}
+
+protocol ProfileTitleCellDelegate {
+    func heightForCell() -> CGFloat
 }

@@ -37,6 +37,7 @@ class ProfileImageCell: UITableViewCell {
 //                }
             }
         }
+        //self.frame.size.height = (2.0/3.0)*(self.frame.width - 32) + 8
     }
     
     func updateWithImage(image: UIImage?) {
@@ -45,6 +46,7 @@ class ProfileImageCell: UITableViewCell {
         self.profileImageView.clipsToBounds = true
         self.profileImageView.layer.borderWidth = 2
         self.profileImageView.layer.borderColor = DesignController.SharedInstance.blueColor.CGColor
+        //self.frame.size.height = (2.0/3.0)*(self.frame.width - 32) + 8
     }
-
+    
 }

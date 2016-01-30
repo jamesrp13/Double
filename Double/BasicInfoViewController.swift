@@ -32,6 +32,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     var state: State = State.first
     var viewType: basicInfoViewType = .createAccount
     
+    @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var firstPersonStackView: UIStackView!
     @IBOutlet weak var secondPersonStackView: UIStackView!
     @IBOutlet weak var coupleStackView: UIStackView!
@@ -48,7 +49,6 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var relationshipStartTextField: UITextField!
     @IBOutlet weak var relationshipSegmentedControl: UISegmentedControl!
     @IBOutlet weak var locationTextField: UITextField!
-    @IBOutlet weak var numberOfKidsTextField: UITextField!
     @IBOutlet weak var nextButton: UIButton!
     
     var person1: Person? = nil
@@ -76,7 +76,8 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         setupConstraints()
         createInputView()
         configureInputFields()
-        createChildStackViews()
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillShow:", name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
     
     // MARK: - Presentation and input configuration
@@ -152,9 +153,6 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         let locationPickerActionSheet = LocationPickerActionSheet(parent: self, useZipSelector: "getLocationFromZip", useLocationSelector: "locationViaDeviceLocation")
         locationPicker = locationPickerActionSheet
         locationTextField.inputView = locationPicker
-        
-        numberOfKidsActionSheet = PickerViewActionSheet(parent: self, doneActionSelector: "numberOfKidsInputDone")
-        numberOfKidsTextField.inputView = numberOfKidsActionSheet
     }
     
     func loadProperState() {
@@ -175,41 +173,22 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func createChildStackViews() {
-        for var i=0; i<25; i++ {
-            let childLabel = UILabel()
-            childLabel.text = "    Child \(i+1):"
-            let font = UIFont(name: "HelveticaNeue-Thin", size: 18)
-            childLabel.font = font
-            childLabel.textColor = .whiteColor()
-            let genderSegmentedControl = UISegmentedControl(items: ["Male", "Female"])
-            genderSegmentedControl.selectedSegmentIndex = 0
-            genderSegmentedControl.frame.size.width = relationshipSegmentedControl.frame.width * (2.0/3.0)
-            genderSegmentedControl.tintColor = DesignController.SharedInstance.blueColor
-            let dobTextField = UITextField()
-            dobTextField.placeholder = "Birthday"
-            dobTextField.font = font
-            dobTextField.textColor = .whiteColor()
-            dobTextField.inputView = datePicker
-            dobTextField.inputAccessoryView = toolbar
-            dobTextField.delegate = self
-            dobTextField.layer.cornerRadius = 5
-            dobTextField.clipsToBounds = true
-            dobTextField.backgroundColor = relationshipStartTextField.backgroundColor
-            let verticalStackView = UIStackView(arrangedSubviews: [genderSegmentedControl, dobTextField])
-            verticalStackView.frame.size.width = relationshipSegmentedControl.frame.width * (2.0/3.0)
-            verticalStackView.distribution = .FillEqually
-            verticalStackView.alignment = .Fill
-            verticalStackView.spacing = 5
-            verticalStackView.axis = .Vertical
-            let horizontalStackView = UIStackView(arrangedSubviews: [childLabel, verticalStackView])
-            horizontalStackView.frame.size.width = coupleStackView.frame.width
-            horizontalStackView.distribution = .FillProportionally
-            horizontalStackView.spacing = 5
-            horizontalStackView.axis = .Horizontal
-            coupleStackView.insertArrangedSubview(horizontalStackView, atIndex: 6+i)
-            coupleStackView.subviews.last?.hidden = true
+    func keyboardWillShow(notification: NSNotification) {
+        guard let activeTextField = activeTextField where activeTextField == locationTextField else {return}
+        if let userInfo = notification.userInfo,
+            keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size {
+                let saveButtonDistanceFromBottom = self.view.frame.height - (mainStackView.frame.origin.y + mainStackView.frame.height - nextButton.frame.height)
+                let contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height - saveButtonDistanceFromBottom, 0)
+                nextButton.contentEdgeInsets = contentInset
+                scrollView.scrollIndicatorInsets = contentInset
         }
+    }
+    
+    func keyboardWillHide(notification: NSNotification) {
+        guard let activeTextField = activeTextField where activeTextField == locationTextField else {return}
+        let contentInset = UIEdgeInsetsZero
+        nextButton.contentEdgeInsets = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
     }
     
     func updateWithProfile(profile: Profile) {
@@ -244,20 +223,6 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             relationshipStartLabel.text = "When did you get engaged?"
         case .Married:
             relationshipStartLabel.text = "When did you get married?"
-        }
-        
-        if children.count > 0 {
-            numberOfKidsTextField.text = "\(children.count)"
-            for var i=0; i<children.count; i++ {
-                let child = children[i]
-                let stackView = coupleStackView.subviews[i+8]
-                stackView.hidden = false
-                if let genderSegment = stackView.subviews[1] as? UISegmentedControl,
-                    dobTextField = stackView.subviews[2] as? UITextField {
-                        genderSegment.selectedSegmentIndex = child.gender.rawValue == "M" ? 0:1
-                        dobTextField.text = dateFormatter.stringFromDate(child.dob)
-                }
-            }
         }
     }
     
@@ -294,19 +259,6 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             relationshipStartLabel.text = "When did you start dating?"
         }
         
-        if children.count > 0 {
-            numberOfKidsTextField.text = "\(children.count)"
-            for var i=0; i<children.count; i++ {
-                let child = children[i]
-                let stackView = coupleStackView.subviews[i+8]
-                stackView.hidden = false
-                if let genderSegment = stackView.subviews[1] as? UISegmentedControl,
-                    dobTextField = stackView.subviews[2] as? UITextField {
-                        genderSegment.selectedSegmentIndex = child.gender.rawValue == "M" ? 0:1
-                        dobTextField.text = dateFormatter.stringFromDate(child.dob)
-                }
-            }
-        }
     }
     
     @IBAction func segmentedControlTapped(sender: UISegmentedControl) {
@@ -392,46 +344,8 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     
     // MARK: - Handling input fields
     
-    func numberOfKidsInputDone() {
-        if let textField = activeTextField {
-            if let numberOfKidsPicker = numberOfKidsActionSheet?.pickerView {
-                textField.text = String(numberOfKidsPicker.selectedRowInComponent(0))
-                if let numberOfKidsAsText = numberOfKidsTextField.text where numberOfKidsAsText.characters.count > 0 && numberOfKidsAsText != "0" {
-                    let numberOfKids = Int(numberOfKidsAsText)
-                    for var i=0; i < 25; i++ {
-                        if i<numberOfKids {
-                            coupleStackView.subviews[i+8].hidden = false
-                        } else {
-                            coupleStackView.subviews[i+8].hidden = true
-                        }
-                    }
-                } else {
-                    for var i=0; i < 25; i++ {
-                        coupleStackView.subviews[i+8].hidden = true
-                    }
-                }
-                
-            }
-            textField.resignFirstResponder()
-        }
-    }
-    
     func textFieldDidBeginEditing(textField: UITextField) {
         activeTextField = textField
-//        switch textField {
-//        case dob1TextField ?? "":
-//            datePicker?.maximumDate = DateController.dateEighteenYearsAgo()
-//            datePicker?.date = datePicker!.maximumDate!
-//        case dob2TextField ?? "":
-//            datePicker?.maximumDate = DateController.dateEighteenYearsAgo()
-//            datePicker?.date = datePicker!.maximumDate!
-//        case relationshipStartTextField:
-//            datePicker?.maximumDate = NSDate()
-//            datePicker?.date = datePicker!.maximumDate!
-//        default:
-//            datePicker?.maximumDate = NSDate()
-//            datePicker?.date = datePicker!.maximumDate!
-//        }
         resignFirstResponderForOtherTextFields(textField)
     }
     
@@ -470,27 +384,8 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        if textField == numberOfKidsTextField {
-            if let numberOfKidsAsText = numberOfKidsTextField.text where numberOfKidsAsText.characters.count > 0 && numberOfKidsAsText != "0" {
-                let numberOfKids = Int(numberOfKidsAsText)
-                for var i=0; i < 25; i++ {
-                    if i<numberOfKids {
-                        coupleStackView.subviews[i+8].hidden = false
-                    } else {
-                        coupleStackView.subviews[i+8].hidden = true
-                    }
-                }
-            } else {
-                for var i=0; i < 25; i++ {
-                    coupleStackView.subviews[i+8].hidden = true
-                }
-            }
-        } else if textField == relationshipStartTextField {
-            
-        }
         name1TextField.resignFirstResponder()
         name2TextField.resignFirstResponder()
-        numberOfKidsTextField.resignFirstResponder()
         return true
     }
     
@@ -530,19 +425,6 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 relationshipStart = dateFormatter.dateFromString(relationshipStartAsText)!
                 let relationshipLength = relationshipStart!.timeIntervalSinceNow/(-365)/24/60/60
                 guard relationshipLength > 0 else {presentAlert("Invalid relationship length", message: "Turns out we don't allow relationships that haven't started yet..."); return}
-                
-                let numberOfKids = Int(numberOfKidsTextField.text!) ?? 0
-                for var i=0; i<numberOfKids; i++ {
-                    guard let genderSegmentedControl = coupleStackView.subviews[i+8].subviews[1] as? UISegmentedControl,
-                        dobTextField = coupleStackView.subviews[i+8].subviews[2] as? UITextField else {break}
-                    guard let dobText = dobTextField.text where dobText.characters.count > 0 else {presentAlert("Missing Information", message: "We use information about your kids to complete your profile, but it isn't required. If you don't want to provide this information please leave the number of children blank or enter \"0\""); return}
-                    let dateFormatter = NSDateFormatter()
-                    dateFormatter.dateStyle = .MediumStyle
-                    let dob = dateFormatter.dateFromString(dobText)
-                    let gender = genderSegmentedControl.selectedSegmentIndex==0 ? "M":"F"
-                    let child = Child(dob: dob!, gender: Child.Gender(rawValue: gender)!, profileIdentifier: accountIdentifier!)
-                    children.append(child)
-                }
                 self.performSegueWithIdentifier("fromBasicInfoToEditProfile", sender: self)
             }
         } else if viewType == .editProfile {

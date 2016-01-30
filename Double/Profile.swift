@@ -35,9 +35,11 @@ struct Profile: FirebaseType, Equatable {
     var about: String?
     var location: CLLocation {
         didSet {
-            LocationController.locationAsCityCountry(location) { (cityState) -> Void in
-                if let cityState = cityState {
-                    self.locationAsString = cityState
+            if locationAsString == nil {
+                LocationController.locationAsCityCountry(location) { (cityState) -> Void in
+                    if let cityState = cityState {
+                        self.locationAsString = cityState
+                    }
                 }
             }
         }
@@ -45,15 +47,17 @@ struct Profile: FirebaseType, Equatable {
     var children: [Child]?
     var imageEndPoint: String {
         didSet {
-            ImageController.imageForIdentifier(imageEndPoint) { (image) -> Void in
-                if let image = image {
-                    self.image = image
+            if image == nil {
+                ImageController.imageForIdentifier(imageEndPoint) { (image) -> Void in
+                    if let image = image {
+                        self.image = image
+                    }
                 }
             }
         }
     }
     
-    var locationAsString: String? = nil
+    var locationAsString: String? = nil 
     var image: UIImage? = nil
     
     // Profile computed variables
@@ -110,6 +114,9 @@ struct Profile: FirebaseType, Equatable {
                 childrenJson.updateValue(child.jsonValue, forKey: child.identifier!)
             }
         }
+        if let locationAsString = locationAsString {
+            profileJson.updateValue(locationAsString, forKey: "locationAsString")
+        }
         
         var json: [String: AnyObject] = [kProfiles: profileJson, kPeople: peopleJson]
         if childrenJson.count > 0 {
@@ -156,6 +163,7 @@ struct Profile: FirebaseType, Equatable {
         self.about = profileDictionary[kAbout] as? String
         self.people = people
         self.children = children
+        self.locationAsString = profileDictionary["locationAsString"] as? String
     }
 
     init?(json: [String : AnyObject], identifier: String, completion: (profile: Profile?) -> Void) {

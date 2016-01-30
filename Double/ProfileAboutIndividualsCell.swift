@@ -94,5 +94,12 @@ class ProfileAboutIndividualsCell: UITableViewCell, UITextViewDelegate {
         }
 
     }
+    
+    func textViewDidChangeSelection(textView: UITextView) {
+        UIView.setAnimationsEnabled(false)
+        self.tableView?.beginUpdates()
+        self.tableView?.endUpdates()
+        UIView.setAnimationsEnabled(true)
+    }
 
 }

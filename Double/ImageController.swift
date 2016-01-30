@@ -10,6 +10,10 @@ import UIKit
 
 class ImageController {
     
+    private static let aspectRatio = CGFloat(2.0)/3.0
+    private static let profileWidth = UIApplication.sharedApplication().windows.first?.frame.width
+    private static let profileHeight = profileWidth!*aspectRatio
+    
     static func uploadImage(image: UIImage, completion: (identifier: String?) -> Void) {
         if let base64Image = image.base64String {
             let base = FirebaseController.base.childByAppendingPath("images").childByAutoId()
@@ -77,6 +81,33 @@ class ImageController {
         return UIImage(CGImage: imageRef!, scale: UIScreen.mainScreen().scale, orientation: image.imageOrientation)
     }
     
+    static func resizeForProfile(image: UIImage) -> UIImage {
+        let width = profileWidth!
+        let height = profileHeight
+        let size = CGSize(width: width, height: height)
+        let hasAlpha = false
+        let scale: CGFloat = 0.0 // Automatically use scale factor of main screen
+        
+        UIGraphicsBeginImageContextWithOptions(size, !hasAlpha, scale)
+        image.drawInRect(CGRect(origin: CGPointZero, size: size))
+        
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return scaledImage
+    }
+    
+    static func resizeForCircle(image: UIImage) -> UIImage {
+        let size = CGSize(width: 70, height: 70)
+        let hasAlpha = false
+        let scale: CGFloat = 0.0 // Automatically use scale factor of main screen
+        
+        UIGraphicsBeginImageContextWithOptions(size, !hasAlpha, scale)
+        image.drawInRect(CGRect(origin: CGPointZero, size: size))
+        
+        let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return scaledImage
+    }
 }
 
 extension UIImage {

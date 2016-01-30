@@ -82,8 +82,6 @@ class EditProfileTableViewController: UIViewController, UITableViewDelegate, UIT
         }
     }
     
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
