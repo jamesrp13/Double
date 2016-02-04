@@ -42,12 +42,16 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func loginTapped(sender: AnyObject) {
         guard let email = emailTextField.text, password = passwordTextField.text else {presentAlert("Please enter login credentials", message: "") ; return}
+        let loadingVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("loadingVC")
+        loadingVC.modalPresentationStyle = .OverFullScreen
+        presentViewController(loadingVC, animated: false, completion: nil)
         
         AccountController.authenticateAccount(email, password: password, completion: { (account) -> Void in
             if let account = account {
                 ProfileController.fetchProfileForIdentifier(account.identifier!, completion: { (profile) -> Void in
                     if let profile = profile {
                         ImageController.imageForIdentifier(profile.imageEndPoint, completion: { (image) -> Void in
+                            self.dismissViewControllerAnimated(false, completion: nil)
                             if let tabBarController = self.presentingViewController as? UITabBarController {
                                 if let navController = tabBarController.viewControllers?.first as? UINavigationController {
                                     let profileViewController = navController.viewControllers.first! as! ProfileTableViewController
@@ -61,10 +65,12 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                             }
                         })
                     } else {
+                        self.dismissViewControllerAnimated(false, completion: nil)
                         self.dismissViewControllerAnimated(true, completion: nil)
                     }
                 })
             } else {
+                self.dismissViewControllerAnimated(false, completion: nil)
                 self.presentAlert("Authentication failed", message: "Please check your email and password and try again.")
             }
         })

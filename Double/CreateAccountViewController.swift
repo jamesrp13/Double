@@ -22,6 +22,10 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
         navigationController?.navigationBarHidden = true
         setupConstraints()
     }
+    
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
 
     func setupConstraints() {
         let topConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1, constant: self.view.frame.height / 6)

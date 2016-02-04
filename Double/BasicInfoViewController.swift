@@ -29,9 +29,17 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         case couple
     }
     
-    var state: State = State.first
+    var state: State = State.first {
+        didSet {
+            if state == .couple {
+                LocationController.resolvePermissions()
+            }
+        }
+    }
     var viewType: basicInfoViewType = .createAccount
     
+    @IBOutlet weak var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topConstraint: NSLayoutConstraint!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var firstPersonStackView: UIStackView!
     @IBOutlet weak var secondPersonStackView: UIStackView!
@@ -69,7 +77,9 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         navigationController?.navigationBarHidden = true
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "setLocationTextFieldText:", name: "locationUpdated", object: nil)
+        if CLLocationManager.authorizationStatus() == .AuthorizedAlways || CLLocationManager.authorizationStatus() == .AuthorizedWhenInUse {
+            LocationController.SharedInstance.locationManager.requestLocation()
+        }
         if firstPersonStackView != nil {
             loadProperState()
         }
@@ -80,30 +90,30 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "keyboardWillHide:", name: UIKeyboardWillHideNotification, object: nil)
     }
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return .LightContent
+    }
+    
     // MARK: - Presentation and input configuration
     
     func setupConstraints() {
         if viewType != .editProfile {
-            let topConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Top, relatedBy: .Equal, toItem: self.view, attribute: .Top, multiplier: 1, constant: self.view.frame.height / 6)
-            let bottomConstraint = NSLayoutConstraint(item: mainStackView, attribute: .Bottom, relatedBy: .Equal, toItem: self.view, attribute: .Bottom, multiplier: 1, constant: -self.view.frame.height / 5)
-            
-            self.view.addConstraint(topConstraint)
-            self.view.addConstraint(bottomConstraint)
+            topConstraint.constant = self.view.frame.height / 6
+            bottomConstraint.constant = self.view.frame.height / 5
         }
     }
     
     func createInputView() {
         let datePicker = UIDatePicker()
         datePicker.datePickerMode = .Date
-        datePicker.maximumDate = NSDate()
-        datePicker.date = datePicker.maximumDate!
+        datePicker.date = NSDate()
         let ageDatePicker = UIDatePicker()
         ageDatePicker.datePickerMode = .Date
-        ageDatePicker.maximumDate = DateController.dateEighteenYearsAgo()
-        ageDatePicker.date = datePicker.maximumDate!
+        ageDatePicker.date = NSDate()
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
         let doneButton = UIBarButtonItem()
+        //doneButton.setTitlePositionAdjustment(UIOffsetMake(0, 0), forBarMetrics: .Default)
         doneButton.title = "Done"
         doneButton.target = self
         doneButton.action = "datePickerDone"
@@ -119,8 +129,8 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         forwardButton.image = UIImage(named: "ForwardButton")
         forwardButton.tintColor = DesignController.SharedInstance.blueColor
         let flex = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
-        toolbar.setItems([backButton, forwardButton, flex, doneButton], animated: true)
-        toolbar.frame.size.height = toolbar.frame.height * 0.75
+        toolbar.setItems([flex, doneButton], animated: true)
+        //toolbar.frame.size.height = toolbar.frame.height * 0.75
         self.ageDatePicker = ageDatePicker
         self.datePicker = datePicker
         self.toolbar = toolbar
@@ -174,21 +184,25 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
     }
     
     func keyboardWillShow(notification: NSNotification) {
-        guard let activeTextField = activeTextField where activeTextField == locationTextField else {return}
+        guard let activeTextField = activeTextField,
+            bottomConstraint = bottomConstraint where activeTextField == locationTextField else {return}
         if let userInfo = notification.userInfo,
             keyboardSize = (userInfo[UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.CGRectValue().size {
-                let saveButtonDistanceFromBottom = self.view.frame.height - (mainStackView.frame.origin.y + mainStackView.frame.height - nextButton.frame.height)
-                let contentInset = UIEdgeInsetsMake(0, 0, keyboardSize.height - saveButtonDistanceFromBottom, 0)
-                nextButton.contentEdgeInsets = contentInset
-                scrollView.scrollIndicatorInsets = contentInset
+                let newConstraint = keyboardSize.height - nextButton.frame.height
+                
+                if newConstraint > bottomConstraint.constant {
+                    bottomConstraint.constant = newConstraint
+                    mainStackView.layoutIfNeeded()
+                    scrollView.scrollRectToVisible(activeTextField.frame, animated: true)
+                }
         }
     }
     
     func keyboardWillHide(notification: NSNotification) {
-        guard let activeTextField = activeTextField where activeTextField == locationTextField else {return}
-        let contentInset = UIEdgeInsetsZero
-        nextButton.contentEdgeInsets = contentInset
-        scrollView.scrollIndicatorInsets = contentInset
+        guard let activeTextField = activeTextField,
+            bottomConstraint = bottomConstraint where activeTextField == locationTextField else {return}
+        bottomConstraint.constant = 100
+        mainStackView.layoutIfNeeded()
     }
     
     func updateWithProfile(profile: Profile) {
@@ -281,43 +295,68 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         locationTextField.resignFirstResponder()
         locationTextField.inputView = nil
         locationTextField.keyboardType = .NumberPad
-        
-        let doneButton = UIBarButtonItem()
-        doneButton.title = "Done"
-        doneButton.action = "zipCodeAdded"
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
-        toolbar.frame.size.height = 30.0
-        toolbar.items = [doneButton]
+        let doneButton = UIBarButtonItem()
+        //doneButton.setTitlePositionAdjustment(UIOffsetMake(0, 0), forBarMetrics: .Default)
+        doneButton.title = "Done"
+        doneButton.target = self
+        doneButton.action = "zipCodeAdded"
+        doneButton.tintColor = DesignController.SharedInstance.blueColor
+        let flex = UIBarButtonItem(barButtonSystemItem: .FlexibleSpace, target: self, action: nil)
+        toolbar.setItems([flex, doneButton], animated: true)
+        //toolbar.frame.size.height = toolbar.frame.height * 0.75
         locationTextField.inputAccessoryView = toolbar
         locationTextField.becomeFirstResponder()
     }
     
     func zipCodeAdded() {
+        self.locationTextField.resignFirstResponder()
         if let zip = locationTextField.text where zip.characters.count > 4 {
+            let loadingVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("loadingVC")
+            loadingVC.modalPresentationStyle = .OverFullScreen
+            presentViewController(loadingVC, animated: false, completion: nil)
             LocationController.zipAsCoordinates(zip, completion: { (location) -> Void in
                 if let location = location {
                     self.location = location
                     LocationController.locationAsCityCountry(location, completion: { (cityState) -> Void in
-                        if let cityState = cityState {
-                            self.locationTextField.text = cityState
+                        self.dismissViewControllerAnimated(false) {
+                            if let cityState = cityState {
+                                self.locationTextField.text = cityState
+                            }
                         }
                     })
                 }
             })
         }
-        locationTextField.resignFirstResponder()
     }
     
     func locationViaDeviceLocation() {
-        if let textField = activeTextField {
-            textField.becomeFirstResponder()
-            if LocationController.resolvePermissions() {
-                LocationController.requestLocation()
-            } else {
-                textField.resignFirstResponder()
-                activeTextField = nil
-            }
+        self.locationTextField.resignFirstResponder()
+        let loadingVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewControllerWithIdentifier("loadingVC")
+        loadingVC.modalPresentationStyle = .OverFullScreen
+        presentViewController(loadingVC, animated: false, completion: nil)
+        if let location = LocationController.SharedInstance.locationManager.location {
+            LocationController.locationAsCityCountry(location, completion: { (cityState) -> Void in
+                self.dismissViewControllerAnimated(false) {
+                    if let cityState = cityState {
+                        self.locationTextField.text = cityState
+                    }
+                }
+            })
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: "locationUpdated", object: nil)
+            NSNotificationCenter.defaultCenter().removeObserver(self, name: "FailedToFindLocation", object: nil)
+        } else {
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "setLocationTextFieldText:", name: "locationUpdated", object: nil)
+            NSNotificationCenter.defaultCenter().addObserver(self, selector: "tellUserLocationNotFound", name: "FailedToFindLocation", object: nil)
+            LocationController.SharedInstance.locationManager.requestLocation()
+        }
+    }
+    
+    func tellUserLocationNotFound() {
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: "FailedToFindLocation", object: nil)
+        dismissViewControllerAnimated(false) {
+            self.presentAlert("Location not found", message: "Sorry, but it looks like we couldn't get a fix on your location. Try again or enter your zip code.")
         }
     }
     
@@ -327,6 +366,7 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
             if let location = notificationInfo["location"] as? CLLocation {
                 self.location = location
                 LocationController.locationAsCityCountry(location, completion: { (cityState) -> Void in
+                    self.dismissViewControllerAnimated(false, completion: nil)
                     if let cityState = cityState {
                         textField.text = cityState
                         textField.resignFirstResponder()
@@ -383,10 +423,24 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
+    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
+        if textField == locationTextField {
+            textField.text = ""
+        }
+        return true
+    }
+    
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         name1TextField.resignFirstResponder()
         name2TextField.resignFirstResponder()
         return true
+    }
+    
+    func textFieldDidEndEditing(textField: UITextField) {
+        if textField == locationTextField {
+            locationTextField.inputView = locationPicker
+            locationTextField.inputAccessoryView = nil
+        }
     }
     
     // MARK: - Navigation
@@ -432,6 +486,8 @@ class BasicInfoViewController: UIViewController, UITextFieldDelegate {
                 relationshipStart = DateController.dateFromString(relationshipStartTextField.text ?? "") else {return}
             let relationshipStatusInt = relationshipSegmentedControl.selectedSegmentIndex
             let relationshipStatus = relationshipStatusInt == 0 ? "dating":(relationshipStatusInt == 1 ? "engaged":"married")
+            let relationshipLength = relationshipStart.timeIntervalSinceNow/(-365)/24/60/60
+            guard relationshipLength > 0 else {presentAlert("Invalid relationship length", message: "Turns out we don't allow relationships that haven't started yet..."); return}
             
             if var profile = profile {
                 profile.location = location

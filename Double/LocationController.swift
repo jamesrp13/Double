@@ -13,6 +13,8 @@ class LocationController: NSObject, CLLocationManagerDelegate {
     
     static let SharedInstance = LocationController()
     
+    var shouldUseDeviceLocation = false
+    
     let locationManager = CLLocationManager()
     
     override init() {
@@ -40,6 +42,7 @@ class LocationController: NSObject, CLLocationManagerDelegate {
         let geoCoder = CLGeocoder()
         geoCoder.reverseGeocodeLocation(location) { (placemarks, error) -> Void in
             if error != nil {
+                completion(cityState: nil)
                 print("Geocoding error: \(error)")
             }
             guard let placemarks = placemarks where placemarks.count > 0 else {
@@ -83,5 +86,11 @@ class LocationController: NSObject, CLLocationManagerDelegate {
     func locationManager(manager: CLLocationManager, didFailWithError error: NSError) {
         NSNotificationCenter.defaultCenter().postNotificationName("FailedToFindLocation", object: self)
         print("Failed to find location: \(error)")
+    }
+    
+    func locationManager(manager: CLLocationManager, didChangeAuthorizationStatus status: CLAuthorizationStatus) {
+        if status == .AuthorizedAlways || status == .AuthorizedWhenInUse {
+            locationManager.requestLocation()
+        }
     }
 }
