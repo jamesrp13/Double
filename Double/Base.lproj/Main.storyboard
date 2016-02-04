@@ -1130,7 +1130,7 @@
                                 <subviews>
                                     <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q2A-7x-Iio">
                                         <rect key="frame" x="2" y="2" width="66" height="66"/>
-                                        <state key="normal" image="1F7D03D6-DB68-4FC4-A04D-FD0708B84A0A"/>
+                                        <state key="normal" image="94FF9BA1-12CD-4DCD-8C23-8DFE19374A37"/>
                                         <connections>
                                             <segue destination="v01-Rg-EEy" kind="show" identifier="toFriendsProfile" id="9ER-se-5Eq"/>
                                         </connections>
@@ -2515,122 +2515,118 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="hFD-WD-nZV">
                                 <rect key="frame" x="25" y="45" width="270" height="410"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Yfp-iG-96D">
+                                    <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ldg-EN-pRC">
                                         <rect key="frame" x="0.0" y="0.0" width="270" height="354"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ldg-EN-pRC">
-                                                <rect key="frame" x="0.0" y="0.0" width="270" height="354"/>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V7r-RV-1O4">
+                                                <rect key="frame" x="0.0" y="0.0" width="15" height="354"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="15" id="59l-B3-RMW"/>
+                                                </constraints>
+                                            </view>
+                                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ife-Ps-cpc">
+                                                <rect key="frame" x="15" y="0.0" width="240" height="354"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V7r-RV-1O4">
-                                                        <rect key="frame" x="0.0" y="0.0" width="15" height="354"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="15" id="59l-B3-RMW"/>
-                                                        </constraints>
-                                                    </view>
-                                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ife-Ps-cpc">
-                                                        <rect key="frame" x="15" y="0.0" width="240" height="354"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Tq6-ni-6CY">
+                                                        <rect key="frame" x="0.0" y="0.0" width="240" height="205"/>
                                                         <subviews>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Tq6-ni-6CY">
-                                                                <rect key="frame" x="0.0" y="0.0" width="240" height="205"/>
-                                                                <subviews>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="What's your relationship status?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Yb4-o3-I9l">
-                                                                        <rect key="frame" x="0.0" y="0.0" width="240" height="30"/>
-                                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
-                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <segmentedControl opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="AXc-YQ-2Qq">
-                                                                        <rect key="frame" x="0.0" y="35" width="240" height="31"/>
-                                                                        <segments>
-                                                                            <segment title="Dating"/>
-                                                                            <segment title="Engaged"/>
-                                                                            <segment title="Married"/>
-                                                                        </segments>
-                                                                        <color key="tintColor" red="0.42335668100000001" green="0.6822198276" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                                                        <connections>
-                                                                            <action selector="segmentedControlTapped:" destination="aiJ-6W-c9X" eventType="valueChanged" id="0V4-eU-YU9"/>
-                                                                        </connections>
-                                                                    </segmentedControl>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="When did you start dating?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="hHR-1K-zEv">
-                                                                        <rect key="frame" x="0.0" y="70" width="240" height="30"/>
-                                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
-                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Dating/Engaged/Married since..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="41M-Xd-2qu">
-                                                                        <rect key="frame" x="0.0" y="105" width="240" height="30"/>
-                                                                        <color key="backgroundColor" red="0.98039215690000003" green="0.89019607840000003" blue="0.89019607840000003" alpha="0.5" colorSpace="calibratedRGB"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="width" constant="189" id="dQM-Qt-Tf0"/>
-                                                                        </constraints>
-                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
-                                                                        <textInputTraits key="textInputTraits"/>
-                                                                        <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                                                <integer key="value" value="0"/>
-                                                                            </userDefinedRuntimeAttribute>
-                                                                        </userDefinedRuntimeAttributes>
-                                                                        <variation key="default">
-                                                                            <mask key="constraints">
-                                                                                <exclude reference="dQM-Qt-Tf0"/>
-                                                                            </mask>
-                                                                        </variation>
-                                                                        <connections>
-                                                                            <outlet property="delegate" destination="aiJ-6W-c9X" id="Lhe-Xj-mYd"/>
-                                                                        </connections>
-                                                                    </textField>
-                                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Where do you live?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="eW4-tP-4Ll">
-                                                                        <rect key="frame" x="0.0" y="140" width="240" height="30"/>
-                                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="20"/>
-                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <nil key="highlightedColor"/>
-                                                                    </label>
-                                                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Where do you live?" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="p5I-pZ-C7q">
-                                                                        <rect key="frame" x="0.0" y="175" width="240" height="30"/>
-                                                                        <color key="backgroundColor" red="0.98039215690000003" green="0.89019607840000003" blue="0.89019607840000003" alpha="0.5" colorSpace="calibratedRGB"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="width" constant="189" id="lws-uS-L5R"/>
-                                                                        </constraints>
-                                                                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
-                                                                        <textInputTraits key="textInputTraits"/>
-                                                                        <variation key="default">
-                                                                            <mask key="constraints">
-                                                                                <exclude reference="lws-uS-L5R"/>
-                                                                            </mask>
-                                                                        </variation>
-                                                                        <connections>
-                                                                            <outlet property="delegate" destination="aiJ-6W-c9X" id="DQm-S4-ILV"/>
-                                                                        </connections>
-                                                                    </textField>
-                                                                </subviews>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="What's your relationship status?" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Yb4-o3-I9l">
+                                                                <rect key="frame" x="0.0" y="0.0" width="240" height="30"/>
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <segmentedControl opaque="NO" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="AXc-YQ-2Qq">
+                                                                <rect key="frame" x="0.0" y="35" width="240" height="31"/>
+                                                                <segments>
+                                                                    <segment title="Dating"/>
+                                                                    <segment title="Engaged"/>
+                                                                    <segment title="Married"/>
+                                                                </segments>
+                                                                <color key="tintColor" red="0.42335668100000001" green="0.6822198276" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <connections>
+                                                                    <action selector="segmentedControlTapped:" destination="aiJ-6W-c9X" eventType="valueChanged" id="0V4-eU-YU9"/>
+                                                                </connections>
+                                                            </segmentedControl>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="When did you start dating?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="hHR-1K-zEv">
+                                                                <rect key="frame" x="0.0" y="70" width="240" height="30"/>
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Dating/Engaged/Married since..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="41M-Xd-2qu">
+                                                                <rect key="frame" x="0.0" y="105" width="240" height="30"/>
+                                                                <color key="backgroundColor" red="0.98039215690000003" green="0.89019607840000003" blue="0.89019607840000003" alpha="0.5" colorSpace="calibratedRGB"/>
                                                                 <constraints>
-                                                                    <constraint firstItem="Yb4-o3-I9l" firstAttribute="height" secondItem="AXc-YQ-2Qq" secondAttribute="height" id="Vc1-XL-3e0"/>
-                                                                    <constraint firstItem="AXc-YQ-2Qq" firstAttribute="height" secondItem="hHR-1K-zEv" secondAttribute="height" id="aRB-bd-Lcc"/>
-                                                                    <constraint firstItem="hHR-1K-zEv" firstAttribute="height" secondItem="41M-Xd-2qu" secondAttribute="height" id="ehB-wt-Mbq"/>
-                                                                    <constraint firstItem="eW4-tP-4Ll" firstAttribute="height" secondItem="p5I-pZ-C7q" secondAttribute="height" id="vnK-v0-Uhj"/>
+                                                                    <constraint firstAttribute="width" constant="189" id="dQM-Qt-Tf0"/>
                                                                 </constraints>
-                                                            </stackView>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                                                                <textInputTraits key="textInputTraits"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                                        <integer key="value" value="0"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                                <variation key="default">
+                                                                    <mask key="constraints">
+                                                                        <exclude reference="dQM-Qt-Tf0"/>
+                                                                    </mask>
+                                                                </variation>
+                                                                <connections>
+                                                                    <outlet property="delegate" destination="aiJ-6W-c9X" id="Lhe-Xj-mYd"/>
+                                                                </connections>
+                                                            </textField>
+                                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="1000" text="Where do you live?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="eW4-tP-4Ll">
+                                                                <rect key="frame" x="0.0" y="140" width="240" height="30"/>
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="20"/>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <nil key="highlightedColor"/>
+                                                            </label>
+                                                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Where do you live?" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="p5I-pZ-C7q">
+                                                                <rect key="frame" x="0.0" y="175" width="240" height="30"/>
+                                                                <color key="backgroundColor" red="0.98039215690000003" green="0.89019607840000003" blue="0.89019607840000003" alpha="0.5" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="189" id="lws-uS-L5R"/>
+                                                                </constraints>
+                                                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="18"/>
+                                                                <textInputTraits key="textInputTraits"/>
+                                                                <variation key="default">
+                                                                    <mask key="constraints">
+                                                                        <exclude reference="lws-uS-L5R"/>
+                                                                    </mask>
+                                                                </variation>
+                                                                <connections>
+                                                                    <outlet property="delegate" destination="aiJ-6W-c9X" id="DQm-S4-ILV"/>
+                                                                </connections>
+                                                            </textField>
                                                         </subviews>
                                                         <constraints>
-                                                            <constraint firstAttribute="trailing" secondItem="Tq6-ni-6CY" secondAttribute="trailing" id="Cpb-Pr-6ta"/>
-                                                            <constraint firstItem="Tq6-ni-6CY" firstAttribute="leading" secondItem="ife-Ps-cpc" secondAttribute="leading" id="hxp-Mn-ZhO"/>
-                                                            <constraint firstItem="Tq6-ni-6CY" firstAttribute="width" secondItem="ife-Ps-cpc" secondAttribute="width" id="jEf-Sb-V25"/>
-                                                            <constraint firstAttribute="bottom" secondItem="Tq6-ni-6CY" secondAttribute="bottom" id="k0u-98-w0t"/>
-                                                            <constraint firstItem="Tq6-ni-6CY" firstAttribute="top" secondItem="ife-Ps-cpc" secondAttribute="top" id="yWn-Gb-i1U"/>
+                                                            <constraint firstItem="41M-Xd-2qu" firstAttribute="height" secondItem="eW4-tP-4Ll" secondAttribute="height" id="BW6-ck-gt1"/>
+                                                            <constraint firstItem="Yb4-o3-I9l" firstAttribute="height" secondItem="AXc-YQ-2Qq" secondAttribute="height" id="Vc1-XL-3e0"/>
+                                                            <constraint firstItem="AXc-YQ-2Qq" firstAttribute="height" secondItem="hHR-1K-zEv" secondAttribute="height" id="aRB-bd-Lcc"/>
+                                                            <constraint firstItem="hHR-1K-zEv" firstAttribute="height" secondItem="41M-Xd-2qu" secondAttribute="height" id="ehB-wt-Mbq"/>
+                                                            <constraint firstItem="eW4-tP-4Ll" firstAttribute="height" secondItem="p5I-pZ-C7q" secondAttribute="height" id="vnK-v0-Uhj"/>
                                                         </constraints>
-                                                    </scrollView>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3iI-1d-0VK">
-                                                        <rect key="frame" x="255" y="0.0" width="15" height="354"/>
-                                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="15" id="m20-OF-3GF"/>
-                                                        </constraints>
-                                                    </view>
+                                                    </stackView>
                                                 </subviews>
-                                            </stackView>
+                                                <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="Tq6-ni-6CY" secondAttribute="trailing" id="Cpb-Pr-6ta"/>
+                                                    <constraint firstItem="Tq6-ni-6CY" firstAttribute="leading" secondItem="ife-Ps-cpc" secondAttribute="leading" id="hxp-Mn-ZhO"/>
+                                                    <constraint firstItem="Tq6-ni-6CY" firstAttribute="width" secondItem="ife-Ps-cpc" secondAttribute="width" id="jEf-Sb-V25"/>
+                                                    <constraint firstAttribute="bottom" secondItem="Tq6-ni-6CY" secondAttribute="bottom" id="k0u-98-w0t"/>
+                                                    <constraint firstItem="Tq6-ni-6CY" firstAttribute="top" secondItem="ife-Ps-cpc" secondAttribute="top" id="yWn-Gb-i1U"/>
+                                                </constraints>
+                                            </scrollView>
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3iI-1d-0VK">
+                                                <rect key="frame" x="255" y="0.0" width="15" height="354"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="15" id="m20-OF-3GF"/>
+                                                </constraints>
+                                            </view>
                                         </subviews>
                                     </stackView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0O3-mv-wKH">
@@ -3086,7 +3082,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="1F7D03D6-DB68-4FC4-A04D-FD0708B84A0A" width="300" height="200">
+        <image name="94FF9BA1-12CD-4DCD-8C23-8DFE19374A37" width="300" height="200">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGOjtYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK0HCBEW
 GxwgISgrLjQ3VSRudWxs1AkKCwwNDg8QViRjbGFzc1xOU0ltYWdlRmxhZ3NWTlNSZXBzV05TQ29sb3KA
@@ -7169,10 +7165,10 @@ AAAABAEAAAAAAAAAPgAAAAAAAAAAAAAAAAADuDk
         <image name="SignupBackground" width="375" height="667"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="zr4-Ee-pol"/>
         <segue reference="Buq-fJ-FjV"/>
         <segue reference="WW6-zc-wDP"/>
         <segue reference="VOf-vH-hh6"/>
         <segue reference="sF1-qx-hgN"/>
+        <segue reference="AqY-fo-GBC"/>
     </inferredMetricsTieBreakers>
 </document>
